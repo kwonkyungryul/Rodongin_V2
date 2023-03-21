@@ -14,7 +14,6 @@ import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.service.company.CompanyService;
 @RequiredArgsConstructor
 @RestController
-@Controller
 public class CompanyController {
 
     private final CompanyService companyService;
