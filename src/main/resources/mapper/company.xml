@@ -54,7 +54,7 @@
     <result property="companyHistory" column="company_history"/>
     <result property="companyVision" column="company_vision"/>
     </resultMap>
-    <select id="Kawaii" resultMap="CompanyDetailOutx">
+    <select id="Companydetail" resultMap="CompanyDetailOutx">
         select * from company WHERE id = #{id}
     </select>
 

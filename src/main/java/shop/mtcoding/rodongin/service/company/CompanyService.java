@@ -14,8 +14,8 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public CompanyDetailOutDto 카와이한상세보기(int id) {
-        CompanyDetailOutDto DetailDto = companyRepository.Kawaii(id);
+    public CompanyDetailOutDto 기업상세보기(int id) {
+        CompanyDetailOutDto DetailDto = companyRepository.Companydetail(id);
         return DetailDto;
     }
 }

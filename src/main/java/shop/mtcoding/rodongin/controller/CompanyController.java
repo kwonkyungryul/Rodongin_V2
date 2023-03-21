@@ -21,7 +21,7 @@ public class CompanyController {
 
     @GetMapping("/company/{id}")
     public ResponseEntity<?> detail(@PathVariable int id, Model model) {
-        CompanyDetailOutDto dto = companyService.카와이한상세보기(id);
+        CompanyDetailOutDto dto = companyService.기업상세보기(id);
         // model.addAttribute("detailDto", dto);
         return new ResponseEntity<>(new ResponseDto<>(1, "기업상세보기", dto), HttpStatus.OK);
     }

@@ -32,6 +32,6 @@ public interface CompanyRepository {
     @Param("companyHistory")   String companyHistory,@Param("companyVision")  String companyVision );
     public int deleteById(int id);
 
-    public CompanyDetailOutDto Kawaii(int id);
+    public CompanyDetailOutDto Companydetail(int id);
 
 }
