@@ -20,7 +20,7 @@ public interface CompanyRepository {
 
     public List<Company> findAll();
 
-    public Company findById(int id);
+    // public Company findById(int id);
 
     public int insert(CompanyJoinReqDto companyJoinReqDto);
 
@@ -32,6 +32,6 @@ public interface CompanyRepository {
     @Param("companyHistory")   String companyHistory,@Param("companyVision")  String companyVision );
     public int deleteById(int id);
 
-    public CompanyDetailOutDto Companydetail(int id);
+    public CompanyDetailOutDto findById(int id);
 
 }

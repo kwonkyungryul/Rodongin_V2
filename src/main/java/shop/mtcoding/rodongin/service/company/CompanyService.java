@@ -15,7 +15,7 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 
     public CompanyDetailOutDto 기업상세보기(int id) {
-        CompanyDetailOutDto DetailDto = companyRepository.Companydetail(id);
+        CompanyDetailOutDto DetailDto = companyRepository.findById(id);
         return DetailDto;
     }
 }
