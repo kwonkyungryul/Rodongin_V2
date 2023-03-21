@@ -43,5 +43,20 @@
         DELETE FROM company WHERE id = #{id}
     </delete>
 
+    <resultMap id="CompanyDetailOutx" type="shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto">
+    <id property="id" column="id" />
+    <result property="companyThumbnail" column="company_thumbnail"/>
+    <result property="companyFullname" column="company_fullname"/>
+    <result property="companyEstablish" column="company_establish"/>
+    <result property="companySales" column="company_sales"/>
+    <result property="companyEmployeesNumber" column="company_employees_number"/>
+    <result property="companyIntroduction" column="company_introduction"/>
+    <result property="companyHistory" column="company_history"/>
+    <result property="companyVision" column="company_vision"/>
+    </resultMap>
+    <select id="Kawaii" resultMap="CompanyDetailOutx">
+        select * from company WHERE id = #{id}
+    </select>
+
 
 </mapper>
