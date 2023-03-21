@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.customer.CustomerRepository">
+
+    <select id="findCustomerDetail" resultType="shop.mtcoding.rodongin.dto.customer.CustomerResp$CustomerDetailRespDto">
+        select cu.id, cu.customer_title, cu.customer_content, cu.EMPLOYEE_ID , em.employee_name
+        from customer cu
+        inner join employee em
+        on cu.employee_id = em.id
+        where cu.id = #{id}
+    </select> 
+
+    <select id="findCustomerList" resultType="shop.mtcoding.rodongin.dto.customer.CustomerResp$CustomerListRespDto">
+        SELECT cu.id, cu.customer_title, em.employee_name, cu.created_at
+        FROM customer cu 
+        INNER JOIN employee em ON cu.employee_id = em.id
+        ORDER BY cu.id DESC
+        <!-- LIMIT 0, 7 -->
+    </select>
+    <!-- 페이징 연습해보기 -->
+
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.customer.Customer">
+        select * from customer
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.customer.Customer">
+        select * from customer where id = #{id}
+    </select>    
+
+    <insert id="insert">
+        insert into customer (customer_title, customer_content, employee_id, created_at)
+        values(#{customerTitle}, #{customerContent}, #{employeeId}, now())
+    </insert>    
+
+    <delete id="deleteById" >
+        delete from customer where id = #{id}
+    </delete>    
+
+    <update id="updateById" >
+        update customer set customer_title= #{customerTitle}, customer_content= #{customerContent} where id = #{id} 
+    </update>    
+
+</mapper>

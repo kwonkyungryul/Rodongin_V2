@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.apply.ApplyRepository">
+    <insert id="insert">
+        INSERT INTO apply (announcement_id, resume_id, created_at) VALUES (#{announcementId}, #{resumeId}, NOW())
+    </insert>
+    
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.apply.Apply">
+        SELECT * FROM apply;
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.apply.Apply">
+        SELECT * FROM apply WHERE id = #{id}
+    </select>
+
+    <select id="findByCompanyId" resultType="shop.mtcoding.rodongin.dto.apply.ApplyResp$ApplyListRespDto">
+        SELECT r.id as resume_id, e.employee_fullname, e.employee_address, r.resume_title, r.resume_salary, GROUP_CONCAT(DISTINCT rc.career_company SEPARATOR ', ') companyName, GROUP_CONCAT(DISTINCT sm.stack_name SEPARATOR ', ') stackName
+        FROM apply a
+        INNER JOIN resume r
+        ON a.resume_id = r.id
+        INNER JOIN resume_career rc
+        ON r.id = rc.resume_id
+        INNER JOIN resume_stack rs
+        ON r.id = rs.resume_id
+        INNER JOIN stack_master sm
+        ON rs.stack_id = sm.id
+        INNER JOIN employee e
+        ON e.id = r.employee_id
+        WHERE a.announcement_id = #{announcementId}
+        GROUP BY r.id , e.employee_fullname, e.employee_address, r.resume_title, r.resume_salary
+    </select>
+</mapper>

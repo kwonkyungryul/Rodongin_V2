@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.master.StackMasterRepository">
+    <insert id="insert">
+        INSERT INTO resume_stack(resume_id, stack_id, stack_acquisition) VALUES(#{resumeId}, #{stackId}, #{stackAcquisition}, now())
+    </insert>
+    
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.master.StackMaster">
+        SELECT * FROM stack_master
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.master.StackMaster">
+        select * from stack_master where id = #{id}
+    </select>
+</mapper>

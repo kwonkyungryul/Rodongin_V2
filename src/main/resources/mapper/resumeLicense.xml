@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeLicenseRepository">
+
+    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeResp$ResumeLicenseRespDto">
+        select rl.RESUME_ID , rl.LICENSE_ID , lm.LICENSE_NAME , rl.LICENSE_ISSUER 
+        from RESUME_LICENSE rl
+        inner join LICENSE_MASTER lm
+        on rl.LICENSE_ID = lm.ID 
+        where rl.RESUME_ID=#{resumeId}
+        GROUP BY LICENSE_ID 
+    </select>
+    <insert id="insert">
+        INSERT INTO resume_license (resume_id, license_id, license_issuer, created_at) VALUES
+        (#{resumeId}, #{licenseId}, #{licenseIssuer}, NOW())
+    </insert>
+
+    <update id="updateByResumeId">
+        update resume_license
+        set license_id = #{licenseId}
+        ,license_issuer = #{licenseIssuer}
+        where resume_id = #{resumeId}
+    </update>
+
+</mapper>

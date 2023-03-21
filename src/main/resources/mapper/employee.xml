@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.employee.EmployeeRepository">
+
+    <select id="findByEmployeeName" resultType="shop.mtcoding.rodongin.model.employee.Employee">
+        SELECT * FROM EMPLOYEE WHERE employee_name = #{employeeName}
+    </select>
+
+    <select id="findByEmployeeNameAndPassword" resultType="shop.mtcoding.rodongin.model.employee.Employee">
+        SELECT * FROM EMPLOYEE WHERE employee_name = #{employeeName} and employee_password = #{employeePassword}
+    </select>
+
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.employee.Employee">
+        SELECT * FROM employee
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.employee.Employee">
+        SELECT * FROM employee WHERE id = #{id}
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO employee (
+            employee_name, employee_password, employee_email, employee_fullname,
+            employee_birth, employee_tel, employee_gender, employee_address, created_at
+        ) VALUES (
+            #{employeeName}, #{employeePassword}, #{employeeEmail}, #{employeeFullname},
+            #{employeeBirth}, #{employeeTel}, #{employeeGender}, #{employeeAddress}, now()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM Employee WHERE id = #{id}
+    </delete>
+
+    <update id="updateById">
+        update employee set
+        employee_password        = #{employeeUpdatdReq.employeePassword}
+        ,employee_email          = #{employeeUpdatdReq.employeeEmail}
+        ,employee_birth          = #{employeeUpdatdReq.employeeBirth}
+        ,employee_tel            = #{employeeUpdatdReq.employeeTel}
+        ,employee_address        = #{employeeUpdatdReq.employeeAddress}
+        ,employee_thumbnail      = #{employeeThumbnail}
+        where id = #{id}
+    </update>
+</mapper>

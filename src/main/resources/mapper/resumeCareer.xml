@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeCareerRepository">
+    <insert id="insert">
+        INSERT INTO resume_career(resume_id, career_company, career_start, career_end, created_at) VALUES
+        (#{resumeId}, #{careerCompany}, #{careerStart},#{careerEnd}, NOW())
+    </insert>
+    
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.resume.ResumeCareer">
+        SELECT * FROM resume_career;
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.ResumeCareer">
+        SELECT * FROM resume_career WHERE id = #{id}
+    </select>
+    
+    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.model.resume.ResumeCareer">
+        SELECT * FROM resume_career where resume_id = #{resumeId}
+    </select>
+
+    <update id="updateByResumeId">
+        update resume_career
+        set career_company = #{careerCompany}
+        ,career_start = #{careerStart}
+        ,career_end = #{careerEnd}
+        where resume_id = #{resumeId}
+    </update>
+   
+
+</mapper>

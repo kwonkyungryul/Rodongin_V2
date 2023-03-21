@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.employee.EmployeeLicenseRepository">
+
+    <insert id="insert">
+         INSERT INTO employee_license (employee_id, license_id, license_issuer, created_at)
+         VALUES (#{employeeId}, #{employeeLicense.licenseId}, #{employeeLicense.licenseIssuer}, NOW())
+    </insert>
+
+     <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$LicenseRespDto">
+        select el.ID, el.EMPLOYEE_ID , el.LICENSE_ID  ,lm.License_NAME ,el.LICENSE_ISSUER 
+        from EMPLOYEE_LICENSE  el
+        inner join LICENSE_MASTER  lm
+        on el.LICENSE_ID  =lm.ID 
+        where el.EMPLOYEE_ID = #{employeeId}
+    </select>
+
+    </mapper>

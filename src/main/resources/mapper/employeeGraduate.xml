@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.employee.EmployeeGraduateRepository">
+
+    <insert id="insert">
+         INSERT INTO employee_graduate (employee_id, school_id, school_graduate, created_at)
+         VALUES (#{employeeId}, #{employeeGraduate.schoolId}, #{employeeGraduate.schoolGraduate}, NOW())
+    </insert>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$GraduateRespDto">
+      select eg.ID, eg.EMPLOYEE_ID , eg.SCHOOL_ID ,sm.SCHOOL_NAME 
+        from EMPLOYEE_GRADUATE eg
+        inner join SCHOOL_MASTER sm
+        on eg.SCHOOL_ID =sm.ID 
+        where eg.EMPLOYEE_ID = #{employeeId}
+    </select>
+
+    </mapper>

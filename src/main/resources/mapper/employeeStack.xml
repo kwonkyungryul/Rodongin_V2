@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.employee.EmployeeStackRepository">
+
+    <insert id="insert">
+         INSERT INTO employee_stack (employee_id, stack_id, stack_acquisition, created_at)
+         VALUES (#{employeeId}, #{employeeStack.stackId}, #{employeeStack.stackAcquisition}, NOW())
+    </insert>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$StackRespDto">
+      select es.ID ,es.EMPLOYEE_ID ,es.STACK_ID ,sm.STACK_NAME ,es.STACK_ACQUISITION 
+        from EMPLOYEE_STACK es
+        inner join STACK_MASTER  sm
+        on es.STACK_ID = sm.ID 
+        where es.EMPLOYEE_ID = #{employeeId}
+    </select>
+
+    <select id="findByEmployeeId" resultType="shop.mtcoding.rodongin.model.employee.EmployeeStack">
+        SELECT * FROM employee_stack WHERE employee_id = #{employeeId}
+    </select>
+
+    </mapper>

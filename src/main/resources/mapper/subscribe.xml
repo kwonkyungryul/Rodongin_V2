@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.subscribe.SubscribeRepository">
+    <select id="findByEmployeeIdAndAnnouncementId" resultType="shop.mtcoding.rodongin.model.subscribe.Subscribe">
+        SELECT * FROM subscribe WHERE employee_id = #{employeeId} AND announcement_id = #{announcementId}
+    </select>
+
+    <select id="findByAnnouncementIdCount" resultType="int">
+        SELECT COUNT(*) FROM subscribe WHERE announcement_id = #{announcementId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO subscribe (employee_id, announcement_id, created_at) VALUES(#{employeeId}, #{announcementId}, now())
+    </insert>
+
+    <delete id="deleteByEmployeeIdAndAnnouncementId">
+        DELETE FROM subscribe WHERE employee_id = #{employeeId} AND announcement_id = #{announcementId}
+    </delete>
+</mapper>

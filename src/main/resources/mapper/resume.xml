@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeRepository">
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.Resume">
+      SELECT * FROM resume WHERE id = #{id}
+    </select>
+    
+    <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeResp$ResumeListRespDto">
+        SELECT re.ID, re.EMPLOYEE_ID, re.RESUME_TITLE, re.RESUME_SALARY,
+        MAX(rc.CAREER_COMPANY) AS CAREER_COMPANY, 
+        MAX((SELECT SCHOOL_NAME FROM SCHOOL_MASTER sm WHERE sm.ID = rg.SCHOOL_ID)) AS SCHOOL_NAME,
+        MAX((SELECT LICENSE_NAME FROM LICENSE_MASTER lm WHERE lm.ID = rl.LICENSE_ID)) AS LICENSE_NAME, MAX(rl.LICENSE_ISSUER),
+        MAX((SELECT STACK_NAME FROM STACK_MASTER stm WHERE stm.ID = rst.STACK_ID)) AS STACK_NAME,
+        MAX(rst.STACK_ACQUISITION)
+        FROM RESUME re
+        LEFT OUTER JOIN RESUME_CAREER rc ON re.ID = rc.RESUME_ID
+        LEFT OUTER JOIN RESUME_GRADUATE rg ON re.ID = rg.RESUME_ID
+        LEFT OUTER JOIN RESUME_LICENSE rl ON re.ID = rl.RESUME_ID 
+        LEFT OUTER JOIN RESUME_STACK rst ON re.ID = rst.RESUME_ID
+        WHERE re.employee_id = #{emplopyeeId}
+        GROUP BY re.ID, re.EMPLOYEE_ID, re.RESUME_TITLE
+    </select>
+    
+    <select id="findByEmployeeId" resultType="shop.mtcoding.rodongin.model.resume.Resume">
+        SELECT * FROM resume WHERE employee_id = #{employeeId}
+    </select>
+
+    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.model.resume.Resume">
+        SELECT * FROM resume WHERE id = #{id}
+    </select>
+    
+    <delete id="deleteById">
+        DELETE FROM resume WHERE id = #{id}
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="resumeSaveDto.id">
+        INSERT INTO resume (employee_id, resume_title, resume_salary, CV, created_at) VALUES
+        (#{employeeId}, #{resumeSaveDto.resumeTitle}, #{resumeSaveDto.resumeSalary}, #{resumeSaveDto.CV}, NOW())
+    </insert>
+    <update id="updateById">
+        update resume
+        set resume_title = #{resumeUpdateDto.resumeTitle}
+        ,resume_salary = #{resumeUpdateDto.resumeSalary}
+        ,CV = #{resumeUpdateDto.CV}
+        where id = #{id}
+    </update>
+
+</mapper>
+

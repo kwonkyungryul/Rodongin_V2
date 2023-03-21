@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.company.CompanyRepository">
+
+    <select id="findByCompanyUsername" resultType="shop.mtcoding.rodongin.model.company.Company">
+        SELECT * FROM company WHERE company_username = #{companyUsername}
+    </select>
+
+    <select id="findByCompanyNameAndPassword" resultType="shop.mtcoding.rodongin.model.company.Company">
+        SELECT * FROM company WHERE company_username = #{companyUsername} and company_password = #{companyPassword}
+    </select>
+
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.company.Company">
+        SELECT * FROM company
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.company.Company">
+
+        SELECT * FROM company WHERE id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO company (
+            company_username, company_password, company_fullname, company_ceo_name,
+            company_license_number, company_tel, company_address, company_email, created_at
+        ) VALUES (
+            #{companyUsername}, #{companyPassword}, #{companyFullname}, #{companyCeoName},
+            #{companyLicenseNumber}, #{companyTel}, #{companyAddress}, #{companyEmail}, now()
+            )
+    </insert>
+
+     <update id="updateById" >
+        update company set 
+            company_fullname = #{companyFullname},company_thumbnail = #{companyThumbnail} , 
+            company_establish =  #{companyEstablish}, company_sales = #{companySales}, company_employees_number = #{companyEmployeesNumber},
+            company_introduction = #{companyIntroduction}, company_history = #{companyHistory}, company_vision = #{companyVision} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM company WHERE id = #{id}
+    </delete>
+
+
+</mapper>

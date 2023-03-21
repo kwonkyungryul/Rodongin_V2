@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeStackRepository">
+    <insert id="insert">
+        INSERT INTO resume_stack (resume_id, stack_id, stack_acquisition, created_at) VALUES
+        (#{resumeId},#{stackId},#{stackAcquisition},NOW())
+    </insert>
+    
+    <select id="findAll" resultType="shop.mtcoding.rodongin.model.resume.ResumeStack">
+        SELECT * FROM resume_stack;
+    </select>
+
+    <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.ResumeStack">
+        SELECT * FROM resume_stack WHERE id = #{id}
+    </select>
+    
+    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeResp$ResumeStackRespDto">
+        select rs.RESUME_ID , rs.STACK_ID , sm.STACK_NAME , rs.STACK_ACQUISITION , 
+        from RESUME_STACK rs
+        inner join STACK_MASTER sm
+        on rs.STACK_ID =sm.ID 
+        where rs.RESUME_ID = #{resumeId}
+    </select>
+
+     <update id="updateByResumeId">
+        update resume_stack
+        set stack_id = #{stackId}
+        ,stack_acquisition = #{stackAcquisition}
+        where resume_id = #{resumeId}
+    </update>
+</mapper>
+
