@@ -5,6 +5,42 @@
 
 <mapper namespace="shop.mtcoding.rodongin.model.announcement.AnnouncementRepository">
 
+<resultMap id="datailResultMap" type="shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto">
+        <id property="id" column="id"/>
+        <result property="announcementTitle" column="announcement_title"/>
+        <result property="announcementContent" column="announcement_content"/>
+        <result property="announcementCarrer" column="announcement_carrer"/>
+        <result property="announcementHireType" column="announcement_hire_type"/>
+        <result property="announcementRecNum" column="announcement_rec_num"/>
+        <result property="announcementSalary" column="announcement_salary"/>
+        <result property="announcementArea" column="announcement_area"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="company" javaType="shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto$CompanyDto">
+            <id property="id" column="id"/>
+            <result property="companyFullname" column="company_fullname"/>
+            <result property="companyCeoName" column="company_ceo_name"/>
+            <result property="companyAddress" column="company_address"/>
+            <result property="companyThumbnail" column="company_thumbnail"/>
+            <result property="companyEstablish" column="company_establish"/>
+            <result property="companyEmployeesNumber" column="company_employees_number"/>
+            <result property="createdAt" column="created_at"/>
+        </association>
+        <association property="stackMaster" javaType="shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto$StackMasterDto">
+            <id property="id" column="id"/>
+            <result property="stackName" column="stack_name"/>
+        </association>
+    </resultMap>
+
+    <select id="findByIdJoinCompanyAndStack" resultMap="datailResultMap">
+      select *
+        from announcement a
+            inner join company c
+            on a.company_id = c.id
+            inner join STACK_MASTER  sm
+            on a.STACK_ID =sm.ID 
+        where a.id = #{id};
+    </select>
+
     <select id="findAll" resultType="shop.mtcoding.rodongin.model.announcement.Announcement">
         SELECT * FROM announcement
     </select>
