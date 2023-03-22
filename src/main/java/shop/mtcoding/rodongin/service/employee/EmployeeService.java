@@ -1,31 +1,58 @@
 package shop.mtcoding.rodongin.service.employee;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeJoinReqDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeLoginReqDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;
-import shop.mtcoding.rodongin.handler.ex.CustomApiException;
+import lombok.RequiredArgsConstructor;
+import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.employee.Employee;
-import shop.mtcoding.rodongin.model.employee.EmployeeCareer;
-import shop.mtcoding.rodongin.model.employee.EmployeeCareerRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeGraduate;
-import shop.mtcoding.rodongin.model.employee.EmployeeGraduateRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeLicense;
-import shop.mtcoding.rodongin.model.employee.EmployeeLicenseRepository;
 import shop.mtcoding.rodongin.model.employee.EmployeeRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeStack;
-import shop.mtcoding.rodongin.model.employee.EmployeeStackRepository;
 import shop.mtcoding.rodongin.util.Encode;
-import shop.mtcoding.rodongin.util.PathUtil;
 
+@RequiredArgsConstructor
 @Service
 public class EmployeeService {
+
+    public final EmployeeRepository employeeRepository;
+
+    @Transactional
+    public void 회원가입(EmployeeJoinInDto employeeJoinInDto) {
+
+        Employee sameEmployee = employeeRepository.findByEmployeeName(employeeJoinInDto.getEmployeeName());
+
+        if (sameEmployee != null) {
+            throw new CustomException("동일한 username이 존재합니다");
+        }
+
+        String encodedPassword = "";
+
+        try {
+            encodedPassword = Encode.passwordEncode(employeeJoinInDto.getEmployeePassword());
+
+        } catch (Exception e) {
+            throw new CustomException("비밀번호 해싱 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        employeeJoinInDto.setEmployeePassword(encodedPassword);
+        System.out.println("테스트");
+
+        String email = employeeJoinInDto.getEmployeeEmail().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeEmail(email);
+
+        String tel = employeeJoinInDto.getEmployeeTel().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeTel(tel);
+
+        String address = employeeJoinInDto.getEmployeeAddress().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeAddress(address);
+
+        employeeRepository.insert(employeeJoinInDto);
+
+        try {
+
+        } catch (Exception e) {
+            throw new CustomException("일시적인 서버 에러입니다.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
