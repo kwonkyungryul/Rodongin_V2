@@ -4,8 +4,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.rodongin.dto.employee.*;
+import shop.mtcoding.rodongin.dto.resume.ResumeDto;
+import shop.mtcoding.rodongin.model.employee.*;
+import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
@@ -14,12 +19,52 @@ import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.model.employee.EmployeeRepository;
 import shop.mtcoding.rodongin.util.Encode;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class EmployeeService {
 
-    public final EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    private final EmployeeGraduateRepository employeeGraduateRepository;
+
+    private final EmployeeCareerRepository employeeCareerRepository;
+
+    private final EmployeeLicenseRepository employeeLicenseRepository;
+
+    private final EmployeeStackRepository employeeStackRepository;
+
+    private final ResumeRepository resumeRepository;
+
+
+    @Transactional(readOnly = true)
+    public EmployeeDetailOutDto 유저정보조회(int principalId) {
+        Employee employee = employeeRepository.findById(principalId);
+        List<EmployeeGraduateDto> graduates = employeeGraduateRepository.findByEmpId(principalId);
+        List<EmployeeCareerDto> careers = employeeCareerRepository.findByEmpId(principalId);
+        List<EmployeeLicenseDto> licenses = employeeLicenseRepository.findByEmpId(principalId);
+        List<EmployeeStackDto> stacks = employeeStackRepository.findByEmpId(principalId);
+        List<ResumeDto> resumes = resumeRepository.findByEmpId(principalId);
+
+
+        EmployeeDetailOutDto employeeDetailInfo = EmployeeDetailOutDto.builder()
+                .id(employee.getId())
+                .employeeFullname(employee.getEmployeeFullname())
+                .employeeName(employee.getEmployeeName())
+                .employeeAddress(employee.getEmployeeAddress())
+                .employeeBirth(employee.getEmployeeBirth())
+                .employeeEmail(employee.getEmployeeEmail())
+                .employeeTel(employee.getEmployeeTel())
+                .employeeGraduateDtos(graduates)
+                .employeeCareerDtos(careers)
+                .employeeLicenseDtos(licenses)
+                .employeeStackDtos(stacks)
+                .resumeDtos(resumes)
+                .build();
+
+        return employeeDetailInfo;
+    }
 
     @Transactional
     public void 회원가입(EmployeeJoinInDto employeeJoinInDto) {

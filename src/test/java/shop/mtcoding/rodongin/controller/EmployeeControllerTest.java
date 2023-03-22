@@ -3,6 +3,8 @@ package shop.mtcoding.rodongin.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
@@ -39,21 +41,21 @@ public class EmployeeControllerTest {
 
     private MockHttpSession mockSession;
 
-    // @BeforeEach
-    // public void setUp() {
-    // // 세션 주입
-    // Employee employee = new Employee();
-    // employee.setId(1);
-    // employee.setEmployeeName("ssar");
-    // employee.setEmployeePassword("1234");
-    // employee.setEmployeeEmail("ssar@nate.com");
-    // // employee.setEmployeeBirth(date);
-    // employee.setEmployeeTel("01011111111");
-    // employee.setEmployeeAddress("서울특별시 강남구");
+    @BeforeEach
+    public void setUp() {
+        // 세션 주입
+        Employee employee = new Employee();
+        employee.setId(1);
+        employee.setEmployeeName("ssar");
+        employee.setEmployeePassword("1234");
+        employee.setEmployeeEmail("ssar@nate.com");
+        // employee.setEmployeeBirth(date);
+        employee.setEmployeeTel("01011111111");
+        employee.setEmployeeAddress("서울특별시 강남구");
 
-    // mockSession = new MockHttpSession();
-    // mockSession.setAttribute("principal", employee);
-    // }
+        mockSession = new MockHttpSession();
+        mockSession.setAttribute("principal", employee);
+    }
 
     @Test
     public void update_test() throws Exception {
@@ -114,6 +116,22 @@ public class EmployeeControllerTest {
         assertThat(principal.getEmployeeName()).isEqualTo("ssar");
         resultActions.andExpect(status().isOk());
 
+    }
+
+    @Test
+    public void detail_list() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/employees"));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + responseBody);
+        // then
+
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
     }
 
 }

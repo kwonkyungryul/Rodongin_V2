@@ -11,11 +11,17 @@
     </insert>
 
     <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$GraduateRespDto">
-      select eg.ID, eg.EMPLOYEE_ID , eg.SCHOOL_ID ,sm.SCHOOL_NAME 
+      select eg.ID, eg.EMPLOYEE_ID , eg.SCHOOL_ID ,sm.SCHOOL_NAME, eg.school_graduate
         from EMPLOYEE_GRADUATE eg
         inner join SCHOOL_MASTER sm
         on eg.SCHOOL_ID =sm.ID 
         where eg.EMPLOYEE_ID = #{employeeId}
+    </select>
+
+    <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto">
+        SELECT *
+        FROM employee_graduate
+        WHERE employee_id = #{employeeId}
     </select>
 
     </mapper>

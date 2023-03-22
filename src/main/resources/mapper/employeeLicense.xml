@@ -18,4 +18,10 @@
         where el.EMPLOYEE_ID = #{employeeId}
     </select>
 
+    <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeLicenseDto">
+        SELECT *
+        FROM employee_license
+        WHERE employee_id = #{employeeId}
+    </select>
+
     </mapper>

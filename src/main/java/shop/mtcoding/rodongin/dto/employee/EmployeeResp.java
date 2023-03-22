@@ -10,6 +10,7 @@ public class EmployeeResp {
     public static class GraduateRespDto {
         private Integer id;
         private Integer employeeId;
+        private String schoolGraduate;
         private Integer schoolId;
         private String schoolName;
     }

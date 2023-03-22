@@ -1,11 +1,11 @@
 package shop.mtcoding.rodongin.model.employee;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+import shop.mtcoding.rodongin.dto.employee.EmployeeLicenseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeResp.LicenseRespDto;
+
+import java.util.List;
 
 @Mapper
 public interface EmployeeLicenseRepository {
@@ -14,6 +14,5 @@ public interface EmployeeLicenseRepository {
 
     public List<LicenseRespDto> findById(int employeeId);
 
-  
-
+    public List<EmployeeLicenseDto> findByEmpId(Integer employeeId);
 }
