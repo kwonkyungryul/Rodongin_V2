@@ -8,15 +8,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
+import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyReq.CompanyJoinReqDto;
-import shop.mtcoding.rodongin.dto.company.CompanyReq.CompanyLoginReqDto;
 
 @Mapper
 public interface CompanyRepository {
 
     public Company findByCompanyUsername(String companyUsername);
 
-    public Company findByCompanyNameAndPassword(CompanyLoginReqDto companyLoginReqDto);
+    public Company findByCompanyNameAndPassword(CompanyLoginInDto companyLoginInDto);
 
     public List<Company> findAll();
 
