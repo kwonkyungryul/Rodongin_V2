@@ -1,5 +1,6 @@
 package shop.mtcoding.rodongin.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
@@ -7,13 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementUpdateInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.service.announcement.AnnouncementService;
@@ -25,6 +29,58 @@ public class AnnouncementController {
 
     private final AnnouncementService announcementService;
     private final HttpSession session;
+
+    // 게시글 수정
+    @PutMapping("/announcement/{id}")
+    public ResponseEntity<?> update(@PathVariable int id,
+            @RequestBody AnnouncementUpdateInDto announcementUpdateInDto, HttpServletResponse response) {
+
+        // Company principal = (Company) session.getAttribute("comPrincipal");
+
+        Company comPrincipal = MySession.CompanyPrincipal(session);
+
+        if (comPrincipal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
+        if (announcementUpdateInDto.getAnnouncementTitle() == null
+                || announcementUpdateInDto.getAnnouncementTitle().isEmpty()) {
+            throw new CustomApiException("title을 작성해주세요");
+        }
+
+        if (announcementUpdateInDto.getStackId() == null
+                || announcementUpdateInDto.getStackId() == 0) {
+            throw new CustomApiException("기술선택을 선택해주세요");
+        }
+
+        if (announcementUpdateInDto.getAnnouncementContent() == null
+                || announcementUpdateInDto.getAnnouncementContent().isEmpty()) {
+            throw new CustomApiException("Content을 작성해주세요");
+        }
+
+        if (announcementUpdateInDto.getAnnouncementCarrer() == null
+                || announcementUpdateInDto.getAnnouncementCarrer().isEmpty()) {
+            throw new CustomApiException("Carrer을 작성해주세요");
+        }
+
+        if (announcementUpdateInDto.getAnnouncementHireType() == null
+                || announcementUpdateInDto.getAnnouncementHireType().isEmpty()) {
+            throw new CustomApiException("HireType을 작성해주세요");
+        }
+
+        if (announcementUpdateInDto.getAnnouncementSalary() == null
+                || announcementUpdateInDto.getAnnouncementSalary().isEmpty()) {
+            throw new CustomApiException("Salary을 작성해주세요");
+        }
+
+        if (announcementUpdateInDto.getAnnouncementArea() == null
+                || announcementUpdateInDto.getAnnouncementArea().isEmpty()) {
+            throw new CustomApiException("Area을 작성해주세요");
+        }
+
+        announcementService.게시글수정(comPrincipal.getId(), id, announcementUpdateInDto);
+        return new ResponseEntity<>(new ResponseDto<>(1, "게시글수정성공", null), HttpStatus.OK);
+    }
 
     @PostMapping("/announcement")
     public ResponseEntity<?> save(@RequestBody AnnouncementSaveInDto announcementSaveInDto) {

@@ -112,16 +112,16 @@
     </delete>
 
     <update id="updateById">
-     update announcement set
-    stack_id = #{announcementUpdateReqDto.stackId},
-    announcement_title = #{announcementUpdateReqDto.announcementTitle},
-    announcement_content = #{announcementUpdateReqDto.announcementContent},
-    announcement_carrer = #{announcementUpdateReqDto.announcementCarrer},
-    announcement_hire_type = #{announcementUpdateReqDto.announcementHireType},
-    announcement_rec_num = #{announcementUpdateReqDto.announcementRecNum},
-    announcement_salary = #{announcementUpdateReqDto.announcementSalary},
-    announcement_area = #{announcementUpdateReqDto.announcementArea}
-  where id = #{id}
+        update announcement set
+            stack_id = #{announcementUpdateInDto.stackId},
+            announcement_title = #{announcementUpdateInDto.announcementTitle},
+            announcement_content = #{announcementUpdateInDto.announcementContent},
+            announcement_carrer = #{announcementUpdateInDto.announcementCarrer},
+            announcement_hire_type = #{announcementUpdateInDto.announcementHireType},
+            announcement_rec_num = #{announcementUpdateInDto.announcementRecNum},
+            announcement_salary = #{announcementUpdateInDto.announcementSalary},
+            announcement_area = #{announcementUpdateInDto.announcementArea}
+        where id = #{id}
     </update>
   <select id="findByDetailUser" resultType="shop.mtcoding.rodongin.model.announcement.Announcement">
     SELECT * FROM announcement WHERE id = #{id}
