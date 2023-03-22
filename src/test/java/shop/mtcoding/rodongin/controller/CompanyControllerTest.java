@@ -1,15 +1,27 @@
 package shop.mtcoding.rodongin.controller;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import javax.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
+import shop.mtcoding.rodongin.model.company.Company;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -18,6 +30,10 @@ public class CompanyControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper om;
+
+    private MockHttpSession mockSession;
     @Test
     public void detail_test() throws Exception {
         // given
@@ -32,6 +48,29 @@ public class CompanyControllerTest {
 
         resultActions.andExpect(jsonPath("$.code").value(1));
         resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    public void login_test() throws Exception {
+        // given
+        CompanyLoginInDto companyLoginInDto = new CompanyLoginInDto();
+        companyLoginInDto.setCompanyUsername("NAVER");
+        companyLoginInDto.setCompanyPassword("1234");
+        String requestBody = om.writeValueAsString(companyLoginInDto);
+
+        System.out.println("테스트 : " + requestBody);
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/company/login").content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
+
+        HttpSession session = resultActions.andReturn().getRequest().getSession();
+        Company principal = (Company) session.getAttribute("comPrincipal");
+
+        // then
+        assertThat(principal.getCompanyUsername()).isEqualTo("NAVER");
+        resultActions.andExpect(status().isOk());
+
     }
     
 }
