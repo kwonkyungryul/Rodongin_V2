@@ -1,10 +1,15 @@
 package shop.mtcoding.rodongin.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
+
+import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,6 +83,39 @@ public class EmployeeControllerTest {
         // then
         resultActions.andExpect(status().isOk());
         // resultActions.andExpect(jsonPath("$.code").value(1));
+    }
+
+    @Test
+    public void join_test() throws Exception {
+        // given
+        String requestBody = "employeeName=asdfsdfsdfr&employeePassword=1234&employeeEmail=love@naver.com&employeeFullname=LOVE&employeeBirth=1990-01-01&employeeTel=01011111111&employeeGender=M&employeeAddress=서울특별시 강남구";
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/employee/join").content(requestBody)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+
+        // then
+        resultActions.andExpect(status().isCreated());
+    }
+
+    @Test
+    public void login_test() throws Exception {
+        // given
+        String requestBody = "employeeName=ssar&employeePassword=1234";
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/employee/login").content(requestBody)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+
+        HttpSession session = resultActions.andReturn().getRequest().getSession();
+        Employee principal = (Employee) session.getAttribute("principal");
+        System.out.println("테스트: " + principal.getEmployeeName());
+        System.out.println("테스트: " + principal.getEmployeePassword());
+
+        // then
+        assertThat(principal.getEmployeeName()).isEqualTo("ssar");
+        resultActions.andExpect(status().isOk());
+
     }
 
     @Test
