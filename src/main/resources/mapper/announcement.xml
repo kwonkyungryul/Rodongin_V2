@@ -101,14 +101,10 @@
     </select>
 
     <insert id="insert">
-        insert into announcement (company_id, stack_id,
-        announcement_title, 
-        announcement_content, announcement_carrer, 
-        announcement_hire_type, announcement_rec_num,
-        announcement_salary, announcement_area, created_at ) 
-        values(#{companyId}, #{stackId}, #{announcementTitle}, 
-        #{announcementContent},#{announcementCarrer},#{announcementHireType},
-        #{announcementRecNum},#{announcementSalary},#{announcementArea},now())
+        insert into announcement 
+        (company_id, stack_id, announcement_title, announcement_content, announcement_carrer, announcement_hire_type, announcement_rec_num, announcement_salary, announcement_area, created_at ) 
+        values
+        (#{companyId}, #{announcementSaveInDto.stackId}, #{announcementSaveInDto.announcementTitle}, #{announcementSaveInDto.announcementContent},#{announcementSaveInDto.announcementCarrer},#{announcementSaveInDto.announcementHireType}, #{announcementSaveInDto.announcementRecNum},#{announcementSaveInDto.announcementSalary},#{announcementSaveInDto.announcementArea},now())
     </insert>
 
     <delete id="deleteById">

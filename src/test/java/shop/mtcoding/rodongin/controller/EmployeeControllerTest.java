@@ -11,7 +11,6 @@ import java.sql.Date;
 
 import javax.servlet.http.HttpSession;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;
 import shop.mtcoding.rodongin.model.employee.Employee;
 
@@ -88,12 +88,22 @@ public class EmployeeControllerTest {
     @Test
     public void join_test() throws Exception {
         // given
-        String requestBody = "employeeName=asdfsdfsdfr&employeePassword=1234&employeeEmail=love@naver.com&employeeFullname=LOVE&employeeBirth=1990-01-01&employeeTel=01011111111&employeeGender=M&employeeAddress=서울특별시 강남구";
+        EmployeeJoinInDto employeeJoinInDto = EmployeeJoinInDto.builder()
+                .employeeName("qsdfid")
+                .employeePassword("1234")
+                .employeeFullname("홍길동")
+                .employeeEmail("SDFWEF@SDF.DFSDF")
+                .employeeTel("01011111111")
+                .employeeGender("M")
+                .employeeBirth(new Date(2013 - 02 - 11))
+                .employeeAddress("서울어쩌고")
+                .build();
 
+        String requestBody = om.writeValueAsString(employeeJoinInDto);
+        System.out.println("테스트 : " + requestBody);
         // when
         ResultActions resultActions = mvc.perform(post("/employee/join").content(requestBody)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
-
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
         // then
         resultActions.andExpect(status().isCreated());
     }
@@ -101,11 +111,15 @@ public class EmployeeControllerTest {
     @Test
     public void login_test() throws Exception {
         // given
-        String requestBody = "employeeName=ssar&employeePassword=1234";
-
+        EmployeeJoinInDto employeeJoinInDto = EmployeeJoinInDto.builder()
+                .employeeName("ssar")
+                .employeePassword("1234")
+                .build();
+        String requestBody = om.writeValueAsString(employeeJoinInDto);
+        System.out.println("테스트 : " + requestBody);
         // when
         ResultActions resultActions = mvc.perform(post("/employee/login").content(requestBody)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         HttpSession session = resultActions.andReturn().getRequest().getSession();
         Employee principal = (Employee) session.getAttribute("principal");

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.mtcoding.rodongin.dto.ResponseDto;
@@ -41,8 +42,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/join")
-    public ResponseEntity<?> join(EmployeeJoinInDto employeeJoinInDto) throws Exception {
-
+    public ResponseEntity<?> join(@RequestBody EmployeeJoinInDto employeeJoinInDto) throws Exception {
         if (employeeJoinInDto.getEmployeeName() == null || employeeJoinInDto.getEmployeeName().isEmpty()) {
             throw new CustomException("아이디를 작성해주세요");
         }
@@ -75,7 +75,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/login")
-    public ResponseEntity<?> login(EmployeeLoginInDto employeeLoginInDto,
+    public ResponseEntity<?> login(@RequestBody EmployeeLoginInDto employeeLoginInDto,
             HttpServletResponse response,
             @RequestParam(value = "remember", required = false) String employeeName) {
 
