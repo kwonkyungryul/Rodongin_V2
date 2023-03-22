@@ -1,21 +1,29 @@
 package shop.mtcoding.rodongin.controller;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
+import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.service.employee.EmployeeService;
 
 @RequiredArgsConstructor
 @RestController
 public class EmployeeController {
 
-    public final EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    private final HttpSession session;
 
     @PostMapping("/employee/join")
     public ResponseEntity<?> join(EmployeeJoinInDto employeeJoinInDto) throws Exception {
@@ -49,6 +57,26 @@ public class EmployeeController {
 
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
 
+    }
+
+    @PostMapping("/employee/login")
+    public ResponseEntity<?> login(EmployeeLoginInDto employeeLoginInDto,
+            HttpServletResponse response,
+            @RequestParam(value = "remember", required = false) String employeeName) {
+
+        if (employeeLoginInDto.getEmployeeName() == null || employeeLoginInDto.getEmployeeName().isEmpty()) {
+            throw new CustomException("username을 입력해주세요", HttpStatus.BAD_REQUEST);
+        }
+
+        if (employeeLoginInDto.getEmployeePassword() == null || employeeLoginInDto.getEmployeePassword().isEmpty()) {
+            throw new CustomException("password를 입력해주세요", HttpStatus.BAD_REQUEST);
+        }
+
+        Employee principal = employeeService.로그인(employeeLoginInDto, response, employeeName);
+
+        session.setAttribute("principal", principal);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "로그인 완료", null), HttpStatus.OK);
     }
 
 }

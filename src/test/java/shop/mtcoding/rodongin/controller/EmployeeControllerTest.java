@@ -1,10 +1,13 @@
 package shop.mtcoding.rodongin.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
+
+import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,21 +39,21 @@ public class EmployeeControllerTest {
 
     private MockHttpSession mockSession;
 
-    @BeforeEach
-    public void setUp() {
-        // 세션 주입
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setEmployeeName("ssar");
-        employee.setEmployeePassword("1234");
-        employee.setEmployeeEmail("ssar@nate.com");
-        // employee.setEmployeeBirth(date);
-        employee.setEmployeeTel("01011111111");
-        employee.setEmployeeAddress("서울특별시 강남구");
+    // @BeforeEach
+    // public void setUp() {
+    // // 세션 주입
+    // Employee employee = new Employee();
+    // employee.setId(1);
+    // employee.setEmployeeName("ssar");
+    // employee.setEmployeePassword("1234");
+    // employee.setEmployeeEmail("ssar@nate.com");
+    // // employee.setEmployeeBirth(date);
+    // employee.setEmployeeTel("01011111111");
+    // employee.setEmployeeAddress("서울특별시 강남구");
 
-        mockSession = new MockHttpSession();
-        mockSession.setAttribute("principal", employee);
-    }
+    // mockSession = new MockHttpSession();
+    // mockSession.setAttribute("principal", employee);
+    // }
 
     @Test
     public void update_test() throws Exception {
@@ -91,6 +94,26 @@ public class EmployeeControllerTest {
 
         // then
         resultActions.andExpect(status().isCreated());
+    }
+
+    @Test
+    public void login_test() throws Exception {
+        // given
+        String requestBody = "employeeName=ssar&employeePassword=1234";
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/employee/login").content(requestBody)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+
+        HttpSession session = resultActions.andReturn().getRequest().getSession();
+        Employee principal = (Employee) session.getAttribute("principal");
+        System.out.println("테스트: " + principal.getEmployeeName());
+        System.out.println("테스트: " + principal.getEmployeePassword());
+
+        // then
+        assertThat(principal.getEmployeeName()).isEqualTo("ssar");
+        resultActions.andExpect(status().isOk());
+
     }
 
 }
