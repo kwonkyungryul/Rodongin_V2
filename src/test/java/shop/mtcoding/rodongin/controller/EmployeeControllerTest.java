@@ -80,4 +80,17 @@ public class EmployeeControllerTest {
         // resultActions.andExpect(jsonPath("$.code").value(1));
     }
 
+    @Test
+    public void join_test() throws Exception {
+        // given
+        String requestBody = "employeeName=asdfsdfsdfr&employeePassword=1234&employeeEmail=love@naver.com&employeeFullname=LOVE&employeeBirth=1990-01-01&employeeTel=01011111111&employeeGender=M&employeeAddress=서울특별시 강남구";
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/employee/join").content(requestBody)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+
+        // then
+        resultActions.andExpect(status().isCreated());
+    }
+
 }

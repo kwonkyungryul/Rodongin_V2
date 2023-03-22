@@ -56,7 +56,7 @@ public class EmployeeController {
 
         employeeService.회원가입(employeeJoinInDto);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
 
     }
 
