@@ -4,6 +4,9 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="shop.mtcoding.rodongin.model.employee.EmployeeRepository">
+    
+  
+<!-- v1 -->
 
     <select id="findByEmployeeName" resultType="shop.mtcoding.rodongin.model.employee.Employee">
         SELECT * FROM EMPLOYEE WHERE employee_name = #{employeeName}
