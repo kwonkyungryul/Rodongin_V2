@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.employee.EmployeeResp.ResumeApplyListRespDto;
+import shop.mtcoding.rodongin.dto.resume.ResumeDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeSaveDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeUpdateDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeListRespDto;
@@ -23,9 +24,7 @@ public interface ResumeRepository {
 
     public List<ResumeApplyListRespDto> findByApplyResumeIdWithCareer(int applyResumeId);
 
-    public List<ResumeListRespDto> findByEmpId(int employeeId);
-
-    public List<Resume> findByEmployeeId(int employeeId);
+    public List<ResumeDto> findByEmpId(int employeeId);
 
     public int insert(@Param("employeeId") int employeeId, @Param("resumeSaveDto") ResumeSaveDto resumeSaveDto);
 

@@ -1,31 +1,57 @@
 package shop.mtcoding.rodongin.service.employee;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import shop.mtcoding.rodongin.dto.employee.*;
+import shop.mtcoding.rodongin.dto.resume.ResumeDto;
+import shop.mtcoding.rodongin.model.employee.*;
+import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeJoinReqDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeLoginReqDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;
-import shop.mtcoding.rodongin.handler.ex.CustomApiException;
-import shop.mtcoding.rodongin.handler.ex.CustomException;
-import shop.mtcoding.rodongin.model.employee.Employee;
-import shop.mtcoding.rodongin.model.employee.EmployeeCareer;
-import shop.mtcoding.rodongin.model.employee.EmployeeCareerRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeGraduate;
-import shop.mtcoding.rodongin.model.employee.EmployeeGraduateRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeLicense;
-import shop.mtcoding.rodongin.model.employee.EmployeeLicenseRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeRepository;
-import shop.mtcoding.rodongin.model.employee.EmployeeStack;
-import shop.mtcoding.rodongin.model.employee.EmployeeStackRepository;
-import shop.mtcoding.rodongin.util.Encode;
-import shop.mtcoding.rodongin.util.PathUtil;
+import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+
+    private final EmployeeGraduateRepository employeeGraduateRepository;
+
+    private final EmployeeCareerRepository employeeCareerRepository;
+
+    private final EmployeeLicenseRepository employeeLicenseRepository;
+
+    private final EmployeeStackRepository employeeStackRepository;
+
+    private final ResumeRepository resumeRepository;
+
+
+    @Transactional(readOnly = true)
+    public EmployeeDetailOutDto 유저정보조회(int principalId) {
+        Employee employee = employeeRepository.findById(principalId);
+        List<EmployeeGraduateDto> graduates = employeeGraduateRepository.findByEmpId(principalId);
+        List<EmployeeCareerDto> careers = employeeCareerRepository.findByEmpId(principalId);
+        List<EmployeeLicenseDto> licenses = employeeLicenseRepository.findByEmpId(principalId);
+        List<EmployeeStackDto> stacks = employeeStackRepository.findByEmpId(principalId);
+        List<ResumeDto> resumes = resumeRepository.findByEmpId(principalId);
+
+
+        EmployeeDetailOutDto employeeDetailInfo = EmployeeDetailOutDto.builder()
+                .id(employee.getId())
+                .employeeFullname(employee.getEmployeeFullname())
+                .employeeName(employee.getEmployeeName())
+                .employeeAddress(employee.getEmployeeAddress())
+                .employeeBirth(employee.getEmployeeBirth())
+                .employeeEmail(employee.getEmployeeEmail())
+                .employeeTel(employee.getEmployeeTel())
+                .employeeGraduateDtos(graduates)
+                .employeeCareerDtos(careers)
+                .employeeLicenseDtos(licenses)
+                .employeeStackDtos(stacks)
+                .resumeDtos(resumes)
+                .build();
+
+        return employeeDetailInfo;
+    }
 }

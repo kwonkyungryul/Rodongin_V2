@@ -15,4 +15,10 @@
          VALUES (#{employeeId}, #{employeeCareer.careerCompany}, #{employeeCareer.careerStart},#{employeeCareer.careerEnd}, NOW())
     </insert>
 
+    <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeCareerDto">
+        SELECT *
+        FROM employee_career
+        WHERE employee_id = #{employeeId}
+    </select>
+
     </mapper>

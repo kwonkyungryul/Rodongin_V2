@@ -1,7 +1,7 @@
 package shop.mtcoding.rodongin.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
@@ -78,6 +78,22 @@ public class EmployeeControllerTest {
         // then
         resultActions.andExpect(status().isOk());
         // resultActions.andExpect(jsonPath("$.code").value(1));
+    }
+
+    @Test
+    public void detail_list() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/employees"));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + responseBody);
+        // then
+
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
     }
 
 }

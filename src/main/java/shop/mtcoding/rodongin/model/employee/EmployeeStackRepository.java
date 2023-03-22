@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.employee.EmployeeResp.StackRespDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeStackDto;
 
 @Mapper
 public interface EmployeeStackRepository {
@@ -14,7 +15,5 @@ public interface EmployeeStackRepository {
 
     public List<StackRespDto> findById(int employeeId);
 
-    public List<EmployeeStack> findByEmployeeId(Integer employeeId);
-
-
+    public List<EmployeeStackDto> findByEmpId(Integer employeeId);
 }

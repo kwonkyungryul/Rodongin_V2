@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeResp.GraduateRespDto;
 
 
@@ -15,6 +16,7 @@ public interface EmployeeGraduateRepository {
             @Param("employeeId") int employeeId);
 
     public List<GraduateRespDto> findById(int employeeId);
-    // public GraduateResp findById(int employeeId);
+
+    public List<EmployeeGraduateDto> findByEmpId(int employeeId);
 
 }

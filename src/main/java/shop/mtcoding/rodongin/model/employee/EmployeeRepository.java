@@ -1,12 +1,11 @@
 package shop.mtcoding.rodongin.model.employee;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.rodongin.dto.employee.EmployeeDetailOutDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeJoinReqDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeLoginReqDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;

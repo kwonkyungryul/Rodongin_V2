@@ -18,7 +18,7 @@
         where es.EMPLOYEE_ID = #{employeeId}
     </select>
 
-    <select id="findByEmployeeId" resultType="shop.mtcoding.rodongin.model.employee.EmployeeStack">
+    <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeStackDto">
         SELECT * FROM employee_stack WHERE employee_id = #{employeeId}
     </select>
 
