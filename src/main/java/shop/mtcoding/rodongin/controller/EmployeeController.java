@@ -45,15 +45,6 @@ public class EmployeeController {
             throw new CustomException("주소를 작성해주세요");
         }
 
-        String email = employeeJoinInDto.getEmployeeEmail().replaceAll(",", "");
-        employeeJoinInDto.setEmployeeEmail(email);
-
-        String tel = employeeJoinInDto.getEmployeeTel().replaceAll(",", "");
-        employeeJoinInDto.setEmployeeTel(tel);
-
-        String address = employeeJoinInDto.getEmployeeAddress().replaceAll(",", "");
-        employeeJoinInDto.setEmployeeAddress(address);
-
         employeeService.회원가입(employeeJoinInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);

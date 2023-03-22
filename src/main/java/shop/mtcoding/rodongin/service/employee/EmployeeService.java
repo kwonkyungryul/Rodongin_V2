@@ -37,6 +37,15 @@ public class EmployeeService {
         employeeJoinInDto.setEmployeePassword(encodedPassword);
         System.out.println("테스트");
 
+        String email = employeeJoinInDto.getEmployeeEmail().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeEmail(email);
+
+        String tel = employeeJoinInDto.getEmployeeTel().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeTel(tel);
+
+        String address = employeeJoinInDto.getEmployeeAddress().replaceAll(",", "");
+        employeeJoinInDto.setEmployeeAddress(address);
+
         employeeRepository.insert(employeeJoinInDto);
 
         try {
