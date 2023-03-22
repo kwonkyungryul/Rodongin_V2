@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,8 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
+    private final HttpSession session;
+
     @GetMapping("/company/{id}")
     public ResponseEntity<?> detail(@PathVariable int id) {
         CompanyDetailOutDto dto = companyService.기업상세보기(id);
@@ -33,7 +36,7 @@ public class CompanyController {
     }
 
     @PostMapping("/company/login")
-    public ResponseEntity<?>  login(CompanyLoginInDto companyLoginInDto, HttpSession session, HttpServletResponse response, 
+    public ResponseEntity<?>  login(@RequestBody CompanyLoginInDto companyLoginInDto, HttpServletResponse response, 
     @RequestParam(value = "remember", required = false) String companyUsername) {
         // System.out.println(companyLoginReqDto.getCompanyUsername());
         // System.out.println(companyLoginReqDto.getCompanyPassword());

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.model.company.Company;
 
 @Transactional
@@ -52,19 +53,22 @@ public class CompanyControllerTest {
     @Test
     public void login_test() throws Exception {
         // given
-        String requestBody = "companyUsername=SAMSUNG&companyPassword=1234";
+        CompanyLoginInDto companyLoginInDto = new CompanyLoginInDto();
+        companyLoginInDto.setCompanyUsername("NAVER");
+        companyLoginInDto.setCompanyPassword("1234");
+        String requestBody = om.writeValueAsString(companyLoginInDto);
+
+        System.out.println("테스트 : " + requestBody);
 
         // when
         ResultActions resultActions = mvc.perform(post("/company/login").content(requestBody)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         HttpSession session = resultActions.andReturn().getRequest().getSession();
-        Company principal = (Company) session.getAttribute("principal");
-        System.out.println("테스트: " + principal.getCompanyUsername());
-        System.out.println("테스트: " + principal.getCompanyPassword());
+        Company principal = (Company) session.getAttribute("comPrincipal");
 
         // then
-        assertThat(principal.getCompanyUsername()).isEqualTo("SAMSUNG");
+        assertThat(principal.getCompanyUsername()).isEqualTo("NAVER");
         resultActions.andExpect(status().isOk());
 
     }
