@@ -9,6 +9,7 @@ import shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementReq.AnnouncementUpdateReqDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementResp.AnnouncementDetailRespDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementUpdateInDto;
 
 // 명사가 뒤 동사가 앞으로
 @Mapper
@@ -45,9 +46,13 @@ public interface AnnouncementRepository {
         // @Param("announcementSalary") String announcementSalary,
         // @Param("announcementArea") String announcementArea);
 
-        public int updateById(@Param("announcementUpdateReqDto") AnnouncementUpdateReqDto announcementUpdateReqDto,
-                        @Param("id") int id);
+        // public int updateById(@Param("announcementUpdateReqDto")
+        // AnnouncementUpdateReqDto announcementUpdateReqDto,
+        // @Param("id") int id);
 
         public int deleteById(int id);
+
+        public int updateById(@Param("announcementUpdateInDto") AnnouncementUpdateInDto announcementUpdateInDto,
+                        @Param("id") int id);
 
 }

@@ -2,6 +2,7 @@ package shop.mtcoding.rodongin.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementUpdateInDto;
 import shop.mtcoding.rodongin.model.company.Company;
 
 @Transactional // 메서드 실행 직후 롤백!! // auto_increment 초기화
@@ -93,4 +95,36 @@ public class AnnouncementControllerTest {
         resultActions.andExpect(jsonPath("$.code").value(1));
         resultActions.andExpect(status().isOk());
     }
+
+    @Test
+    public void update_test() throws Exception {
+        // given
+        int id = 1;
+
+        AnnouncementUpdateInDto announcementUpdateInDto = AnnouncementUpdateInDto.builder()
+                .stackId(1)
+                .announcementTitle("asdf---df")
+                .announcementContent("asd---fasdf")
+                .announcementCarrer("신입")
+                .announcementHireType("정규직")
+                .announcementRecNum(1)
+                .announcementSalary("3500")
+                .announcementArea("스울강역시")
+                .build();
+
+        String requestBody = om.writeValueAsString(announcementUpdateInDto);
+        System.out.println("테스트 : " + requestBody);
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                put("/announcement/" + id)
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .session(mockSession));
+
+        // then
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+    }
+
 }
