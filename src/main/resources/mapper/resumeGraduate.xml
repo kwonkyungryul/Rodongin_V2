@@ -43,6 +43,7 @@
             where rg.RESUME_ID = #{resumeId}
             GROUP BY SCHOOL_ID 
     </select>
+
     <update id="updateByResumeId">
         update resume_graduate
         set school_id = #{schoolId}
@@ -50,5 +51,8 @@
         where resume_id = #{resumeId}
     </update>
 
+    <delete id="deleteByResumeId">
+        DELETE FROM resume_graduate WHERE resume_id = #{resumeId}
+    </delete>
     
 </mapper>

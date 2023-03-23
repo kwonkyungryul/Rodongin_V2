@@ -11,6 +11,8 @@ import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeGraduateRespDto;
 @Mapper
 public interface ResumeGraduateRepository {
 
+        public int deleteByResumeId(int resumeId);
+
         public List<ResumeGraduateRespDto> findByResumeId(int resumeId);
 
         public void insert(@Param("resumeId") int resumeId, @Param("schoolId") int schoolId,

@@ -16,6 +16,8 @@ import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeSaveInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeUpdateInDto;
 import shop.mtcoding.rodongin.model.employee.Employee;
+import shop.mtcoding.rodongin.model.resume.Resume;
+import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 
 import java.sql.Date;
 
@@ -37,6 +39,9 @@ public class ResumeControllerTest {
     private ObjectMapper om;
 
     private MockHttpSession mockSession;
+
+    @Autowired
+    private ResumeRepository resumeRepository;
 
     @BeforeEach
     public void setUp() {
@@ -135,5 +140,20 @@ public class ResumeControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(1));
+    }
+
+    @Test
+    public void delete_test() throws Exception {
+        // given
+        int id = 5;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                delete("/resumes/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + responseBody);
+        
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
     }
 }

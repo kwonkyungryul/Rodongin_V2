@@ -50,5 +50,9 @@
         ,stack_acquisition = #{stackAcquisition}
         where resume_id = #{resumeId}
     </update>
+
+    <delete id="deleteByResumeId">
+        DELETE FROM resume_stack WHERE resume_id = #{resumeId}
+    </delete>
 </mapper>
 

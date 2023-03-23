@@ -11,6 +11,7 @@ import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeLicenseRespDto;
 
 @Mapper
 public interface ResumeLicenseRepository {
+        public int deleteByResumeId(int resumeId);
 
         public List<ResumeLicenseDto> findByResumeLicenseJoinLicenseMaster(int resumeId);
 

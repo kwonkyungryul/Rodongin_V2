@@ -11,6 +11,7 @@ import shop.mtcoding.rodongin.dto.resume.ResumeStackDto;
 
 @Mapper
 public interface ResumeStackRepository {
+    public int deleteByResumeId(int resumeId);
 
     public List<ResumeStackDto> findByResumeStackJoinStackMaster(int resumeId);
 

@@ -43,4 +43,8 @@
         where resume_id = #{resumeId}
     </update>
 
+    <delete id="deleteByResumeId">
+        DELETE FROM resume_license WHERE resume_id = #{resumeId}
+    </delete>
+
 </mapper>

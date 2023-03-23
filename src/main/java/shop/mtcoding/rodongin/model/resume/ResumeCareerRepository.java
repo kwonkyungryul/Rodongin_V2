@@ -9,6 +9,7 @@ import shop.mtcoding.rodongin.dto.resume.ResumeCareerDto;
 
 @Mapper
 public interface ResumeCareerRepository {
+    public int deleteByResumeId(int resumeId);
 
     public List<ResumeCareerDto> findByResumeId(int resumeId);
 

@@ -71,6 +71,7 @@ public class ResumeService {
         }
     }
 
+    @Transactional
     public void 이력서수정(Integer principalId, int id, ResumeUpdateInDto resumeUpdateInDto) {
         Resume resumePS = resumeRepository.findById(id);
         if (resumePS == null) {
@@ -93,6 +94,30 @@ public class ResumeService {
             throw new CustomApiException("이력서 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
+    }
+
+    @Transactional
+    public void 이력서삭제(Integer principalId, int id) {
+        Resume resumePS = resumeRepository.findById(id);
+        if (resumePS == null) {
+            throw new CustomApiException("존재하지 않는 이력서 입니다.");
+        }
+
+        if (resumePS.getEmployeeId() != principalId) {
+            throw new CustomApiException("권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            resumeRepository.deleteById(id);
+            resumeGraduateRepository.deleteByResumeId(id);
+            resumeCareerRepository.deleteByResumeId(id);
+            resumeLicenseRepository.deleteByResumeId(id);
+            resumeStackRepository.deleteByResumeId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomApiException("이력서 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 }

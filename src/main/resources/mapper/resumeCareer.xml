@@ -21,8 +21,6 @@
     <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.ResumeCareer">
         SELECT * FROM resume_career WHERE id = #{id}
     </select>
-    
-
 
     <update id="updateByResumeId">
         update resume_career
@@ -31,6 +29,9 @@
         ,career_end = #{careerEnd}
         where resume_id = #{resumeId}
     </update>
-   
+
+    <delete id="deleteByResumeId">
+        DELETE FROM resume_career WHERE resume_id = #{resumeId}
+    </delete>
 
 </mapper>

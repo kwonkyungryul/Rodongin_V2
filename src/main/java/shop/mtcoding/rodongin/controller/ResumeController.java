@@ -85,5 +85,18 @@ public class ResumeController {
 
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 수정 성공", null), HttpStatus.OK);
     }
+    
+    @DeleteMapping("/resumes/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+
+        Employee principal = MySession.MyPrincipal(session);
+        if (principal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
+        resumeService.이력서삭제(principal.getId(), id);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "이력서 삭제 성공", null), HttpStatus.OK);
+    }
 
 }
