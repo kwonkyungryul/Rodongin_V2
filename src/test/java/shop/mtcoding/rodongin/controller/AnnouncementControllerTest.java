@@ -61,7 +61,7 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                delete("/announcement/" + id).session(mockSession));
+                delete("/announcements/" + id).session(mockSession));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("delete_test : " + responseBody);
         resultActions.andExpect(jsonPath("$.code").value(1));
@@ -84,7 +84,7 @@ public class AnnouncementControllerTest {
         String requestBody = om.writeValueAsString(announcementSaveInDto);
         // when
         ResultActions resultActions = mvc.perform(
-                post("/announcement")
+                post("/announcements")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
@@ -102,7 +102,7 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                get("/announcement/" + id));
+                get("/announcements/" + id));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("테스트 : " + responseBody);
         // then
@@ -132,7 +132,7 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/announcement/" + id)
+                put("/announcements/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
