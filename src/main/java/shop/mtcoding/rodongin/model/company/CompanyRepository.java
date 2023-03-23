@@ -9,6 +9,7 @@ import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateOutDto;
 
 @Mapper
 public interface CompanyRepository {
@@ -29,6 +30,8 @@ public interface CompanyRepository {
     public int deleteById(int id);
 
     public CompanyDetailOutDto findById(@Param("id") int id);
+
+    public CompanyUpdateOutDto findUpdateById(int id);
 
 
 }

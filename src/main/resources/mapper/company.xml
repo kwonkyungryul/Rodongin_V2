@@ -16,11 +16,7 @@
     <select id="findAll" resultType="shop.mtcoding.rodongin.model.company.Company">
         SELECT * FROM company
     </select>
-<!-- 
-    <select id="findById" resultType="shop.mtcoding.rodongin.model.company.Company">
 
-        SELECT * FROM company WHERE id = #{id}
-    </select> -->
 
     <insert id="insert">
         INSERT INTO company (
@@ -64,5 +60,21 @@
         select * from company WHERE id = #{id}
     </select>
 
+
+
+    <resultMap id="CompanyUpdateOut" type="shop.mtcoding.rodongin.dto.company.CompanyUpdateOutDto">
+    <id property="id" column="id" />
+    <result property="companyFullname" column="compan_fullname"/>
+    <result property="companyThumbnail" column="company_thumbnail"/>
+    <result property="companyEstablish" column="company_establish"/>
+    <result property="companySales" column="company_sales"/>
+    <result property="companyEmployeesNumber" column="company_employees_number"/>
+    <result property="companyIntroduction" column="company_introduction"/>
+    <result property="companyHistory" column="company_history"/>
+    <result property="companyVision" column="company_vision"/>
+    </resultMap>
+    <select id="findUpdateById" resultMap="CompanyUpdateOut">
+        SELECT * from company WHERE id = #{id}
+    </select>
 
 </mapper>

@@ -5,15 +5,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
@@ -21,6 +20,7 @@ import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateOutDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
@@ -39,6 +39,18 @@ public class CompanyController {
         CompanyDetailOutDto dto = companyService.기업상세보기(id);
         // model.addAttribute("detailDto", dto);
         return new ResponseEntity<>(new ResponseDto<>(1, "기업상세보기", dto), HttpStatus.OK);
+    }
+
+    @GetMapping("/companies/saveForm/{id}")
+    public ResponseEntity<?> update(@PathVariable int id){
+        Company comPrincipal = MySession.CompanyPrincipal(session);
+        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+        if (comPrincipal == null) {
+            throw new CustomException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
+        }
+        CompanyUpdateOutDto updatedto = companyService.기업업데이트보기(id);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "기업상세보기", updatedto), HttpStatus.OK);
     }
 
     @PostMapping("/companies/login")
@@ -140,5 +152,7 @@ public class CompanyController {
             
         
     }
+
+    
     
 }

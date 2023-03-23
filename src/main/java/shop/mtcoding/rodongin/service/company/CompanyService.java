@@ -13,6 +13,7 @@ import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateOutDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
@@ -29,6 +30,11 @@ public class CompanyService {
     public CompanyDetailOutDto 기업상세보기(int id) {
         CompanyDetailOutDto DetailDto = companyRepository.findById(id);
         return DetailDto;
+    }
+
+    public CompanyUpdateOutDto 기업업데이트보기(int id) {
+        CompanyUpdateOutDto UpdateDto = companyRepository.findUpdateById(id);
+        return UpdateDto;
     }
 
     @Transactional

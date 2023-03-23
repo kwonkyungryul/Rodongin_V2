@@ -155,6 +155,21 @@ public class CompanyControllerTest {
     }
 
 
+    @Test
+    public void update_view() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/companies/saveForm/" + id));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + responseBody);
+        // then
+
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
+    }
    
     
 }
