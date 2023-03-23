@@ -49,10 +49,7 @@ public class CompanyControllerTest {
         company.setCompanyUsername("SAMSUNG");
         company.setCompanyPassword(
                 "96e60856f35fafa9b394a64812f93659$ede46b1fc6024720c6b8690c57a9bc3d84ec705a88c5e081c7599500ebf15ce0");
-        // company.setEmployeeEmail("ssar@nate.com");
-        // company.setEmployeeBirth(date);
-        // company.setEmployeeTel("01011111111");
-        // company.setEmployeeAddress("서울특별시 강남구");
+        
 
         mockSession = new MockHttpSession();
         mockSession.setAttribute("comPrincipal", company);
@@ -65,7 +62,7 @@ public class CompanyControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                get("/companes/" + id));
+                get("/companies/" + id));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("테스트 : " + responseBody);
         // then
@@ -85,7 +82,7 @@ public class CompanyControllerTest {
         System.out.println("테스트 : " + requestBody);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/companes/login").content(requestBody)
+        ResultActions resultActions = mvc.perform(post("/companies/login").content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         HttpSession session = resultActions.andReturn().getRequest().getSession();
@@ -113,7 +110,7 @@ public class CompanyControllerTest {
         String requestBody = om.writeValueAsString(companyJoinInDto);
     
         // when
-        ResultActions resultActions = mvc.perform(post("/companes/join").content(requestBody)
+        ResultActions resultActions = mvc.perform(post("/companies/join").content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
     
         // then
@@ -145,7 +142,7 @@ public class CompanyControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/companes/update/" + id)
+                put("/companies/update/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));

@@ -28,6 +28,7 @@ public interface CompanyRepository {
 
     public int deleteById(int id);
 
-    public CompanyDetailOutDto findById(int id);
+    public CompanyDetailOutDto findById(@Param("id") int id);
+
 
 }

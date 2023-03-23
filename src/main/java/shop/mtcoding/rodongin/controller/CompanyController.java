@@ -34,14 +34,14 @@ public class CompanyController {
 
     private final HttpSession session;
 
-    @GetMapping("/companes/{id}")
+    @GetMapping("/companies/{id}")
     public ResponseEntity<?> detail(@PathVariable int id) {
         CompanyDetailOutDto dto = companyService.기업상세보기(id);
         // model.addAttribute("detailDto", dto);
         return new ResponseEntity<>(new ResponseDto<>(1, "기업상세보기", dto), HttpStatus.OK);
     }
 
-    @PostMapping("/companes/login")
+    @PostMapping("/companies/login")
     public ResponseEntity<?>  login(@RequestBody CompanyLoginInDto companyLoginInDto, HttpServletResponse response, 
     @RequestParam(value = "remember", required = false) String companyUsername) {
         // System.out.println(companyLoginReqDto.getCompanyUsername());
@@ -63,7 +63,7 @@ public class CompanyController {
         
     }
 
-    @PostMapping("/companes/join")
+    @PostMapping("/companies/join")
     public ResponseEntity<?> join(@RequestBody CompanyJoinInDto companyJoinInDto) throws Exception {
         if (companyJoinInDto.getCompanyUsername() == null || companyJoinInDto.getCompanyUsername().isEmpty()) {
             throw new CustomException("아이디를 작성해주세요");
@@ -107,8 +107,8 @@ public class CompanyController {
     }
 
 
-    @PutMapping("/companes/update/{id}")
-    public ResponseEntity<?> update(MultipartFile profile, @PathVariable int id,
+    @PutMapping("/companies/update/{id}")
+    public ResponseEntity<?> update(@PathVariable int id,
     @RequestBody CompanyUpdateInDto companyUpdateInDto, HttpServletResponse response){
 
         Company comPrincipal = MySession.CompanyPrincipal(session);
@@ -132,7 +132,7 @@ public class CompanyController {
             throw new CustomApiException("Vision을 작성해주세요");
         }
         
-        companyService.기업소개등록(id, companyUpdateInDto, comPrincipal.getId(), profile);
+        companyService.기업소개등록(id, companyUpdateInDto, comPrincipal.getId());
 
         session.setAttribute("comPrincipal", comPrincipal);
 
