@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
+import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyReq.CompanyJoinReqDto;
 
@@ -22,7 +23,7 @@ public interface CompanyRepository {
 
     // public Company findById(int id);
 
-    public int insert(CompanyJoinReqDto companyJoinReqDto);
+    public int insert(CompanyJoinInDto companyJoinInDto);
 
     public int updateById(@Param("id") int id, @Param("companyFullname") String companyFullname, 
     @Param("companyThumbnail") String companyThumbnail, @Param("companyEstablish") Date companyEstablish,

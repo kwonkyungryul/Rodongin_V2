@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.model.company.Company;
 
@@ -72,5 +73,35 @@ public class CompanyControllerTest {
         resultActions.andExpect(status().isOk());
 
     }
+
+
+    @Test
+    public void join_test() throws Exception {
+        // given
+        CompanyJoinInDto companyJoinInDto = new CompanyJoinInDto();
+        companyJoinInDto.setCompanyUsername("OOIUS");
+        companyJoinInDto.setCompanyPassword("1234");
+        companyJoinInDto.setCompanyTel("01011111111");
+        companyJoinInDto.setCompanyLicenseNumber("1233");
+        companyJoinInDto.setCompanyFullname("JDSOJJ");
+        companyJoinInDto.setCompanyEmail("a0211a@naver.com");
+        companyJoinInDto.setCompanyCeoName("M");
+        companyJoinInDto.setCompanyAddress("서울특별시 강남구");
+        String requestBody = om.writeValueAsString(companyJoinInDto);
+    
+        // when
+        ResultActions resultActions = mvc.perform(post("/company/join").content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
+    
+        // then
+        resultActions.andExpect(status().isCreated());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        // resultActions.andExpect(jsonPath("$.message").value("기업회원가입완료"));
+        resultActions.andExpect(jsonPath("$.data").isEmpty());
+    }
+    
+
+
+   
     
 }
