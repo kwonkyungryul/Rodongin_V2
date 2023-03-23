@@ -127,4 +127,20 @@ public class AnnouncementControllerTest {
         resultActions.andExpect(jsonPath("$.code").value(1));
     }
 
+    @Test
+    public void list_test() throws Exception {
+        // given
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/"));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+        // then
+
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.data.content").value(""));
+        resultActions.andExpect(jsonPath("$.data.announcementListDto[0].id").value(66));
+    }
 }
