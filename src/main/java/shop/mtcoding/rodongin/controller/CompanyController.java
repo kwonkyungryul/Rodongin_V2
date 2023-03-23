@@ -20,6 +20,7 @@ import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.service.company.CompanyService;
+
 @RequiredArgsConstructor
 @RestController
 public class CompanyController {
@@ -36,8 +37,8 @@ public class CompanyController {
     }
 
     @PostMapping("/company/login")
-    public ResponseEntity<?>  login(@RequestBody CompanyLoginInDto companyLoginInDto, HttpServletResponse response, 
-    @RequestParam(value = "remember", required = false) String companyUsername) {
+    public ResponseEntity<?> login(@RequestBody CompanyLoginInDto companyLoginInDto, HttpServletResponse response,
+            @RequestParam(value = "remember", required = false) String companyUsername) {
         // System.out.println(companyLoginReqDto.getCompanyUsername());
         // System.out.println(companyLoginReqDto.getCompanyPassword());
         if (companyLoginInDto.getCompanyUsername() == null || companyLoginInDto.getCompanyUsername().isEmpty()) {
@@ -46,15 +47,13 @@ public class CompanyController {
         if (companyLoginInDto.getCompanyPassword() == null || companyLoginInDto.getCompanyPassword().isEmpty()) {
             throw new CustomException("password를 입력해주세요", HttpStatus.BAD_REQUEST);
         }
-        
-       
+
         Company principal = companyService.로그인(companyLoginInDto, response, companyUsername);
 
         session.setAttribute("comPrincipal", principal);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "기업로그인완료", null), HttpStatus.OK);
 
-        
     }
 
     @PostMapping("/company/join")
@@ -92,11 +91,12 @@ public class CompanyController {
         companyJoinInDto.setCompanyAddress(address);
 
         String email = companyJoinInDto.getCompanyEmail().replaceAll(",", "");
-        
+
         companyJoinInDto.setCompanyEmail(email);
 
         companyService.기업회원가입(companyJoinInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "기업회원가입완료", null), HttpStatus.CREATED);
     }
+
 }

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;
+import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
 import shop.mtcoding.rodongin.model.employee.Employee;
 
 @Transactional // 메서드 실행 직후 롤백!! // auto_increment 초기화
@@ -64,26 +64,27 @@ public class EmployeeControllerTest {
 
         Date date = new Date(1990 - 01 - 12);
         int id = 1;
-        EmployeeUpdatdReq employeeUpdatdReq = new EmployeeUpdatdReq();
-        employeeUpdatdReq.setEmployeePassword("1234");
-        employeeUpdatdReq.setEmployeeEmail("ssar@nate.com");
-        employeeUpdatdReq.setEmployeeBirth(date);
-        employeeUpdatdReq.setEmployeeTel("01022222222");
-        employeeUpdatdReq.setEmployeeAddress("부산 진구 부전동");
+        EmployeeUpdateInDto employeeUpdateInDto = new EmployeeUpdateInDto();
+        employeeUpdateInDto.setId(id);
+        employeeUpdateInDto.setEmployeePassword("1234");
+        employeeUpdateInDto.setEmployeeEmail("ssar@nate.com");
+        employeeUpdateInDto.setEmployeeBirth(date);
+        employeeUpdateInDto.setEmployeeTel("01022222222");
+        employeeUpdateInDto.setEmployeeAddress("부산 진구 부전동");
 
-        String requestBody = om.writeValueAsString(employeeUpdatdReq);
+        String requestBody = om.writeValueAsString(employeeUpdateInDto);
         System.out.println("테스트 : " + requestBody);
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/employees/" + id)
+                put("/employees/update")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
 
         // then
         resultActions.andExpect(status().isOk());
-        // resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.code").value(1));
     }
 
     @Test

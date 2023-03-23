@@ -1,24 +1,29 @@
 package shop.mtcoding.rodongin.controller;
 
-import lombok.RequiredArgsConstructor;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeDetailOutDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
+import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.service.employee.EmployeeService;
 import shop.mtcoding.rodongin.util.MySession;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,6 +32,41 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     private final HttpSession session;
+
+    @PutMapping("/employees/update")
+    public ResponseEntity<?> update(@RequestBody EmployeeUpdateInDto employeeUpdateInDto) {
+
+        // Employee principal = (Employee) session.getAttribute("principal");
+        Employee principal = MySession.MyPrincipal(session);
+
+        if (principal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
+        }
+        if (employeeUpdateInDto.getEmployeePassword() == null ||
+                employeeUpdateInDto.getEmployeePassword().isEmpty()) {
+            throw new CustomApiException("Password을 작성해주세요");
+        }
+        if (employeeUpdateInDto.getEmployeeEmail() == null ||
+                employeeUpdateInDto.getEmployeeEmail().isEmpty()) {
+            throw new CustomApiException("Email을 작성해주세요");
+        }
+        if (employeeUpdateInDto.getEmployeeBirth() == null) {
+            throw new CustomApiException("Birth을 작성해주세요");
+        }
+        if (employeeUpdateInDto.getEmployeeTel() == null ||
+                employeeUpdateInDto.getEmployeeTel().isEmpty()) {
+            throw new CustomApiException("Tel을 작성해주세요");
+        }
+        if (employeeUpdateInDto.getEmployeeAddress() == null ||
+                employeeUpdateInDto.getEmployeeAddress().isEmpty()) {
+            throw new CustomApiException("Address을 작성해주세요");
+        }
+
+        Employee principall = employeeService.회원정보수정(principal.getId(), employeeUpdateInDto);
+        session.setAttribute("principal", principall);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.OK);
+    }
 
     @GetMapping("/employees")
     public ResponseEntity<?> detail() {
@@ -91,6 +131,12 @@ public class EmployeeController {
         session.setAttribute("principal", principal);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "로그인 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        session.invalidate();
+        return "redirect:/loginForm";
     }
 
 }
