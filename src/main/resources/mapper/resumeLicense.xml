@@ -5,6 +5,24 @@
 
 <mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeLicenseRepository">
 
+    <resultMap id="resumeLicenseListResultMap" type="shop.mtcoding.rodongin.dto.resume.ResumeLicenseDto">
+        <id property="id" column="id"/>
+        <result property="licenseIssuer" column="license_issuer"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="licenseMasterDto" javaType="shop.mtcoding.rodongin.dto.resume.ResumeLicenseDto$LicenseMasterDto">
+            <id property="id" column="licenseId"/>
+            <result property="licenseName" column="licenseName"/>
+        </association>
+    </resultMap>
+
+    <select id="findByResumeLicenseJoinLicenseMaster" resultMap="resumeLicenseListResultMap">
+        SELECT rl.*, lm.id licenseId, lm.license_name licenseName
+        FROM resume_license rl
+        INNER JOIN license_master lm
+        ON rl.license_id = lm.id
+        WHERE rl.resume_id = #{resumeId}
+    </select>
+
     <select id="findByResumeId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeResp$ResumeLicenseRespDto">
         select rl.RESUME_ID , rl.LICENSE_ID , lm.LICENSE_NAME , rl.LICENSE_ISSUER 
         from RESUME_LICENSE rl

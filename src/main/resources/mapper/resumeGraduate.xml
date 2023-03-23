@@ -4,6 +4,24 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeGraduateRepository">
+
+    <resultMap id="resumeGraduateListResultMap" type="shop.mtcoding.rodongin.dto.resume.ResumeGraduateDto">
+        <id property="id" column="id"/>
+        <result property="schoolGraduate" column="school_graduate"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="schoolMasterDto" javaType="shop.mtcoding.rodongin.dto.resume.ResumeGraduateDto$SchoolMasterDto">
+            <id property="id" column="schoolId"/>
+            <result property="schoolName" column="schoolName"/>
+        </association>
+    </resultMap>
+
+    <select id="findByResumeGraduateJoinSchoolMaster" resultMap="resumeGraduateListResultMap">
+        SELECT rg.*, sm.id schoolId, sm.school_name schoolName FROM resume_graduate rg
+        INNER JOIN school_master sm
+        ON rg.school_id = sm.id
+        WHERE rg.resume_id = #{resumeId}
+    </select>
+
     <insert id="insert">
         INSERT INTO resume_graduate (resume_id, school_id, school_graduate, created_at) VALUES
         (#{resumeId}, #{schoolId}, #{schoolGraduate}, NOW())

@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import shop.mtcoding.rodongin.dto.resume.ResumeCareerDto;
 
 @Mapper
 public interface ResumeCareerRepository {
 
-    public List<ResumeCareer> findByResumeId(int resumeId);
+    public List<ResumeCareerDto> findByResumeId(int resumeId);
 
     public void insert(@Param("resumeId") int resumeId, @Param("careerCompany") String careerCompany,
             @Param("careerStart") Date careerStart,

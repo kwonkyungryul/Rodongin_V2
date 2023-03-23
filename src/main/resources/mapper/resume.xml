@@ -4,6 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeRepository">
+
+    <resultMap id="resumeDetailResultMap" type="shop.mtcoding.rodongin.dto.resume.ResumeDetailOutDto">
+        <id property="id" column="id"/>
+        <result property="resumeTitle" column="resume_title"/>
+        <result property="resumeSalary" column="resume_salary"/>
+        <result property="CV" column="CV"/>
+        <association property="employeeDto" javaType="shop.mtcoding.rodongin.dto.resume.ResumeDetailOutDto$EmployeeDto">
+            <id property="id" column="employeeId"/>
+            <result property="employeeFullname" column="employee_fullname"/>
+            <result property="employeeEmail" column="employee_email"/>
+            <result property="employeeTel" column="employee_tel"/>
+            <result property="employeeBirth" column="employee_birth"/>
+            <result property="employeeAddress" column="employee_address"/>
+            <result property="employeeThumbnail" column="employee_thumbnail"/>
+        </association>
+    </resultMap>
+
+    <select id="findByResumeJoinAndEmployee" resultMap="resumeDetailResultMap">
+        SELECT r.*, e.*, e.id employeeId FROM resume r
+        INNER JOIN employee e
+        ON r.employee_id = e.id
+        WHERE r.id = #{id}
+    </select>
+
+
     <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.Resume">
       SELECT * FROM resume WHERE id = #{id}
     </select>
