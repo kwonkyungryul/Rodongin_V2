@@ -5,7 +5,62 @@
 
 <mapper namespace="shop.mtcoding.rodongin.model.announcement.AnnouncementRepository">
 
-<resultMap id="datailResultMap" type="shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto">
+    <!-- 공고 리스트  -->
+    <resultMap id="AnnouncementListResultMap" type="shop.mtcoding.rodongin.dto.announcement.AnnouncementListDto">
+        <id property="id" column="id" />
+        <result property="announcementTitle" column="announcement_title"/>
+        <result property="announcementContent" column="announcement_content"/>
+        <result property="announcementCarrer" column="announcement_carrer"/>
+        <result property="announcementHireType" column="announcement_hire_type"/>
+        <result property="announcementRecNum" column="announcement_rec_num"/>
+        <result property="announcementSalary" column="announcement_salary"/>
+        <result property="announcementArea" column="announcement_area"/>
+        <result property="createdAt" column="created_at"/>
+
+        <association property="companyDto" javaType="shop.mtcoding.rodongin.dto.announcement.AnnouncementListDto$CompanyDto">
+            <id property="id" column="companyId" />
+            <result property="companyFullname" column="companyFullname" />
+        </association>
+
+        <association property="stackDto" javaType="shop.mtcoding.rodongin.dto.announcement.AnnouncementListDto$StackDto">
+            <id property="id" column="smStackId" />
+            <result property="stackName" column="stackName" />
+        </association>
+    </resultMap>
+
+    <select id="findAnnouncementlist" resultMap="AnnouncementListResultMap">
+        select a.*, c.id companyId, c.company_fullname companyFullname, sm.id smStackId, sm.stack_name stackName from announcement a
+        inner join company c
+        on a.company_id = c.id
+        INNER JOIN stack_master sm
+        ON sm.id = a.stack_id
+        WHERE company_fullname LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_title LIKE CONCAT( '%', #{content}, '%' )
+        OR company_vision LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_hire_type LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_salary LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_area LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_carrer LIKE CONCAT( '%', #{content}, '%' )
+        OR announcement_content LIKE CONCAT( '%', #{content}, '%' )
+        ORDER BY
+        <choose>
+            <when test="skills == null">
+                1 DESC
+            </when>
+
+            <otherwise>
+                <foreach item="stackId" collection="skills" open="(" separator="," close=")">
+                    #{stackId}
+                </foreach>
+                DESC
+
+            </otherwise>
+        </choose>
+        LIMIT #{start}, #{end}
+    </select>
+
+
+    <resultMap id="datailResultMap" type="shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto">
         <id property="id" column="id"/>
         <result property="announcementTitle" column="announcement_title"/>
         <result property="announcementContent" column="announcement_content"/>
@@ -37,7 +92,7 @@
             inner join company c
             on a.company_id = c.id
             inner join STACK_MASTER  sm
-            on a.STACK_ID =sm.ID 
+            on a.STACK_ID =sm.ID
         where a.id = #{id};
     </select>
 
@@ -51,35 +106,6 @@
       inner join company c
       on a.company_id = c.id
       where a.id = #{id}
-    </select>
-    
-    <select id="findAnnouncementlist" resultType="shop.mtcoding.rodongin.dto.announcement.AnnouncementResp$AnnouncementDetailRespDto">
-    select * from announcement a
-    inner join company c
-    on a.company_id = c.id
-    WHERE company_fullname LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_title LIKE CONCAT( '%', #{content}, '%' )
-    OR company_vision LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_hire_type LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_salary LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_area LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_carrer LIKE CONCAT( '%', #{content}, '%' )
-    OR announcement_content LIKE CONCAT( '%', #{content}, '%' )
-    ORDER BY
-    <choose>
-        <when test="skills == null">
-            1 DESC
-        </when>
-
-        <otherwise>
-            <foreach item="stackId" collection="skills" open="(" separator="," close=")">
-                #{stackId}
-            </foreach>
-            DESC
-
-        </otherwise>
-    </choose>
-    LIMIT #{start}, #{end}
     </select>
 
     <select id="findAnnouncementCount" resultType="int">
