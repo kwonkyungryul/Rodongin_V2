@@ -41,12 +41,12 @@
 
     <update id="updateById">
         update employee set
-        employee_password        = #{employeeUpdatdReq.employeePassword}
-        ,employee_email          = #{employeeUpdatdReq.employeeEmail}
-        ,employee_birth          = #{employeeUpdatdReq.employeeBirth}
-        ,employee_tel            = #{employeeUpdatdReq.employeeTel}
-        ,employee_address        = #{employeeUpdatdReq.employeeAddress}
-        ,employee_thumbnail      = #{employeeThumbnail}
+        employee_password        = #{employeeUpdateInDto.employeePassword}
+        ,employee_email          = #{employeeUpdateInDto.employeeEmail}
+        ,employee_birth          = #{employeeUpdateInDto.employeeBirth}
+        ,employee_tel            = #{employeeUpdateInDto.employeeTel}
+        ,employee_address        = #{employeeUpdateInDto.employeeAddress}
+        ,employee_thumbnail      = #{employeeUpdateInDto.employeeThumbnail}
         where id = #{id}
     </update>
 </mapper>

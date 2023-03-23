@@ -1,25 +1,35 @@
 package shop.mtcoding.rodongin.service.employee;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.mtcoding.rodongin.dto.employee.*;
-import shop.mtcoding.rodongin.dto.resume.ResumeDto;
-import shop.mtcoding.rodongin.model.employee.*;
-import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 
 import lombok.RequiredArgsConstructor;
+import shop.mtcoding.rodongin.dto.employee.EmployeeCareerDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeDetailOutDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeLicenseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeStackDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
+import shop.mtcoding.rodongin.dto.resume.ResumeDto;
+import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.employee.Employee;
+import shop.mtcoding.rodongin.model.employee.EmployeeCareerRepository;
+import shop.mtcoding.rodongin.model.employee.EmployeeGraduateRepository;
+import shop.mtcoding.rodongin.model.employee.EmployeeLicenseRepository;
 import shop.mtcoding.rodongin.model.employee.EmployeeRepository;
+import shop.mtcoding.rodongin.model.employee.EmployeeStackRepository;
+import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 import shop.mtcoding.rodongin.util.Encode;
-import java.util.List;
+import shop.mtcoding.rodongin.util.PathUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -37,7 +47,6 @@ public class EmployeeService {
 
     private final ResumeRepository resumeRepository;
 
-
     @Transactional(readOnly = true)
     public EmployeeDetailOutDto 유저정보조회(int principalId) {
         Employee employee = employeeRepository.findById(principalId);
@@ -46,7 +55,6 @@ public class EmployeeService {
         List<EmployeeLicenseDto> licenses = employeeLicenseRepository.findByEmpId(principalId);
         List<EmployeeStackDto> stacks = employeeStackRepository.findByEmpId(principalId);
         List<ResumeDto> resumes = resumeRepository.findByEmpId(principalId);
-
 
         EmployeeDetailOutDto employeeDetailInfo = EmployeeDetailOutDto.builder()
                 .id(employee.getId())
@@ -146,5 +154,25 @@ public class EmployeeService {
 
         return principal;
 
+    }
+
+    @Transactional
+    public Employee 회원정보수정(int principalId, EmployeeUpdateInDto employeeUpdateInDto) {
+
+        // String thumbnail =
+        // PathUtil.writeImageFile(employeeUpdateInDto.getEmployeeThumbnail());
+
+        // if (profile == null || profile.isEmpty()) {
+        // thumbnail = employeeRepository.findById(principalId).getEmployeeThumbnail();
+        // }
+        try {
+            employeeRepository.updateById(principalId, employeeUpdateInDto);
+
+        } catch (Exception e) {
+            throw new CustomApiException("회원정보 수정에 실패하였습니다", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Employee principal = employeeRepository.findById(principalId);
+        return principal;
     }
 }
