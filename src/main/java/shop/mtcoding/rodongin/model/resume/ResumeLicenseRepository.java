@@ -5,11 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.rodongin.dto.resume.ResumeLicenseDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeLicenseSaveDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeLicenseRespDto;
 
 @Mapper
 public interface ResumeLicenseRepository {
+
+        public List<ResumeLicenseDto> findByResumeLicenseJoinLicenseMaster(int resumeId);
 
         public List<ResumeLicenseRespDto> findByResumeId(int resumeId);
 

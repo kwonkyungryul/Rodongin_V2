@@ -7,9 +7,12 @@ import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeStackSaveDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeStackRespDto;
+import shop.mtcoding.rodongin.dto.resume.ResumeStackDto;
 
 @Mapper
 public interface ResumeStackRepository {
+
+    public List<ResumeStackDto> findByResumeStackJoinStackMaster(int resumeId);
 
     List<ResumeStackRespDto> findByResumeId(int resumeId);
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.rodongin.dto.resume.ResumeGraduateDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeGraduateRespDto;
 
 @Mapper
@@ -26,6 +27,6 @@ public interface ResumeGraduateRepository {
         public void updateByResumeId(@Param("resumeId") int resumeId, @Param("schoolId") int schoolId,
                         @Param("schoolGraduate") String schoolGraduate);
 
-        // public GraduateResp findById(int employeeId);
+        public List<ResumeGraduateDto> findByResumeGraduateJoinSchoolMaster(int resumeId);
 
 }

@@ -4,6 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeCareerRepository">
+
+    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeCareerDto">
+        SELECT * FROM resume_career where resume_id = #{resumeId}
+    </select>
+
     <insert id="insert">
         INSERT INTO resume_career(resume_id, career_company, career_start, career_end, created_at) VALUES
         (#{resumeId}, #{careerCompany}, #{careerStart},#{careerEnd}, NOW())
@@ -17,9 +22,7 @@
         SELECT * FROM resume_career WHERE id = #{id}
     </select>
     
-    <select id="findByResumeId" resultType="shop.mtcoding.rodongin.model.resume.ResumeCareer">
-        SELECT * FROM resume_career where resume_id = #{resumeId}
-    </select>
+
 
     <update id="updateByResumeId">
         update resume_career
