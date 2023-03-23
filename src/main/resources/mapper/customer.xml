@@ -5,12 +5,23 @@
 
 <mapper namespace="shop.mtcoding.rodongin.model.customer.CustomerRepository">
 
-    <select id="findCustomerDetail" resultType="shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto">
-        select cu.id, cu.customer_title, cu.customer_content, cu.EMPLOYEE_ID , em.employee_name
-        from customer cu
-        inner join employee em
-        on cu.employee_id = em.id
-        where cu.id = #{id}
+<resultMap id="detailDto" type="shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto">
+        <id property="id" column="id"/>
+        <result property="customerTitle" column="customer_title"/>
+        <result property="customerContent" column="customer_content"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="employee" javaType="shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto$EmployeeDto">
+            <id property="id" column="id"/>
+            <result property="employeeName" column="employee_name"/>
+        </association>
+    </resultMap>
+
+    <select id="findCustomerDetail" resultMap="detailDto">
+    SELECT cu.id, cu.customer_title, cu.customer_content, cu.employee_id, em.employee_name
+    FROM customer cu
+    INNER JOIN employee em 
+    ON cu.employee_id = em.id
+    WHERE cu.id = #{id}
     </select> 
 
     <select id="findCustomerList" resultType="shop.mtcoding.rodongin.dto.customer.CustomerResp$CustomerListRespDto">
