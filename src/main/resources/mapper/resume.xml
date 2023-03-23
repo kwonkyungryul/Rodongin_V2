@@ -49,11 +49,12 @@
         INSERT INTO resume (employee_id, resume_title, resume_salary, CV, created_at) VALUES
         (#{employeeId}, #{resumeSaveInDto.resumeTitle}, #{resumeSaveInDto.resumeSalary}, #{resumeSaveInDto.CV}, NOW())
     </insert>
+
     <update id="updateById">
         update resume
-        set resume_title = #{resumeUpdateDto.resumeTitle}
-        ,resume_salary = #{resumeUpdateDto.resumeSalary}
-        ,CV = #{resumeUpdateDto.CV}
+        set resume_title = #{resumeUpdateInDto.resumeTitle}
+        ,resume_salary = #{resumeUpdateInDto.resumeSalary}
+        ,CV = #{resumeUpdateInDto.CV}
         where id = #{id}
     </update>
 
