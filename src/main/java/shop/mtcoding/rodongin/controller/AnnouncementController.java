@@ -28,8 +28,20 @@ public class AnnouncementController {
 
     private final HttpSession session;
 
+    @DeleteMapping("/announcements/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+        Company comPrincipal = MySession.CompanyPrincipal(session);
+        if (comPrincipal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다.");
+        }
+        announcementService.게시글삭제(comPrincipal.getId(), id);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
+    }
+
     // 게시글 수정
-    @PutMapping("/announcement/{id}")
+    @PutMapping("/announcements/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
             @RequestBody AnnouncementUpdateInDto announcementUpdateInDto, HttpServletResponse response) {
 
@@ -80,7 +92,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글수정성공", null), HttpStatus.OK);
     }
 
-    @PostMapping("/announcement")
+    @PostMapping("/announcements")
     public ResponseEntity<?> save(@RequestBody AnnouncementSaveInDto announcementSaveInDto) {
         System.out.println(announcementSaveInDto.getStackId());
         // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
@@ -125,7 +137,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글작성 성공", null), HttpStatus.CREATED);
     }
 
-    @GetMapping("announcement/{id}")
+    @GetMapping("announcements/{id}")
     public ResponseEntity<?> detail(@PathVariable Integer id) {
         AnnouncementDetailOutDto datailDto = announcementService.공고상세보기(id);
         return new ResponseEntity<>(new ResponseDto<>(1, "공고상세보기페이지", datailDto), HttpStatus.OK);

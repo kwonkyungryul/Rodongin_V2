@@ -1,5 +1,6 @@
 package shop.mtcoding.rodongin.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -54,6 +55,20 @@ public class AnnouncementControllerTest {
     }
 
     @Test
+    public void delete_test() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                delete("/announcements/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("delete_test : " + responseBody);
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
     public void save_test() throws Exception {
         // given
         AnnouncementSaveInDto announcementSaveInDto = new AnnouncementSaveInDto();
@@ -69,7 +84,7 @@ public class AnnouncementControllerTest {
         String requestBody = om.writeValueAsString(announcementSaveInDto);
         // when
         ResultActions resultActions = mvc.perform(
-                post("/announcement")
+                post("/announcements")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
@@ -87,7 +102,7 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                get("/announcement/" + id));
+                get("/announcements/" + id));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("테스트 : " + responseBody);
         // then
@@ -117,7 +132,7 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/announcement/" + id)
+                put("/announcements/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));

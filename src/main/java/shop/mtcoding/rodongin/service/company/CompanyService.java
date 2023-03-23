@@ -1,16 +1,19 @@
 package shop.mtcoding.rodongin.service.company;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
+import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.company.CompanyRepository;
@@ -70,5 +73,53 @@ public class CompanyService {
 
         return principal;
 
+    }
+
+    @Transactional
+    public void 기업회원가입(CompanyJoinInDto companyJoinInDto) {
+
+        Company sameCompany = companyRepository.findByCompanyUsername(companyJoinInDto.getCompanyUsername());
+
+        if (sameCompany != null) {
+            throw new CustomException("동일한 아이디가 존재합니다");
+        }
+
+        String encodedPassword = "";
+        try {
+            
+            encodedPassword = Encode.passwordEncode(companyJoinInDto.getCompanyPassword());
+
+        } catch (Exception e) {
+            throw new CustomException("비밀번호 해싱 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        companyJoinInDto.setCompanyPassword(encodedPassword);
+        // System.out.println("테스트");
+
+        companyRepository.insert(companyJoinInDto);
+        try {
+
+        } catch (Exception e) {
+            throw new CustomException("일시적인 서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Transactional
+    public void 기업소개등록(int id, CompanyUpdateInDto companyUpdateInDto, int comPrincipalId){
+        CompanyDetailOutDto principalPS = companyRepository.findById(id);
+        if (principalPS.getId() != comPrincipalId) {
+            throw new CustomApiException("기업소개를 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        // String thumbnail = PathUtil.writeImageFile(profile);
+
+        // if (profile == null || profile.isEmpty()) {
+        //     thumbnail = companyRepository.findById(comPrincipalId).getCompanyThumbnail();
+        // }
+        
+        try {
+            int result = companyRepository.updateById(companyUpdateInDto, id);
+            } catch (Exception e) {
+        throw new CustomApiException("기업소개 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
 }
