@@ -107,7 +107,7 @@ public class CompanyController {
     }
 
 
-    @PutMapping("/companies/update/{id}")
+    @PutMapping("/companies/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
     @RequestBody CompanyUpdateInDto companyUpdateInDto, HttpServletResponse response){
 
