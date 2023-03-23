@@ -7,15 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.company.CompanyRepository;
 import shop.mtcoding.rodongin.util.Encode;
+import shop.mtcoding.rodongin.util.PathUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -100,5 +104,22 @@ public class CompanyService {
             throw new CustomException("일시적인 서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @Transactional
+    public void 기업소개등록(int id, CompanyUpdateInDto companyUpdateInDto, int comPrincipalId, MultipartFile profile){
+        
+        // String thumbnail = PathUtil.writeImageFile(profile);
+
+        // if (profile == null || profile.isEmpty()) {
+        //     thumbnail = companyRepository.findById(comPrincipalId).getCompanyThumbnail();
+        // }
+        
+        int result = companyRepository.updateById(companyUpdateInDto, id);
+
+
+        if (result != 1) {
+            throw new CustomApiException("기업소개 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
