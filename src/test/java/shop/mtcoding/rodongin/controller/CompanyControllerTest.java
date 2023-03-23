@@ -142,7 +142,7 @@ public class CompanyControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/companies/update/" + id)
+                put("/companies/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
