@@ -5,13 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import shop.mtcoding.rodongin.dto.customer.CustomerResp.CustomerDetailRespDto;
+import shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto;
 import shop.mtcoding.rodongin.dto.customer.CustomerResp.CustomerListRespDto;
 
 @Mapper
 public interface CustomerRepository {
 
-        public CustomerDetailRespDto findCustomerDetail(int id);
+        public CustomerDetailOutDto findCustomerDetail(int id);
 
         public List<CustomerListRespDto> findCustomerList();
 
