@@ -27,7 +27,7 @@ public class CustomerControllerTest {
 
     // when
     ResultActions resultActions = mvc.perform(
-        get("/coustomers/" + id));
+        get("/customers/" + id));
     String responseBody = resultActions.andReturn().getResponse().getContentAsString();
     System.out.println("테스트 : " + responseBody);
     // then
