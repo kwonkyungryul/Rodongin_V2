@@ -77,7 +77,7 @@ public class EmployeeControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/employees/update")
+                put("/employees")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
