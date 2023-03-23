@@ -33,7 +33,7 @@ public class EmployeeController {
 
     private final HttpSession session;
 
-    @PutMapping("/employees/update")
+    @PutMapping("/employees")
     public ResponseEntity<?> update(@RequestBody EmployeeUpdateInDto employeeUpdateInDto) {
 
         // Employee principal = (Employee) session.getAttribute("principal");
