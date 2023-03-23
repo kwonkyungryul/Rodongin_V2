@@ -96,7 +96,7 @@ public class CompanyControllerTest {
         // then
         resultActions.andExpect(status().isCreated());
         resultActions.andExpect(jsonPath("$.code").value(1));
-        // resultActions.andExpect(jsonPath("$.message").value("기업회원가입완료"));
+        resultActions.andExpect(jsonPath("$.msg").value("기업회원가입완료"));
         resultActions.andExpect(jsonPath("$.data").isEmpty());
     }
     
