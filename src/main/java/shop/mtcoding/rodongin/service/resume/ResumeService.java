@@ -70,4 +70,29 @@ public class ResumeService {
             throw new CustomApiException("이력서 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void 이력서수정(Integer principalId, int id, ResumeUpdateInDto resumeUpdateInDto) {
+        Resume resumePS = resumeRepository.findById(id);
+        if (resumePS == null) {
+            throw new CustomApiException("존재하지 않는 이력서 입니다.");
+        }
+
+        if (resumePS.getEmployeeId() != principalId) {
+            throw new CustomApiException("권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            resumeRepository.updateById(id, resumeUpdateInDto);
+            resumeGraduateRepository.updateByResumeId(id, resumeUpdateInDto.getSchoolId(), resumeUpdateInDto.getSchoolGraduate());
+            resumeCareerRepository.updateByResumeId(id, resumeUpdateInDto.getCareerCompany(), resumeUpdateInDto.getCareerStart(), resumeUpdateInDto.getCareerEnd());
+            resumeLicenseRepository.updateByResumeId(id, resumeUpdateInDto.getLicenseId(), resumeUpdateInDto.getLicenseIssuer());
+            resumeStackRepository.updateByResumeId(id, resumeUpdateInDto.getStackId(), resumeUpdateInDto.getStackAcquisition());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomApiException("이력서 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+    }
 }

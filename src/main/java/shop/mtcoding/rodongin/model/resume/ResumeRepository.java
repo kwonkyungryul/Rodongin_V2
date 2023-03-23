@@ -12,6 +12,7 @@ import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeSaveDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeUpdateDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeListRespDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeSaveInDto;
+import shop.mtcoding.rodongin.dto.resume.ResumeUpdateInDto;
 
 @Mapper
 public interface ResumeRepository {
@@ -22,7 +23,7 @@ public interface ResumeRepository {
 
     public Resume findById(int id);
 
-    public int updateById(@Param("id") int id, @Param("resumeUpdateDto") ResumeUpdateDto resumeUpdateDto);
+    public int updateById(@Param("id") int id, @Param("resumeUpdateInDto") ResumeUpdateInDto resumeUpdateInDto);
 
     public int deleteById(int id);
 
