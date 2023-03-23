@@ -34,9 +34,15 @@
 
      <update id="updateById" >
         update company set 
-            company_fullname = #{companyFullname},company_thumbnail = #{companyThumbnail} , 
-            company_establish =  #{companyEstablish}, company_sales = #{companySales}, company_employees_number = #{companyEmployeesNumber},
-            company_introduction = #{companyIntroduction}, company_history = #{companyHistory}, company_vision = #{companyVision} where id = #{id}
+            company_fullname = #{companyUpdateInDto.companyFullname},
+            company_thumbnail = #{companyUpdateInDto.companyThumbnail} , 
+            company_establish =  #{companyUpdateInDto.companyEstablish},
+            company_sales = #{companyUpdateInDto.companySales},
+            company_employees_number = #{companyUpdateInDto.companyEmployeesNumber},
+            company_introduction = #{companyUpdateInDto.companyIntroduction},
+            company_history = #{companyUpdateInDto.companyHistory}, 
+            company_vision = #{companyUpdateInDto.companyVision}
+            where id = #{id}
     </update>
 
     <delete id="deleteById">
