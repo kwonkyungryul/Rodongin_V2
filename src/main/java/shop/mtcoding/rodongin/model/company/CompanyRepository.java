@@ -1,7 +1,5 @@
 package shop.mtcoding.rodongin.model.company;
 
-import java.math.BigInteger;
-import java.sql.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -10,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
-import shop.mtcoding.rodongin.dto.company.CompanyReq.CompanyJoinReqDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
 
 @Mapper
 public interface CompanyRepository {
@@ -25,14 +23,12 @@ public interface CompanyRepository {
 
     public int insert(CompanyJoinInDto companyJoinInDto);
 
-    public int updateById(@Param("id") int id, @Param("companyFullname") String companyFullname, 
-    @Param("companyThumbnail") String companyThumbnail, @Param("companyEstablish") Date companyEstablish,
-    @Param("companySales") BigInteger companySales,
-    @Param("companyEmployeesNumber") int companyEmployeesNumber,
-    @Param("companyIntroduction")  String companyIntroduction,
-    @Param("companyHistory")   String companyHistory,@Param("companyVision")  String companyVision );
+    public int updateById(@Param("companyUpdateInDto") CompanyUpdateInDto companyUpdateInDto,
+    @Param("id") int id);
+
     public int deleteById(int id);
 
-    public CompanyDetailOutDto findById(int id);
+    public CompanyDetailOutDto findById(@Param("id") int id);
+
 
 }

@@ -4,24 +4,26 @@ package shop.mtcoding.rodongin.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
-import shop.mtcoding.rodongin.dto.customer.CustomerListOutDto;
+
+import shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto;
 import shop.mtcoding.rodongin.service.customer.CustomerService;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 public class CustomerController {
 
-    private final CustomerService customerService;
+  private final CustomerService customerService;
 
-    @GetMapping({ "/customer/list", "customer" })
-    public ResponseEntity<?> list() { // customer - main 리스트페이지
-        CustomerListOutDto listDto = customerService.고객센터리스트();
-
-        return new ResponseEntity<>(new ResponseDto<>(1, "고객센터 리스트 보기 성공", listDto), HttpStatus.OK);
-    }
-
+  @GetMapping("customers/{id}")
+  public ResponseEntity<?> detail(@PathVariable Integer id) {
+    CustomerDetailOutDto customerDetailOutDto = customerService.고객센터게시글상세보기(id);
+    return new ResponseEntity<>(new ResponseDto<>(1, "게시글보기페이지 성공", customerDetailOutDto), HttpStatus.OK);
+  }
 }

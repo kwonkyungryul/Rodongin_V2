@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
 import shop.mtcoding.rodongin.dto.company.CompanyLoginInDto;
+import shop.mtcoding.rodongin.dto.company.CompanyUpdateInDto;
+import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.company.CompanyRepository;
@@ -100,5 +102,24 @@ public class CompanyService {
             throw new CustomException("일시적인 서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @Transactional
+    public void 기업소개등록(int id, CompanyUpdateInDto companyUpdateInDto, int comPrincipalId){
+        CompanyDetailOutDto principalPS = companyRepository.findById(id);
+        if (principalPS.getId() != comPrincipalId) {
+            throw new CustomApiException("기업소개를 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        // String thumbnail = PathUtil.writeImageFile(profile);
+
+        // if (profile == null || profile.isEmpty()) {
+        //     thumbnail = companyRepository.findById(comPrincipalId).getCompanyThumbnail();
+        // }
+        
+        try {
+            int result = companyRepository.updateById(companyUpdateInDto, id);
+            } catch (Exception e) {
+        throw new CustomApiException("기업소개 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
 }
