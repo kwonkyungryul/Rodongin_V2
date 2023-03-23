@@ -76,7 +76,7 @@ public class EmployeeControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/employee/" + id)
+                put("/employees/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
@@ -103,7 +103,7 @@ public class EmployeeControllerTest {
         String requestBody = om.writeValueAsString(employeeJoinInDto);
         System.out.println("테스트 : " + requestBody);
         // when
-        ResultActions resultActions = mvc.perform(post("/employee/join").content(requestBody)
+        ResultActions resultActions = mvc.perform(post("/employees/join").content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
         // then
         resultActions.andExpect(status().isCreated());
@@ -119,7 +119,7 @@ public class EmployeeControllerTest {
         String requestBody = om.writeValueAsString(employeeJoinInDto);
         System.out.println("테스트 : " + requestBody);
         // when
-        ResultActions resultActions = mvc.perform(post("/employee/login").content(requestBody)
+        ResultActions resultActions = mvc.perform(post("/employees/login").content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         HttpSession session = resultActions.andReturn().getRequest().getSession();

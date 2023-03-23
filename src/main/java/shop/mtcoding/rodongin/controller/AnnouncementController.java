@@ -5,12 +5,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,20 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
     private final HttpSession session;
 
+    @DeleteMapping("/announcements/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+        Company comPrincipal = MySession.CompanyPrincipal(session);
+        if (comPrincipal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다.");
+        }
+        announcementService.게시글삭제(comPrincipal.getId(), id);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
+    }
+
     // 게시글 수정
-    @PutMapping("/announcement/{id}")
+    @PutMapping("/announcements/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
             @RequestBody AnnouncementUpdateInDto announcementUpdateInDto, HttpServletResponse response) {
 
@@ -82,7 +94,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글수정성공", null), HttpStatus.OK);
     }
 
-    @PostMapping("/announcement")
+    @PostMapping("/announcements")
     public ResponseEntity<?> save(@RequestBody AnnouncementSaveInDto announcementSaveInDto) {
         System.out.println(announcementSaveInDto.getStackId());
         // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
@@ -127,7 +139,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글작성 성공", null), HttpStatus.CREATED);
     }
 
-    @GetMapping("announcement/{id}")
+    @GetMapping("announcements/{id}")
     public ResponseEntity<?> detail(@PathVariable Integer id) {
         AnnouncementDetailOutDto datailDto = announcementService.공고상세보기(id);
         return new ResponseEntity<>(new ResponseDto<>(1, "공고상세보기페이지", datailDto), HttpStatus.OK);

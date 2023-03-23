@@ -39,7 +39,7 @@ public class AnnouncementService {
     public void 게시글수정(int comPrincipalId, int id, AnnouncementUpdateInDto announcementUpdateInDto) {
         Announcement announcementPS = announcementRepository.findById(id);
         if (announcementPS == null) {
-            throw new CustomApiException("해당 게시글을 찾을 수 없당.");
+            throw new CustomApiException("해당 게시글을 찾을 수 없습니다.");
         }
         if (announcementPS.getCompanyId() != comPrincipalId) {
             throw new CustomApiException("게시글을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
@@ -50,7 +50,23 @@ public class AnnouncementService {
 
         if (result != 1) {
 
-            throw new CustomApiException("게시글을 수정에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomApiException("게시글 수정에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public void 게시글삭제(int comPrincipalId, int id) {
+        Announcement announcementPS = announcementRepository.findById(id);
+        if (announcementPS == null) {
+            throw new CustomApiException("없는 게시글을 삭제할 수 없습니다.");
+        }
+        if (announcementPS.getCompanyId() != comPrincipalId) {
+            throw new CustomApiException("삭제 권한이 없습니다.");
+        }
+
+        try {
+            announcementRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new CustomApiException("게시글 삭제에 실패하였습니다.");
         }
     }
 }

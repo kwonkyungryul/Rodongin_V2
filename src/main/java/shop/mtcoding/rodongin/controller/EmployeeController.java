@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class EmployeeController {
 
-
     private final EmployeeService employeeService;
 
     private final HttpSession session;
@@ -32,7 +31,7 @@ public class EmployeeController {
     @GetMapping("/employees")
     public ResponseEntity<?> detail() {
         Employee principal = MySession.MyPrincipal(session);
-//        Employee principal = (Employee) session.getAttribute("principal");
+        // Employee principal = (Employee) session.getAttribute("principal");
         if (principal == null) {
             return new ResponseEntity<>(new ResponseDto<>(-1, "인증이 되지 않았습니다.", null), HttpStatus.UNAUTHORIZED);
         }
@@ -41,7 +40,7 @@ public class EmployeeController {
         return new ResponseEntity<>(new ResponseDto<>(1, "개인정보 페이지", response), HttpStatus.OK);
     }
 
-    @PostMapping("/employee/join")
+    @PostMapping("/employees/join")
     public ResponseEntity<?> join(@RequestBody EmployeeJoinInDto employeeJoinInDto) throws Exception {
         if (employeeJoinInDto.getEmployeeName() == null || employeeJoinInDto.getEmployeeName().isEmpty()) {
             throw new CustomException("아이디를 작성해주세요");
@@ -74,7 +73,7 @@ public class EmployeeController {
 
     }
 
-    @PostMapping("/employee/login")
+    @PostMapping("/employees/login")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginInDto employeeLoginInDto,
             HttpServletResponse response,
             @RequestParam(value = "remember", required = false) String employeeName) {
