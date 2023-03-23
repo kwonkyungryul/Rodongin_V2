@@ -93,7 +93,7 @@
             on a.company_id = c.id
             inner join STACK_MASTER  sm
             on a.STACK_ID =sm.ID
-        where a.id = #{id};
+        where a.COMPANY_ID  = #{id};
     </select>
 
     <select id="findAll" resultType="shop.mtcoding.rodongin.model.announcement.Announcement">
@@ -153,4 +153,28 @@
     SELECT * FROM announcement WHERE id = #{id}
   </select>
   
+
+  <resultMap id="comListDto" type="shop.mtcoding.rodongin.dto.announcement.AnnouncementCompanyListOutDto">
+        <id property="id" column="id"/>
+        <result property="announcementTitle" column="announcement_title"/>
+        <result property="announcementContent" column="announcement_content"/>
+        <result property="announcementCarrer" column="announcement_carrer"/>
+        <result property="announcementHireType" column="announcement_hire_type"/>
+        <result property="announcementRecNum" column="announcement_rec_num"/>
+        <result property="announcementSalary" column="announcement_salary"/>
+        <result property="announcementArea" column="announcement_area"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="stack" javaType="shop.mtcoding.rodongin.dto.announcement.AnnouncementCompanyListOutDto$StackDto">
+            <id property="id" column="id"/>
+            <result property="stackName" column="stack_name"/>
+        </association>
+    </resultMap>
+
+    <select id="findCompanyId" resultMap="comListDto">
+        SELECT * FROM ANNOUNCEMENT a
+        inner join STACK_MASTER sm
+        on a.STACK_ID = sm.ID 
+        where COMPANY_ID  = #{id}
+    </select>
+
 </mapper>
