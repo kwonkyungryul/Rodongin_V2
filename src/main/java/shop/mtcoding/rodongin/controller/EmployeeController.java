@@ -134,7 +134,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public ResponseEntity<?> logout() {
         session.invalidate();
         return new ResponseEntity<>(new ResponseDto<>(1, "로그아웃 완료", null), HttpStatus.OK);
     }
