@@ -7,7 +7,7 @@
 
     <insert id="insert">
          INSERT INTO employee_graduate (employee_id, school_id, school_graduate, created_at)
-         VALUES (#{employeeId}, #{employeeGraduate.schoolId}, #{employeeGraduate.schoolGraduate}, NOW())
+         VALUES (#{employeeId}, #{employeeSaveInDto.schoolId}, #{employeeSaveInDto.schoolGraduate}, NOW())
     </insert>
 
     <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$GraduateRespDto">

@@ -12,7 +12,7 @@
 
     <insert id="insert">
          INSERT INTO employee_career (employee_id, career_company, career_start, career_end, created_at)
-         VALUES (#{employeeId}, #{employeeCareer.careerCompany}, #{employeeCareer.careerStart},#{employeeCareer.careerEnd}, NOW())
+         VALUES (#{employeeId}, #{employeeSaveInDto.careerCompany}, #{employeeSaveInDto.careerStart},#{employeeSaveInDto.careerEnd}, NOW())
     </insert>
 
     <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeCareerDto">

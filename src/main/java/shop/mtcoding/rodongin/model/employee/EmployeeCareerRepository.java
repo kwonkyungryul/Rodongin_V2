@@ -6,15 +6,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import shop.mtcoding.rodongin.dto.employee.EmployeeCareerDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeSaveInDto;
 
 @Mapper
 public interface EmployeeCareerRepository {
-    public int insert(@Param("employeeCareer") EmployeeCareer employeeCareer,
-            @Param("employeeId") int employeeId);
+    public int insert(@Param("employeeId") Integer employeeId,
+            @Param("employeeSaveInDto") EmployeeSaveInDto employeeSaveInDto);
 
     public List<EmployeeCareer> findById(int employeeId);
 
     public List<EmployeeCareerDto> findByEmpId(int employeeId);
 
-   
 }

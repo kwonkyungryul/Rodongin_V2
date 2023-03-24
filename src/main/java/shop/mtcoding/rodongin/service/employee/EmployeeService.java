@@ -16,6 +16,7 @@ import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLicenseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeSaveInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeStackDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeDto;
@@ -113,6 +114,7 @@ public class EmployeeService {
         }
     }
 
+    @Transactional
     public Employee 로그인(EmployeeLoginInDto employeeLoginInDto, HttpServletResponse response, String employeeName) {
 
         Employee principalPS = employeeRepository.findByEmployeeName(employeeLoginInDto.getEmployeeName());
@@ -174,5 +176,50 @@ public class EmployeeService {
 
         Employee principal = employeeRepository.findById(principalId);
         return principal;
+    }
+
+    @Transactional
+    public void 개인정보추가(Integer principalId, EmployeeSaveInDto employeeSaveInDto) {
+
+        if (!employeeSaveInDto.getSchoolGraduate().equals("") || employeeSaveInDto.getSchoolGraduate() == null) {
+            try {
+                employeeGraduateRepository.insert(principalId, employeeSaveInDto);
+
+            } catch (Exception e) {
+                throw new CustomException("최종학력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null)
+
+        {
+            try {
+                employeeCareerRepository.insert(principalId, employeeSaveInDto);
+
+            } catch (Exception e) {
+                throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (!employeeSaveInDto.getLicenseIssuer().equals("") || employeeSaveInDto.getLicenseIssuer() == null) {
+            try {
+                employeeLicenseRepository.insert(principalId, employeeSaveInDto);
+
+            } catch (Exception e) {
+                throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (!employeeSaveInDto.getStackAcquisition().equals("") || employeeSaveInDto.getStackAcquisition() == null) {
+            try {
+                employeeStackRepository.insert(principalId, employeeSaveInDto);
+
+            } catch (Exception e) {
+                throw new CustomException("기술스택 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (employeeSaveInDto.getCareerStart().toString().equals("0001-01-01")) {
+            employeeSaveInDto.setCareerStart(null);
+        }
+        if (employeeSaveInDto.getCareerEnd().toString().equals("0001-01-01")) {
+            employeeSaveInDto.setCareerEnd(null);
+        }
     }
 }

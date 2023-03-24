@@ -7,7 +7,7 @@
 
     <insert id="insert">
          INSERT INTO employee_stack (employee_id, stack_id, stack_acquisition, created_at)
-         VALUES (#{employeeId}, #{employeeStack.stackId}, #{employeeStack.stackAcquisition}, NOW())
+         VALUES (#{employeeId}, #{employeeSaveInDto.stackId}, #{employeeSaveInDto.stackAcquisition}, NOW())
     </insert>
 
     <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$StackRespDto">
