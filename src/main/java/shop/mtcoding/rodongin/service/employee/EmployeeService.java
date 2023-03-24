@@ -181,7 +181,7 @@ public class EmployeeService {
     @Transactional
     public void 개인정보추가(Integer principalId, EmployeeSaveInDto employeeSaveInDto) {
 
-        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+        if (!employeeSaveInDto.getSchoolGraduate().equals("") || employeeSaveInDto.getSchoolGraduate() == null) {
             try {
                 employeeGraduateRepository.insert(principalId, employeeSaveInDto);
 
@@ -199,7 +199,7 @@ public class EmployeeService {
                 throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+        if (!employeeSaveInDto.getLicenseIssuer().equals("") || employeeSaveInDto.getLicenseIssuer() == null) {
             try {
                 employeeLicenseRepository.insert(principalId, employeeSaveInDto);
 
@@ -207,7 +207,7 @@ public class EmployeeService {
                 throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+        if (!employeeSaveInDto.getStackAcquisition().equals("") || employeeSaveInDto.getStackAcquisition() == null) {
             try {
                 employeeStackRepository.insert(principalId, employeeSaveInDto);
 
