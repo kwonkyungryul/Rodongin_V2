@@ -16,6 +16,7 @@ import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLicenseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeSaveInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeStackDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeDto;
@@ -174,5 +175,42 @@ public class EmployeeService {
 
         Employee principal = employeeRepository.findById(principalId);
         return principal;
+    }
+
+    public void 개인정보추가(Integer principalId, EmployeeSaveInDto employeeSaveInDto) {
+        try {
+            employeeGraduateRepository.insert(principalId, employeeSaveInDto);
+
+        } catch (Exception e) {
+            throw new CustomException("최종학력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            employeeCareerRepository.insert(principalId, employeeSaveInDto);
+
+        } catch (Exception e) {
+            throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            employeeLicenseRepository.insert(principalId, employeeSaveInDto);
+
+        } catch (Exception e) {
+            throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            employeeStackRepository.insert(principalId, employeeSaveInDto);
+
+        } catch (Exception e) {
+            throw new CustomException("기술스택 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (employeeSaveInDto.getCareerStart().toString().equals("0001-01-01")) {
+            employeeSaveInDto.setCareerStart(null);
+        }
+        if (employeeSaveInDto.getCareerEnd().toString().equals("0001-01-01")) {
+            employeeSaveInDto.setCareerEnd(null);
+        }
     }
 }

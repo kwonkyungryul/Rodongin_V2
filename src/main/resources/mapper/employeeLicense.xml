@@ -7,7 +7,7 @@
 
     <insert id="insert">
          INSERT INTO employee_license (employee_id, license_id, license_issuer, created_at)
-         VALUES (#{employeeId}, #{employeeLicense.licenseId}, #{employeeLicense.licenseIssuer}, NOW())
+         VALUES (#{employeeId}, #{employeeSaveInDto.licenseId}, #{employeeSaveInDto.licenseIssuer}, NOW())
     </insert>
 
      <select id="findById" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeResp$LicenseRespDto">

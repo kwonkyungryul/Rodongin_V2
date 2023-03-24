@@ -17,6 +17,7 @@ import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeDetailOutDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
+import shop.mtcoding.rodongin.dto.employee.EmployeeSaveInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
@@ -65,6 +66,21 @@ public class EmployeeController {
         session.setAttribute("principal", principall);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/employees")
+    public ResponseEntity<?> save(@RequestBody EmployeeSaveInDto employeeSaveInDto) {
+
+        Employee principal = MySession.MyPrincipal(session);
+        // Employee principal = (Employee) session.getAttribute("principal");
+
+        if (principal == null) {
+            return new ResponseEntity<>(new ResponseDto<>(-1, "인증이 되지 않았습니다.", null), HttpStatus.UNAUTHORIZED);
+        }
+
+        employeeService.개인정보추가(principal.getId(), employeeSaveInDto);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "개인정보 추가 완료!", null), HttpStatus.CREATED);
     }
 
     @GetMapping("/employees")
