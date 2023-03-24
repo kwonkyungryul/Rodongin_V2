@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class EmployeeSaveInDto {
-    private Integer employeeId;
     private Integer schoolId;
     private String schoolGraduate;
     private String careerCompany;
@@ -25,10 +24,9 @@ public class EmployeeSaveInDto {
     private Timestamp createdAt;
 
     @Builder
-    public EmployeeSaveInDto(Integer employeeId, Integer schoolId, String schoolGraduate, String careerCompany,
+    public EmployeeSaveInDto(Integer schoolId, String schoolGraduate, String careerCompany,
             Date careerStart, Date careerEnd, Integer licenseId, String licenseIssuer, Integer stackId,
             String stackAcquisition, Timestamp createdAt) {
-        this.employeeId = employeeId;
         this.schoolId = schoolId;
         this.schoolGraduate = schoolGraduate;
         this.careerCompany = careerCompany;

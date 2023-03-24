@@ -17,8 +17,6 @@ public interface EmployeeLicenseRepository {
 
         public List<EmployeeLicenseDto> findByEmpId(Integer employeeId);
 
-        public int insert(EmployeeSaveInDto employeeSaveInDto, Integer principalId);
-
-        public void insert(@Param("employeeId") Integer employeeId,
+        public int insert(@Param("employeeId") Integer employeeId,
                         @Param("employeeSaveInDto") EmployeeSaveInDto employeeSaveInDto);
 }

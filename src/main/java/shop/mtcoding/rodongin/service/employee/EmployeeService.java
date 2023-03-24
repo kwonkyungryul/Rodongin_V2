@@ -114,6 +114,7 @@ public class EmployeeService {
         }
     }
 
+    @Transactional
     public Employee 로그인(EmployeeLoginInDto employeeLoginInDto, HttpServletResponse response, String employeeName) {
 
         Employee principalPS = employeeRepository.findByEmployeeName(employeeLoginInDto.getEmployeeName());
@@ -177,35 +178,43 @@ public class EmployeeService {
         return principal;
     }
 
+    @Transactional
     public void 개인정보추가(Integer principalId, EmployeeSaveInDto employeeSaveInDto) {
-        try {
-            employeeGraduateRepository.insert(principalId, employeeSaveInDto);
 
-        } catch (Exception e) {
-            throw new CustomException("최종학력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+            try {
+                employeeGraduateRepository.insert(principalId, employeeSaveInDto);
+
+            } catch (Exception e) {
+                throw new CustomException("최종학력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null)
 
-        try {
-            employeeCareerRepository.insert(principalId, employeeSaveInDto);
+        {
+            try {
+                employeeCareerRepository.insert(principalId, employeeSaveInDto);
 
-        } catch (Exception e) {
-            throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+            try {
+                employeeLicenseRepository.insert(principalId, employeeSaveInDto);
 
-        try {
-            employeeLicenseRepository.insert(principalId, employeeSaveInDto);
-
-        } catch (Exception e) {
-            throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        if (!employeeSaveInDto.getCareerCompany().equals("") || employeeSaveInDto.getCareerCompany() == null) {
+            try {
+                employeeStackRepository.insert(principalId, employeeSaveInDto);
 
-        try {
-            employeeStackRepository.insert(principalId, employeeSaveInDto);
-
-        } catch (Exception e) {
-            throw new CustomException("기술스택 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                throw new CustomException("기술스택 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
-
         if (employeeSaveInDto.getCareerStart().toString().equals("0001-01-01")) {
             employeeSaveInDto.setCareerStart(null);
         }

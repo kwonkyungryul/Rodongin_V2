@@ -155,7 +155,6 @@ public class EmployeeControllerTest {
         public void save_test() throws Exception {
                 // given
                 EmployeeSaveInDto resumeSaveInDto = EmployeeSaveInDto.builder()
-                                .employeeId(1)
                                 .schoolId(1)
                                 .schoolGraduate("졸업")
                                 .careerCompany("삼성맨")
