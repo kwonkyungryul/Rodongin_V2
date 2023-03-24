@@ -158,4 +158,20 @@ public class AnnouncementControllerTest {
         resultActions.andExpect(jsonPath("$.data.content").value(""));
         resultActions.andExpect(jsonPath("$.data.announcementListDto[0].id").value(66));
     }
+
+    @Test
+    public void comList_test() throws Exception {
+        // given
+        int companyId = 5;
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/announcements/companies/" + companyId));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+        // then
+
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.data[0].stack.stackName").value("Java"));
+    }
 }

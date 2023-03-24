@@ -23,7 +23,7 @@ public interface AnnouncementRepository {
         public AnnouncementDetailRespDto findAnnouncementAndCompanyId(int id);
 
         public List<AnnouncementListDto> findAnnouncementlist(@Param("skills") List<String> skills,
-                                                              @Param("content") String content, @Param("start") Integer start, @Param("end") Integer end);
+                        @Param("content") String content, @Param("start") Integer start, @Param("end") Integer end);
         // public List<AnnouncementDetailReqDto> findByDetailUser(int id);
 
         public List<Announcement> findTopList();
@@ -36,4 +36,6 @@ public interface AnnouncementRepository {
 
         public int updateById(@Param("announcementUpdateInDto") AnnouncementUpdateInDto announcementUpdateInDto,
                         @Param("id") int id);
+
+        public List<AnnouncementCompanyListOutDto> findCompanyId(@Param("id") Integer id);
 }

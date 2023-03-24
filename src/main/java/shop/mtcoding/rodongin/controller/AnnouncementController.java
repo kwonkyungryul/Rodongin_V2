@@ -1,14 +1,24 @@
 package shop.mtcoding.rodongin.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.rodongin.dto.ResponseDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementCompanyListOutDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementListOutDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
@@ -17,8 +27,6 @@ import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.service.announcement.AnnouncementService;
 import shop.mtcoding.rodongin.util.MySession;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -137,18 +145,36 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글작성 성공", null), HttpStatus.CREATED);
     }
 
-    @GetMapping("announcements/{id}")
+    @GetMapping("/announcements/{id}")
     public ResponseEntity<?> detail(@PathVariable Integer id) {
         AnnouncementDetailOutDto datailDto = announcementService.공고상세보기(id);
         return new ResponseEntity<>(new ResponseDto<>(1, "공고상세보기페이지", datailDto), HttpStatus.OK);
     }
 
-    @GetMapping({"/announcements", "/"})
+    @GetMapping({ "/announcements", "/" })
     public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int num,
-                                  @RequestParam(defaultValue = "") String content) {
+            @RequestParam(defaultValue = "") String content) {
 
-        AnnouncementListOutDto announcementList = announcementService.공고리스트보기(num, content);
+        AnnouncementListOutDto announcementList = announcementService.공고리스트보기(num,
+                content);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "공고 리스트 " + num + "페이지", announcementList), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(1, "공고 리스트 " + num + "페이지",
+                announcementList), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/announcements/companies/{companyId}")
+    public ResponseEntity<?> comList(@PathVariable int companyId) {
+
+        // Company principal = (Company) session.getAttribute("comPrincipal");
+        Company comPrincipal = MySession.CompanyPrincipal(session);
+        if (comPrincipal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<AnnouncementCompanyListOutDto> comList = announcementService.우리회사공고리스트(comPrincipal.getId(), companyId);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "공고 리스트 보기 성공",
+                comList), HttpStatus.OK);
     }
 }

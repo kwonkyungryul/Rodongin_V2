@@ -1,25 +1,31 @@
 package shop.mtcoding.rodongin.service.announcement;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import shop.mtcoding.rodongin.dto.announcement.*;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementCompanyListOutDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementDetailOutDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementListDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementListOutDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementResp;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
+import shop.mtcoding.rodongin.dto.announcement.AnnouncementUpdateInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeStackDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.announcement.Announcement;
 import shop.mtcoding.rodongin.model.announcement.AnnouncementRepository;
 import shop.mtcoding.rodongin.model.employee.Employee;
-import shop.mtcoding.rodongin.model.employee.EmployeeStack;
 import shop.mtcoding.rodongin.model.employee.EmployeeStackRepository;
 import shop.mtcoding.rodongin.model.master.StackMaster;
 import shop.mtcoding.rodongin.model.master.StackMasterRepository;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -128,8 +134,10 @@ public class AnnouncementService {
         boolean prev = startPageNum == 1 ? false : true;
         boolean next = endPageNum * pageNum_cnt >= cnt ? false : true;
 
-        List<AnnouncementListDto> announcementlist = announcementRepository.findAnnouncementlist(skills, content, start, end);
-        AnnouncementListOutDto.AnnouncementPagingDto announcementPagingDto = AnnouncementListOutDto.AnnouncementPagingDto.builder()
+        List<AnnouncementListDto> announcementlist = announcementRepository.findAnnouncementlist(skills, content, start,
+                end);
+        AnnouncementListOutDto.AnnouncementPagingDto announcementPagingDto = AnnouncementListOutDto.AnnouncementPagingDto
+                .builder()
                 .num(num)
                 .start(start)
                 .end(end)
@@ -140,21 +148,31 @@ public class AnnouncementService {
                 .next(next)
                 .prev(prev).build();
 
-
         AnnouncementListOutDto announcementListOutDto = AnnouncementListOutDto.builder()
                 .announcementListDto(announcementlist)
                 .content(content)
                 .announcementPagingDto(announcementPagingDto).build();
-//        announcementListOutDto.getAnnouncementPagingDto().setNum(num);
-//        announcementListOutDto.getAnnouncementPagingDto().setStart(start);
-//        announcementListOutDto.getAnnouncementPagingDto().setEnd(end);
-//        announcementListOutDto.getAnnouncementPagingDto().setSelect(num);
-//        announcementListOutDto.getAnnouncementPagingDto().setStartPageNum(startPageNum);
-//        announcementListOutDto.getAnnouncementPagingDto().setEndPageNum(endPageNum);
-//        announcementListOutDto.getAnnouncementPagingDto().setPageNum(pageNum);
-//        announcementListOutDto.getAnnouncementPagingDto().setPrev(prev);
-//        announcementListOutDto.getAnnouncementPagingDto().setNext(next);
+        // announcementListOutDto.getAnnouncementPagingDto().setNum(num);
+        // announcementListOutDto.getAnnouncementPagingDto().setStart(start);
+        // announcementListOutDto.getAnnouncementPagingDto().setEnd(end);
+        // announcementListOutDto.getAnnouncementPagingDto().setSelect(num);
+        // announcementListOutDto.getAnnouncementPagingDto().setStartPageNum(startPageNum);
+        // announcementListOutDto.getAnnouncementPagingDto().setEndPageNum(endPageNum);
+        // announcementListOutDto.getAnnouncementPagingDto().setPageNum(pageNum);
+        // announcementListOutDto.getAnnouncementPagingDto().setPrev(prev);
+        // announcementListOutDto.getAnnouncementPagingDto().setNext(next);
 
         return announcementListOutDto;
+    }
+
+    public List<AnnouncementCompanyListOutDto> 우리회사공고리스트(Integer comPrincipalId, Integer companyId) {
+        if (comPrincipalId != companyId) {
+            throw new CustomApiException("리스트를 볼 수 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        List<AnnouncementCompanyListOutDto> announcementCompanyListOutDto = announcementRepository.findCompanyId(
+                comPrincipalId);
+
+        return announcementCompanyListOutDto;
     }
 }
