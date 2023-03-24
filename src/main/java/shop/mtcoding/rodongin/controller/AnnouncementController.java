@@ -163,11 +163,17 @@ public class AnnouncementController {
 
     }
 
-    @GetMapping("/companies/announcements")
-    public ResponseEntity<?> comList() {
+    @GetMapping("/announcements/companies/{companyId}")
+    public ResponseEntity<?> comList(@PathVariable int companyId) {
 
         // Company principal = (Company) session.getAttribute("comPrincipal");
         Company comPrincipal = MySession.CompanyPrincipal(session);
+        if (comPrincipal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
+        }
+        if (comPrincipal.getId() != companyId) {
+            throw new CustomApiException("리스트를 볼 수 없습니다.", HttpStatus.FORBIDDEN);
+        }
 
         List<AnnouncementCompanyListOutDto> comList = announcementService.우리회사공고리스트(comPrincipal.getId());
 

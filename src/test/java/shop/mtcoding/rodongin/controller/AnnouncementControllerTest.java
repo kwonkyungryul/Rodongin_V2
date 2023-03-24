@@ -162,10 +162,10 @@ public class AnnouncementControllerTest {
     @Test
     public void comList_test() throws Exception {
         // given
-
+        int companyId = 1;
         // when
         ResultActions resultActions = mvc.perform(
-                get("/companies/announcements"));
+                get("/announcements/companies/" + companyId));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println(responseBody);
         // then
