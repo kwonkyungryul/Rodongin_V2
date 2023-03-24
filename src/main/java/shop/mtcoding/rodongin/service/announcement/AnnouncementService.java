@@ -165,7 +165,10 @@ public class AnnouncementService {
         return announcementListOutDto;
     }
 
-    public List<AnnouncementCompanyListOutDto> 우리회사공고리스트(Integer comPrincipalId) {
+    public List<AnnouncementCompanyListOutDto> 우리회사공고리스트(Integer comPrincipalId, Integer companyId) {
+        if (comPrincipalId != companyId) {
+            throw new CustomApiException("리스트를 볼 수 없습니다.", HttpStatus.FORBIDDEN);
+        }
 
         List<AnnouncementCompanyListOutDto> announcementCompanyListOutDto = announcementRepository.findCompanyId(
                 comPrincipalId);

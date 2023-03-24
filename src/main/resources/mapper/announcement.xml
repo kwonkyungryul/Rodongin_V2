@@ -93,7 +93,7 @@
             on a.company_id = c.id
             inner join STACK_MASTER  sm
             on a.STACK_ID =sm.ID
-        where a.COMPANY_ID  = #{id};
+        where a.id  = #{id};
     </select>
 
     <select id="findAll" resultType="shop.mtcoding.rodongin.model.announcement.Announcement">
