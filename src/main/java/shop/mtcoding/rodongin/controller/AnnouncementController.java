@@ -143,9 +143,9 @@ public class AnnouncementController {
         return new ResponseEntity<>(new ResponseDto<>(1, "공고상세보기페이지", datailDto), HttpStatus.OK);
     }
 
-    @GetMapping({"/announcements", "/"})
+    @GetMapping({ "/announcements", "/" })
     public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int num,
-                                  @RequestParam(defaultValue = "") String content) {
+            @RequestParam(defaultValue = "") String content) {
 
         AnnouncementListOutDto announcementList = announcementService.공고리스트보기(num, content);
 

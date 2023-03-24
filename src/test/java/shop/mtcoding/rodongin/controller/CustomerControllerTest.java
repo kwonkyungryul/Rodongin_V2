@@ -42,14 +42,20 @@ public class CustomerControllerTest {
 
     // when
     ResultActions resultActions = mvc.perform(
-        get("/customers/list/"));
+        get("/customers/"));
     String responseBody = resultActions.andReturn().getResponse().getContentAsString();
     System.out.println("테스트 : " + responseBody);
     // then
-
-    resultActions.andExpect(jsonPath("$.code").value(1));
-    resultActions.andExpect(jsonPath("$.data[0].customerTitle").value("문의한 내용에 대한 답변이 오지 않았어요"));
-    // resultActions.andExpect(jsonPath("$.data.customerListDto[1].id").value(1));
     resultActions.andExpect(status().isOk());
+    resultActions.andExpect(jsonPath("$.code").value(1));
+    resultActions.andExpect(jsonPath("$.data[0].id").value(11));
+    resultActions.andExpect(jsonPath("$.data[0].customerTitle").value("문의한 내용에 대한 답변이 오지 않았어요"));
+    resultActions.andExpect(jsonPath("$.data[0].employee.id").value(11));
+    resultActions.andExpect(jsonPath("$.data[0].employee.employeeName").value("apple"));
   }
 }
+
+// private Integer id;
+// private String customerTitle;
+// private EmployeeDto employee;
+// private Timestamp createdAt;

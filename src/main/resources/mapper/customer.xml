@@ -32,13 +32,9 @@
             <id property="id" column="id"/>
             <result property="employeeName" column="employee_name"/>
         </association>
-        <!-- <association property="employee" javaType="shop.mtcoding.rodongin.dto.customer.CustomerListOutDto$EmployeeDto">
-            <id property="id" column="id"/>
-            <result property ="employeeName" columns="employee_name"/>
-        </association> -->
     </resultMap>
 
-    <select id="findCustomerList" resultType="shop.mtcoding.rodongin.dto.customer.CustomerResp$CustomerListRespDto">
+    <select id="findCustomerList" resultMap="listDto">
         SELECT cu.id, cu.customer_title, em.employee_name, cu.created_at
         FROM customer cu 
         INNER JOIN employee em ON cu.employee_id = em.id

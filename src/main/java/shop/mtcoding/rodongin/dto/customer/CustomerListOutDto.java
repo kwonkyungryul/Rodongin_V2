@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
-@Getter
-@NoArgsConstructor // updateDto - findCustomerDetail
+@Getter // updateDto - findCustomerDetail
+@NoArgsConstructor
 public class CustomerListOutDto {
 
   private Integer id;

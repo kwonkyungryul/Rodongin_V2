@@ -27,7 +27,6 @@ public class CustomerService {
   public List<CustomerListOutDto> 고객센터게시글리스트보기() {
 
     List<CustomerListOutDto> customerListOutDto = customerRepository.findCustomerList();
-
     return customerListOutDto;
   }
 }
