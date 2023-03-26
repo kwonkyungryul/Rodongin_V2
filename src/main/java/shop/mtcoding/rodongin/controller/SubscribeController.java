@@ -29,7 +29,7 @@ public class SubscribeController {
         return new ResponseEntity<>(new ResponseDto<>(1, "구독취소", null), HttpStatus.OK);
     }
 
-    @PostMapping("/subscribes")
+    @PostMapping("/s/subscribes")
     public ResponseEntity<?> save(@RequestBody SubscribeSaveInDto subscribeSaveInDto) {
 
         if (subscribeSaveInDto.getAnnouncementId() == null) {

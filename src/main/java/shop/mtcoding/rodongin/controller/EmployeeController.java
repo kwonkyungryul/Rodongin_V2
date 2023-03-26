@@ -47,7 +47,7 @@ public class EmployeeController {
 
         employeeService.회원정보수정(employeeUpdateInDto);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.OK);
     }
 
     @PostMapping("/s/employees")
@@ -116,12 +116,6 @@ public class EmployeeController {
         session.setAttribute("principal", principal);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "로그인 완료", null), HttpStatus.OK);
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<?> logout() {
-        session.invalidate();
-        return new ResponseEntity<>(new ResponseDto<>(1, "로그아웃 완료", null), HttpStatus.OK);
     }
 
 }

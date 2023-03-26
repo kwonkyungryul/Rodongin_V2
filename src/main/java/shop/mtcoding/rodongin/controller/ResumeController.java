@@ -21,7 +21,7 @@ public class ResumeController {
 
     private final HttpSession session;
 
-    @GetMapping("/s/resumes/{id}")
+    @GetMapping("/resumes/{id}")
     public ResponseEntity<?> detail(@PathVariable int id) {
 
         ResumeDetailOutDto resumeDetailOutDto = resumeService.이력서상세보기(id);
@@ -48,7 +48,7 @@ public class ResumeController {
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 저장 성공", null), HttpStatus.CREATED);
     }
 
-    @PutMapping("/resumes/{id}")
+    @PutMapping("/s/resumes/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody ResumeUpdateInDto resumeUpdateInDto) {
 
         if (resumeUpdateInDto.getResumeTitle() == null || resumeUpdateInDto.getResumeTitle().isEmpty()) {

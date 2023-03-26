@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.subscribe.SubscribeSaveInDto;
 import shop.mtcoding.rodongin.model.employee.Employee;
 
@@ -33,21 +34,10 @@ public class SubscribeControllerTest {
 
     private MockHttpSession mockSession;
 
-    @BeforeEach
-    public void setUp() {
-        // 세션 주입
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setEmployeeName("ssar");
-        employee.setEmployeePassword("1234");
-        employee.setEmployeeEmail("ssar@nate.com");
-        // employee.setEmployeeBirth(date);
-        employee.setEmployeeTel("01011111111");
-        employee.setEmployeeAddress("서울특별시 강남구");
-
-        mockSession = new MockHttpSession();
-        mockSession.setAttribute("principal", employee);
-    }
+    String jwt = JwtProvider.create(Employee.builder()
+            .id(1)
+            .employeeRole("employee")
+            .build());
 
     @Test
     public void save_test() throws Exception {
@@ -58,8 +48,8 @@ public class SubscribeControllerTest {
         String responseBody = om.writeValueAsString(subscribeSaveInDto);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/subscribes")
-                .content(responseBody).contentType(MediaType.APPLICATION_JSON).session(mockSession));
+        ResultActions resultActions = mvc.perform(post("/s/subscribes")
+                .content(responseBody).contentType(MediaType.APPLICATION_JSON).header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isCreated());
@@ -71,8 +61,8 @@ public class SubscribeControllerTest {
         Integer announcementId = 1;
 
         // when
-        ResultActions resultActions = mvc.perform(delete("/subscribes/" + announcementId)
-                .session(mockSession));
+        ResultActions resultActions = mvc.perform(delete("/s/subscribes/" + announcementId)
+                .header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isOk());

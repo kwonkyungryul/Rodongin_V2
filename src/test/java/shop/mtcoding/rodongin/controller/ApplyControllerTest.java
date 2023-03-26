@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.model.company.Company;
 
 @Transactional
@@ -32,18 +33,10 @@ public class ApplyControllerTest {
 
     private MockHttpSession mockSession;
 
-    @BeforeEach
-    public void setUp() {
-        // 세션 주입
-        Company company = new Company();
-        company.setId(1);
-        company.setCompanyUsername("SAMSUNG");
-        company.setCompanyPassword(
-                "96e60856f35fafa9b394a64812f93659$ede46b1fc6024720c6b8690c57a9bc3d84ec705a88c5e081c7599500ebf15ce0");
-
-        mockSession = new MockHttpSession();
-        mockSession.setAttribute("comPrincipal", company);
-    }
+    String jwt = JwtProvider.create(Company.builder()
+            .id(1)
+            .companyRole("company")
+            .build());
 
     @Test
     public void applyList_test() throws Exception {
@@ -51,9 +44,8 @@ public class ApplyControllerTest {
         int announcementId = 1;
         // when
         ResultActions resultActions = mvc.perform(
-                get("/apply/" + announcementId));
+                get("/s/apply/" + announcementId).header("Authorization", jwt));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println(responseBody);
         // then
 
         resultActions.andExpect(status().isOk());

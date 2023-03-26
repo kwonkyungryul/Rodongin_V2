@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementUpdateInDto;
 import shop.mtcoding.rodongin.model.company.Company;
@@ -37,22 +38,10 @@ public class AnnouncementControllerTest {
     @Autowired
     private ObjectMapper om;
 
-    @BeforeEach
-    public void setUp() {
-        // 세션 주입
-        Company company = new Company();
-        company.setId(1);
-        company.setCompanyUsername("SAMSUNG");
-        company.setCompanyPassword(
-                "96e60856f35fafa9b394a64812f93659$ede46b1fc6024720c6b8690c57a9bc3d84ec705a88c5e081c7599500ebf15ce0");
-        // company.setEmployeeEmail("ssar@nate.com");
-        // company.setEmployeeBirth(date);
-        // company.setEmployeeTel("01011111111");
-        // company.setEmployeeAddress("서울특별시 강남구");
-
-        mockSession = new MockHttpSession();
-        mockSession.setAttribute("comPrincipal", company);
-    }
+    String jwt = JwtProvider.create(Company.builder()
+            .id(1)
+            .companyRole("company")
+            .build());
 
     @Test
     public void delete_test() throws Exception {
@@ -61,9 +50,8 @@ public class AnnouncementControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                delete("/announcements/" + id).session(mockSession));
+                delete("/s/announcements/" + id).header("Authorization", jwt));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("delete_test : " + responseBody);
         resultActions.andExpect(jsonPath("$.code").value(1));
         resultActions.andExpect(status().isOk());
     }
@@ -84,11 +72,10 @@ public class AnnouncementControllerTest {
         String requestBody = om.writeValueAsString(announcementSaveInDto);
         // when
         ResultActions resultActions = mvc.perform(
-                post("/announcements")
+                post("/s/announcements")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .session(mockSession));
-        System.out.println("테스트 : " + resultActions);
+                        .header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isCreated());
@@ -98,12 +85,10 @@ public class AnnouncementControllerTest {
     public void detail_test() throws Exception {
         // given
         int id = 1;
-
         // when
         ResultActions resultActions = mvc.perform(
                 get("/announcements/" + id));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트 : " + responseBody);
         // then
 
         resultActions.andExpect(jsonPath("$.code").value(1));
@@ -127,14 +112,13 @@ public class AnnouncementControllerTest {
                 .build();
 
         String requestBody = om.writeValueAsString(announcementUpdateInDto);
-        System.out.println("테스트 : " + requestBody);
 
         // when
         ResultActions resultActions = mvc.perform(
-                put("/announcements/" + id)
+                put("/s/announcements/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .session(mockSession));
+                        .header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isOk());
@@ -161,10 +145,10 @@ public class AnnouncementControllerTest {
     @Test
     public void comList_test() throws Exception {
         // given
-        int companyId = 5;
+        int companyId = 1;
         // when
         ResultActions resultActions = mvc.perform(
-                get("/announcements/companies/" + companyId));
+                get("/s/announcements/companies/" + companyId).header("Authorization", jwt));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println(responseBody);
         // then

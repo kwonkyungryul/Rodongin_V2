@@ -21,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.customer.CustomerSaveInDto;
 import shop.mtcoding.rodongin.dto.customer.CustomerUpdateInDto;
+import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.employee.Employee;
 
 @Transactional // 메서드 실행 직후 롤백!! // auto_increment 초기화
@@ -38,21 +40,10 @@ public class CustomerControllerTest {
 
   private MockHttpSession mockSession;
 
-  @BeforeEach
-  public void setUp() {
-    // 세션 주입
-    Employee employee = new Employee();
-    employee.setId(1);
-    employee.setEmployeeName("ssar");
-    employee.setEmployeePassword("1234");
-    employee.setEmployeeEmail("ssar@nate.com");
-    // employee.setEmployeeBirth(date);
-    employee.setEmployeeTel("01011111111");
-    employee.setEmployeeAddress("서울특별시 강남구");
-
-    mockSession = new MockHttpSession();
-    mockSession.setAttribute("principal", employee);
-  }
+  String jwt = JwtProvider.create(Employee.builder()
+          .id(1)
+          .employeeRole("employee")
+          .build());
 
   @Test
   public void update_test() throws Exception {
@@ -64,14 +55,13 @@ public class CustomerControllerTest {
         .customerContent("이력서 등록이 안 되는데 어떻게 해야 하나요?").build();
 
     String requestBody = om.writeValueAsString(customerUpdateInDto);
-    System.out.println("테스트 : " + requestBody);
 
     // when
     ResultActions resultActions = mvc.perform(
-        put("/customers/" + id)
+        put("/s/customers/" + id)
             .content(requestBody)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .session(mockSession));
+            .header("Authorization", jwt));
 
     // then
     resultActions.andExpect(status().isOk());
@@ -90,12 +80,10 @@ public class CustomerControllerTest {
 
     ResultActions resultActions = mvc.perform(
         post(
-            "/customers")
+            "/s/customers")
             .content(requestBody)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .session(mockSession));
-
-    System.out.println("테스트 : " + resultActions);
+            .header("Authorization", jwt));
 
     // then
     resultActions.andExpect(status().isCreated());
@@ -110,7 +98,6 @@ public class CustomerControllerTest {
     ResultActions resultActions = mvc.perform(
         get("/customers/" + id));
     String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-    System.out.println("테스트 : " + responseBody);
     // then
 
     resultActions.andExpect(jsonPath("$.code").value(1));
@@ -125,7 +112,6 @@ public class CustomerControllerTest {
     ResultActions resultActions = mvc.perform(
         get("/customers/"));
     String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-    System.out.println("테스트 : " + responseBody);
     // then
     resultActions.andExpect(status().isOk());
     resultActions.andExpect(jsonPath("$.code").value(1));
@@ -142,10 +128,8 @@ public class CustomerControllerTest {
 
     // when
     ResultActions resultActions = mvc.perform(
-        delete("/customers/" + id).session(mockSession));
+        delete("/s/customers/" + id).header("Authorization", jwt));
     String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-    System.out.println("delete_테스트 : " + responseBody);
-
     // then
     resultActions.andExpect(jsonPath("$.code").value(1));
     resultActions.andExpect(status().isOk());

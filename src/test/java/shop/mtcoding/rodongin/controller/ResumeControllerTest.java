@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.announcement.AnnouncementSaveInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeSaveInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeUpdateInDto;
@@ -43,21 +44,10 @@ public class ResumeControllerTest {
     @Autowired
     private ResumeRepository resumeRepository;
 
-    @BeforeEach
-    public void setUp() {
-        // 세션 주입
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setEmployeeName("ssar");
-        employee.setEmployeePassword("1234");
-        employee.setEmployeeEmail("ssar@nate.com");
-        // employee.setEmployeeBirth(date);
-        employee.setEmployeeTel("01011111111");
-        employee.setEmployeeAddress("서울특별시 강남구");
-
-        mockSession = new MockHttpSession();
-        mockSession.setAttribute("principal", employee);
-    }
+    String jwt = JwtProvider.create(Employee.builder()
+            .id(1)
+            .employeeRole("employee")
+            .build());
 
     @Test
     public void detail_test() throws Exception {
@@ -67,7 +57,6 @@ public class ResumeControllerTest {
         ResultActions resultActions = mvc.perform(
                 get("/resumes/" + id));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트 : " + responseBody);
 
         // then
         resultActions.andExpect(status().isOk());
@@ -96,12 +85,10 @@ public class ResumeControllerTest {
         // when
         String requestBody = om.writeValueAsString(resumeSaveInDto);
         ResultActions resultActions = mvc.perform(
-                post("/resumes")
+                post("/s/resumes")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .session(mockSession));
-        System.out.println("테스트 : " + requestBody);
-        System.out.println("테스트 : " + resultActions);
+                        .header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isCreated())
@@ -111,7 +98,7 @@ public class ResumeControllerTest {
     @Test
     public void update_test() throws Exception {
         // given
-        int id = 5;
+        int id = 1;
 
         ResumeUpdateInDto resumeUpdateInDto = ResumeUpdateInDto.builder()
                 .resumeTitle("이력서제목")
@@ -130,12 +117,10 @@ public class ResumeControllerTest {
         // when
         String requestBody = om.writeValueAsString(resumeUpdateInDto);
         ResultActions resultActions = mvc.perform(
-                put("/resumes/" + id)
+                put("/s/resumes/" + id)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .session(mockSession));
-        System.out.println("테스트 : " + requestBody);
-        System.out.println("테스트 : " + resultActions);
+                        .header("Authorization", jwt));
 
         // then
         resultActions.andExpect(status().isOk())
@@ -145,11 +130,11 @@ public class ResumeControllerTest {
     @Test
     public void delete_test() throws Exception {
         // given
-        int id = 5;
+        int id = 1;
 
         // when
         ResultActions resultActions = mvc.perform(
-                delete("/resumes/" + id).session(mockSession));
+                delete("/s/resumes/" + id).header("Authorization", jwt));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("테스트 : " + responseBody);
 

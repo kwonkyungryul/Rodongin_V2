@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ApplyController {
     private final HttpSession session;
     private final ApplyService applyService;
 
-    @GetMapping("/apply/{announcementId}")
+    @GetMapping("/s/apply/{announcementId}")
     public ResponseEntity<?> applyList(@PathVariable int announcementId) {
 
         List<ApplyListOutDto> listDto = applyService.지원자목록보기(announcementId);
