@@ -14,12 +14,18 @@ import shop.mtcoding.rodongin.dto.customer.CustomerUpdateInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.model.customer.Customer;
 import shop.mtcoding.rodongin.model.customer.CustomerRepository;
+import shop.mtcoding.rodongin.model.employee.Employee;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Service
 public class CustomerService {
 
   private final CustomerRepository customerRepository;
+
+  private final HttpSession session;
+
 
   @Transactional
   public CustomerDetailOutDto 고객센터게시글상세보기(int id) {
@@ -29,9 +35,10 @@ public class CustomerService {
   }
 
   @Transactional
-  public void 글쓰기(int principalId, CustomerSaveInDto customerSaveInDto) {
+  public void 글쓰기(CustomerSaveInDto customerSaveInDto) {
+    Employee principal = (Employee) session.getAttribute("principal");
     try {
-      customerRepository.insert(principalId, customerSaveInDto);
+      customerRepository.insert(principal.getId(), customerSaveInDto);
     } catch (Exception e) {
       throw new CustomApiException("게시글 등록 실패!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -46,12 +53,14 @@ public class CustomerService {
   }
 
   @Transactional
-  public void 게시글삭제(Integer employeeId, Integer id) {
+  public void 게시글삭제(Integer id) {
+    Employee principal = (Employee) session.getAttribute("principal");
+
     Customer customerPS = customerRepository.findById(id);
     if (customerPS == null) {
       throw new CustomApiException("없는 게시글을 삭제할 수 없습니다");
     }
-    if (customerPS.getEmployeeId() != employeeId) { // 만약에 오류나면 이쪽..
+    if (customerPS.getEmployeeId().intValue() != principal.getId()) { // 만약에 오류나면 이쪽..
       throw new CustomApiException("해당 게시글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
     }
 
@@ -63,12 +72,14 @@ public class CustomerService {
     }
   }
 
-  public void 글수정(Integer id, Integer principalId, CustomerUpdateInDto customerUpdateInDto) {
+  public void 글수정(Integer id, CustomerUpdateInDto customerUpdateInDto) {
+    Employee principal = (Employee) session.getAttribute("principal");
+
     Customer customerPS = customerRepository.findById(id);
     if (customerPS == null) {
       throw new CustomApiException("글이 존재 하지않아 수정이 불가합니다.");
     }
-    if (customerPS.getEmployeeId() != principalId) {
+    if (customerPS.getEmployeeId() != principal.getId()) {
       throw new CustomApiException("게시물의 수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
     }
     try {

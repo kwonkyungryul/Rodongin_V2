@@ -3,16 +3,13 @@ package shop.mtcoding.rodongin.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeDetailOutDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeSaveInDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeUpdateInDto;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
-import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.service.resume.ResumeService;
-import shop.mtcoding.rodongin.util.MySession;
 
 import javax.servlet.http.HttpSession;
 

@@ -1,21 +1,10 @@
 
 package shop.mtcoding.rodongin.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto;
 import shop.mtcoding.rodongin.dto.customer.CustomerListOutDto;
@@ -27,6 +16,9 @@ import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.service.customer.CustomerService;
 import shop.mtcoding.rodongin.util.MySession;
 
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class CustomerController {
@@ -35,16 +27,9 @@ public class CustomerController {
 
   private final CustomerService customerService;
 
-  @PutMapping("/customers/{id}")
+  @PutMapping("/s/customers/{id}")
   public ResponseEntity<?> update(@PathVariable int id,
       @RequestBody CustomerUpdateInDto customerUpdateInDto) {
-
-    // Employee principal = (Employee) session.getAttribute("principal");
-    Employee principal = MySession.MyPrincipal(session);
-
-    if (principal == null) {
-      throw new CustomException("인증이 되지 않습니다", HttpStatus.UNAUTHORIZED);
-    }
 
     if (customerUpdateInDto.getCustomerTitle() == null ||
         customerUpdateInDto.getCustomerTitle().isEmpty()) {
@@ -54,31 +39,18 @@ public class CustomerController {
         customerUpdateInDto.getCustomerContent().isEmpty()) {
       throw new CustomException("content를 작성해주세요");
     }
-    customerService.글수정(principal.getId(), id, customerUpdateInDto);
+    customerService.글수정(id, customerUpdateInDto);
     return new ResponseEntity<>(new ResponseDto<>(1, "수정성공", null), HttpStatus.OK);
   }
 
-  @DeleteMapping("/customers/{id}")
+  @DeleteMapping("/s/customers/{id}")
   public ResponseEntity<?> delete(@PathVariable int id) {
-
-    // Employee principal = (Employee) session.getAttribute("principal");
-    Employee principal = MySession.MyPrincipal(session);
-    if (principal == null) {
-      throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-    }
-    customerService.게시글삭제(principal.getId(), id);
+    customerService.게시글삭제(id);
     return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
   }
 
-  @PostMapping("/customers")
+  @PostMapping("/s/customers")
   public ResponseEntity<?> save(@RequestBody CustomerSaveInDto customerSaveInDto) {
-
-    // Employee principal = (Employee) session.getAttribute("principal");
-    Employee principal = MySession.MyPrincipal(session);
-
-    if (principal == null) {
-      throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-    }
 
     if (customerSaveInDto.getCustomerTitle().length() > 100) {
       throw new CustomApiException("제목의 길이가 100자 이하여야 합니다.");
@@ -90,8 +62,7 @@ public class CustomerController {
         customerSaveInDto.getCustomerContent().isEmpty()) {
       throw new CustomApiException("내용을 작성해 주세요.");
     }
-    System.out.println("테스트 : " + principal.getId());
-    customerService.글쓰기(principal.getId(), customerSaveInDto);
+    customerService.글쓰기(customerSaveInDto);
     return new ResponseEntity<>(new ResponseDto<>(1, "게시글 등록 성공", null), HttpStatus.CREATED);
   }
 
