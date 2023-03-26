@@ -22,6 +22,7 @@ import shop.mtcoding.rodongin.handler.ex.CustomApiException;
 import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.announcement.Announcement;
 import shop.mtcoding.rodongin.model.announcement.AnnouncementRepository;
+import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.model.employee.EmployeeStackRepository;
 import shop.mtcoding.rodongin.model.master.StackMaster;
@@ -46,41 +47,35 @@ public class AnnouncementService {
     }
 
     @Transactional
-    public void 공고등록(int comPrincipalId, AnnouncementSaveInDto announcementSaveInDto) {
-        announcementRepository.insert(comPrincipalId, announcementSaveInDto);
+    public void 공고등록(AnnouncementSaveInDto announcementSaveInDto) {
+        Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+        System.out.println(comPrincipal.getId());
         try {
-
+            announcementRepository.insert(comPrincipal.getId(), announcementSaveInDto);
         } catch (Exception e) {
             throw new CustomException("일시적인 서버 에러입니다.",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public void 게시글수정(int comPrincipalId, int id, AnnouncementUpdateInDto announcementUpdateInDto) {
+    public void 게시글수정(int id, AnnouncementUpdateInDto announcementUpdateInDto) {
         Announcement announcementPS = announcementRepository.findById(id);
         if (announcementPS == null) {
             throw new CustomApiException("해당 게시글을 찾을 수 없습니다.");
-        }
-        if (announcementPS.getCompanyId() != comPrincipalId) {
-            throw new CustomApiException("게시글을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
         int result = announcementRepository.updateById(
                 announcementUpdateInDto, id);
 
         if (result != 1) {
-
             throw new CustomApiException("게시글 수정에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public void 게시글삭제(int comPrincipalId, int id) {
+    public void 게시글삭제(int id) {
         Announcement announcementPS = announcementRepository.findById(id);
         if (announcementPS == null) {
             throw new CustomApiException("없는 게시글을 삭제할 수 없습니다.");
-        }
-        if (announcementPS.getCompanyId() != comPrincipalId) {
-            throw new CustomApiException("삭제 권한이 없습니다.");
         }
 
         try {
@@ -91,11 +86,9 @@ public class AnnouncementService {
     }
 
     public AnnouncementListOutDto 공고리스트보기(int num, String content) {
-        System.out.println(num);
         Employee principal = (Employee) session.getAttribute("principal");
 
         List<String> skills = new ArrayList<>();
-        List<AnnouncementResp.AnnouncementDetailRespDto> announcementDetailDto;
 
         int cnt;
         if (principal != null) { // 로그인이 되어 있을 때
@@ -148,31 +141,18 @@ public class AnnouncementService {
                 .next(next)
                 .prev(prev).build();
 
-        AnnouncementListOutDto announcementListOutDto = AnnouncementListOutDto.builder()
+        return AnnouncementListOutDto.builder()
                 .announcementListDto(announcementlist)
                 .content(content)
                 .announcementPagingDto(announcementPagingDto).build();
-        // announcementListOutDto.getAnnouncementPagingDto().setNum(num);
-        // announcementListOutDto.getAnnouncementPagingDto().setStart(start);
-        // announcementListOutDto.getAnnouncementPagingDto().setEnd(end);
-        // announcementListOutDto.getAnnouncementPagingDto().setSelect(num);
-        // announcementListOutDto.getAnnouncementPagingDto().setStartPageNum(startPageNum);
-        // announcementListOutDto.getAnnouncementPagingDto().setEndPageNum(endPageNum);
-        // announcementListOutDto.getAnnouncementPagingDto().setPageNum(pageNum);
-        // announcementListOutDto.getAnnouncementPagingDto().setPrev(prev);
-        // announcementListOutDto.getAnnouncementPagingDto().setNext(next);
-
-        return announcementListOutDto;
     }
 
-    public List<AnnouncementCompanyListOutDto> 우리회사공고리스트(Integer comPrincipalId, Integer companyId) {
-        if (comPrincipalId != companyId) {
+    public List<AnnouncementCompanyListOutDto> 우리회사공고리스트(Integer companyId) {
+        Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+        if (comPrincipal.getId().intValue() != companyId) {
             throw new CustomApiException("리스트를 볼 수 없습니다.", HttpStatus.FORBIDDEN);
         }
 
-        List<AnnouncementCompanyListOutDto> announcementCompanyListOutDto = announcementRepository.findCompanyId(
-                comPrincipalId);
-
-        return announcementCompanyListOutDto;
+        return announcementRepository.findCompanyId(comPrincipal.getId());
     }
 }

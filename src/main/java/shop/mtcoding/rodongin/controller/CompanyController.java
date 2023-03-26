@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.company.CompanyDetailOutDto;
 import shop.mtcoding.rodongin.dto.company.CompanyJoinInDto;
@@ -55,12 +56,10 @@ public class CompanyController {
             throw new CustomException("password를 입력해주세요", HttpStatus.BAD_REQUEST);
         }
 
-        Company principal = companyService.로그인(companyLoginInDto, response, companyUsername);
+        String jwt = companyService.로그인(companyLoginInDto, response, companyUsername);
 
-        session.setAttribute("comPrincipal", principal);
-
-        return new ResponseEntity<>(new ResponseDto<>(1, "기업로그인완료", null), HttpStatus.OK);
-
+//        return new ResponseEntity<>(new ResponseDto<>(1, "기업로그인완료", null), HttpStatus.OK);
+        return ResponseEntity.ok().header(JwtProvider.HEADER, jwt).body("기업 로그인 성공");
     }
 
     @PostMapping("/companies/join")
@@ -106,15 +105,10 @@ public class CompanyController {
         return new ResponseEntity<>(new ResponseDto<>(1, "기업회원가입완료", null), HttpStatus.CREATED);
     }
 
-    @PutMapping("/companies/{id}")
+    @PutMapping("/s/companies/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
     @RequestBody CompanyUpdateInDto companyUpdateInDto, HttpServletResponse response){
 
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
-        if (comPrincipal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
         if (companyUpdateInDto.getCompanyEstablish() == null){
             throw new CustomApiException("Etablish를 작성해주세요");
         } 
@@ -131,9 +125,7 @@ public class CompanyController {
             throw new CustomApiException("Vision을 작성해주세요");
         }
         
-        companyService.기업소개등록(id, companyUpdateInDto, comPrincipal.getId());
-
-        session.setAttribute("comPrincipal", comPrincipal);
+        companyService.기업소개등록(id, companyUpdateInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "기업소개 수정성공", null), HttpStatus.OK);
             

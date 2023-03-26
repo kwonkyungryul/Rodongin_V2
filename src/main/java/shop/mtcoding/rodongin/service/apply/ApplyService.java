@@ -17,10 +17,13 @@ import shop.mtcoding.rodongin.model.announcement.Announcement;
 import shop.mtcoding.rodongin.model.announcement.AnnouncementRepository;
 import shop.mtcoding.rodongin.model.apply.Apply;
 import shop.mtcoding.rodongin.model.apply.ApplyRepository;
+import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.employee.EmployeeRepository;
 import shop.mtcoding.rodongin.model.resume.ResumeCareerRepository;
 import shop.mtcoding.rodongin.model.resume.ResumeRepository;
 import shop.mtcoding.rodongin.model.resume.ResumeStackRepository;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Service
@@ -38,11 +41,15 @@ public class ApplyService {
 
     private final ResumeCareerRepository resumeCareerRepository;
 
-    public List<ApplyListOutDto> 지원자목록보기(int comPrincipalId, int announcementId) {
+    private final HttpSession session;
+
+    public List<ApplyListOutDto> 지원자목록보기(int announcementId) {
+
+        Company comPrincipal = (Company) session.getAttribute("comPrincipal");
 
         Announcement ann = announcementRepository.findById(announcementId);
 
-        if (comPrincipalId != ann.getCompanyId()) {
+        if (comPrincipal.getId().intValue() != ann.getCompanyId()) {
             throw new CustomApiException("권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 

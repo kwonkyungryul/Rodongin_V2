@@ -27,9 +27,7 @@ public class ApplyController {
     @GetMapping("/apply/{announcementId}")
     public ResponseEntity<?> applyList(@PathVariable int announcementId) {
 
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-
-        List<ApplyListOutDto> listDto = applyService.지원자목록보기(comPrincipal.getId(), announcementId);
+        List<ApplyListOutDto> listDto = applyService.지원자목록보기(announcementId);
         return new ResponseEntity<>(new ResponseDto<>(1, "지원자 목록 보기", listDto), HttpStatus.OK);
 
     }

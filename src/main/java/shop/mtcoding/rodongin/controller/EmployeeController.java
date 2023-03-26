@@ -33,15 +33,9 @@ public class EmployeeController {
 
     private final HttpSession session;
 
-    @PutMapping("/employees")
+    @PutMapping("/s/employees")
     public ResponseEntity<?> update(@RequestBody EmployeeUpdateInDto employeeUpdateInDto) {
 
-        // Employee principal = (Employee) session.getAttribute("principal");
-        Employee principal = MySession.MyPrincipal(session);
-
-        if (principal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
         if (employeeUpdateInDto.getEmployeePassword() == null ||
                 employeeUpdateInDto.getEmployeePassword().isEmpty()) {
             throw new CustomApiException("Password을 작성해주세요");
@@ -62,35 +56,22 @@ public class EmployeeController {
             throw new CustomApiException("Address을 작성해주세요");
         }
 
-        principal = employeeService.회원정보수정(principal.getId(), employeeUpdateInDto);
-        session.setAttribute("principal", principal);
+        employeeService.회원정보수정(employeeUpdateInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.OK);
     }
 
-    @PostMapping("/employees")
+    @PostMapping("/s/employees")
     public ResponseEntity<?> save(@RequestBody EmployeeSaveInDto employeeSaveInDto) {
 
-        Employee principal = MySession.MyPrincipal(session);
-        // Employee principal = (Employee) session.getAttribute("principal");
-
-        if (principal == null) {
-            return new ResponseEntity<>(new ResponseDto<>(-1, "인증이 되지 않았습니다.", null), HttpStatus.UNAUTHORIZED);
-        }
-
-        employeeService.개인정보추가(principal.getId(), employeeSaveInDto);
+        employeeService.개인정보추가(employeeSaveInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "개인정보 추가 완료!", null), HttpStatus.CREATED);
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/s/employees")
     public ResponseEntity<?> detail() {
-        Employee principal = MySession.MyPrincipal(session);
-        // Employee principal = (Employee) session.getAttribute("principal");
-        if (principal == null) {
-            return new ResponseEntity<>(new ResponseDto<>(-1, "인증이 되지 않았습니다.", null), HttpStatus.UNAUTHORIZED);
-        }
-        EmployeeDetailOutDto response = employeeService.유저정보조회(principal.getId());
+        EmployeeDetailOutDto response = employeeService.유저정보조회();
 
         return new ResponseEntity<>(new ResponseDto<>(1, "개인정보 페이지", response), HttpStatus.OK);
     }

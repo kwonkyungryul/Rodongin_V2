@@ -24,25 +24,15 @@ public class ResumeController {
 
     private final HttpSession session;
 
-    @GetMapping("/resumes/{id}")
+    @GetMapping("/s/resumes/{id}")
     public ResponseEntity<?> detail(@PathVariable int id) {
-        Employee principal = MySession.MyPrincipal(session);
 
-        if (principal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
-
-        ResumeDetailOutDto resumeDetailOutDto = resumeService.이력서상세보기(principal.getId(), id);
+        ResumeDetailOutDto resumeDetailOutDto = resumeService.이력서상세보기(id);
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 상세보기", resumeDetailOutDto), HttpStatus.OK);
     }
 
-    @PostMapping("/resumes")
+    @PostMapping("/s/resumes")
     public ResponseEntity<?> save(@RequestBody ResumeSaveInDto resumeSaveInDto) {
-        Employee principal = MySession.MyPrincipal(session);
-
-        if (principal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
         
         if (resumeSaveInDto.getResumeTitle() == null || resumeSaveInDto.getResumeTitle().isEmpty()) {
             throw new CustomApiException("이력서 제목을 입력해주세요");
@@ -56,18 +46,13 @@ public class ResumeController {
             throw new CustomApiException("자기소개서를 입력해주세요");
         }
 
-        resumeService.이력서등록(principal.getId(), resumeSaveInDto);
+        resumeService.이력서등록(resumeSaveInDto);
         
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 저장 성공", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/resumes/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody ResumeUpdateInDto resumeUpdateInDto) {
-        Employee principal = MySession.MyPrincipal(session);
-
-        if (principal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
 
         if (resumeUpdateInDto.getResumeTitle() == null || resumeUpdateInDto.getResumeTitle().isEmpty()) {
             throw new CustomApiException("이력서 제목을 입력해주세요");
@@ -81,20 +66,15 @@ public class ResumeController {
             throw new CustomApiException("자기소개서를 입력해주세요");
         }
 
-        resumeService.이력서수정(principal.getId(), id, resumeUpdateInDto);
+        resumeService.이력서수정(id, resumeUpdateInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 수정 성공", null), HttpStatus.OK);
     }
     
-    @DeleteMapping("/resumes/{id}")
+    @DeleteMapping("/s/resumes/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
 
-        Employee principal = MySession.MyPrincipal(session);
-        if (principal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다.", HttpStatus.UNAUTHORIZED);
-        }
-
-        resumeService.이력서삭제(principal.getId(), id);
+        resumeService.이력서삭제(id);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "이력서 삭제 성공", null), HttpStatus.OK);
     }

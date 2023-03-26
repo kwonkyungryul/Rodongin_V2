@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -48,14 +49,17 @@ public class EmployeeService {
 
     private final ResumeRepository resumeRepository;
 
+    private final HttpSession session;
+
     @Transactional(readOnly = true)
-    public EmployeeDetailOutDto 유저정보조회(int principalId) {
-        Employee employee = employeeRepository.findById(principalId);
-        List<EmployeeGraduateDto> graduates = employeeGraduateRepository.findByEmpId(principalId);
-        List<EmployeeCareerDto> careers = employeeCareerRepository.findByEmpId(principalId);
-        List<EmployeeLicenseDto> licenses = employeeLicenseRepository.findByEmpId(principalId);
-        List<EmployeeStackDto> stacks = employeeStackRepository.findByEmpId(principalId);
-        List<ResumeDto> resumes = resumeRepository.findByEmpId(principalId);
+    public EmployeeDetailOutDto 유저정보조회() {
+        Employee principal = (Employee) session.getAttribute("principal");
+        Employee employee = employeeRepository.findById(principal.getId());
+        List<EmployeeGraduateDto> graduates = employeeGraduateRepository.findByEmpId(principal.getId());
+        List<EmployeeCareerDto> careers = employeeCareerRepository.findByEmpId(principal.getId());
+        List<EmployeeLicenseDto> licenses = employeeLicenseRepository.findByEmpId(principal.getId());
+        List<EmployeeStackDto> stacks = employeeStackRepository.findByEmpId(principal.getId());
+        List<ResumeDto> resumes = resumeRepository.findByEmpId(principal.getId());
 
         EmployeeDetailOutDto employeeDetailInfo = EmployeeDetailOutDto.builder()
                 .id(employee.getId())
@@ -159,7 +163,10 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee 회원정보수정(int principalId, EmployeeUpdateInDto employeeUpdateInDto) {
+    public void 회원정보수정(EmployeeUpdateInDto employeeUpdateInDto) {
+
+        Employee principal = (Employee) session.getAttribute("principal");
+
         System.out.println(employeeUpdateInDto);
         if (employeeUpdateInDto.getEmployeeThumbnail() != null) {
             String thumbnail = PathUtil.writeImageFile(employeeUpdateInDto.getEmployeeThumbnail());
@@ -167,22 +174,21 @@ public class EmployeeService {
             System.out.println(thumbnail);
         }
         try {
-            employeeRepository.updateById(principalId, employeeUpdateInDto);
+            employeeRepository.updateById(principal.getId(), employeeUpdateInDto);
 
         } catch (Exception e) {
             throw new CustomApiException("회원정보 수정에 실패하였습니다", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        System.out.println("aaaaa");
-        Employee principal = employeeRepository.findById(principalId);
-        return principal;
     }
 
     @Transactional
-    public void 개인정보추가(Integer principalId, EmployeeSaveInDto employeeSaveInDto) {
+    public void 개인정보추가(EmployeeSaveInDto employeeSaveInDto) {
+
+        Employee principal = (Employee) session.getAttribute("principal");
 
         if (!employeeSaveInDto.getSchoolGraduate().equals("") || employeeSaveInDto.getSchoolGraduate() == null) {
             try {
-                employeeGraduateRepository.insert(principalId, employeeSaveInDto);
+                employeeGraduateRepository.insert(principal.getId(), employeeSaveInDto);
 
             } catch (Exception e) {
                 throw new CustomException("최종학력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -192,7 +198,7 @@ public class EmployeeService {
 
         {
             try {
-                employeeCareerRepository.insert(principalId, employeeSaveInDto);
+                employeeCareerRepository.insert(principal.getId(), employeeSaveInDto);
 
             } catch (Exception e) {
                 throw new CustomException("경력 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -200,7 +206,7 @@ public class EmployeeService {
         }
         if (!employeeSaveInDto.getLicenseIssuer().equals("") || employeeSaveInDto.getLicenseIssuer() == null) {
             try {
-                employeeLicenseRepository.insert(principalId, employeeSaveInDto);
+                employeeLicenseRepository.insert(principal.getId(), employeeSaveInDto);
 
             } catch (Exception e) {
                 throw new CustomException("자격증 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -208,7 +214,7 @@ public class EmployeeService {
         }
         if (!employeeSaveInDto.getStackAcquisition().equals("") || employeeSaveInDto.getStackAcquisition() == null) {
             try {
-                employeeStackRepository.insert(principalId, employeeSaveInDto);
+                employeeStackRepository.insert(principal.getId(), employeeSaveInDto);
 
             } catch (Exception e) {
                 throw new CustomException("기술스택 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
