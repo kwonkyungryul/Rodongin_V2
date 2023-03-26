@@ -36,4 +36,26 @@ public class CustomerControllerTest {
     resultActions.andExpect(status().isOk());
   }
 
+  @Test
+  public void list_test() throws Exception {
+    // given
+
+    // when
+    ResultActions resultActions = mvc.perform(
+        get("/customers/"));
+    String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+    System.out.println("테스트 : " + responseBody);
+    // then
+    resultActions.andExpect(status().isOk());
+    resultActions.andExpect(jsonPath("$.code").value(1));
+    resultActions.andExpect(jsonPath("$.data[0].id").value(11));
+    resultActions.andExpect(jsonPath("$.data[0].customerTitle").value("문의한 내용에 대한 답변이 오지 않았어요"));
+    resultActions.andExpect(jsonPath("$.data[0].employee.id").value(11));
+    resultActions.andExpect(jsonPath("$.data[0].employee.employeeName").value("apple"));
+  }
 }
+
+// private Integer id;
+// private String customerTitle;
+// private EmployeeDto employee;
+// private Timestamp createdAt;
