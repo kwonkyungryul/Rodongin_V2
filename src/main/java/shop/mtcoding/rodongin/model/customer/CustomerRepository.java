@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import shop.mtcoding.rodongin.dto.customer.CustomerDetailOutDto;
 import shop.mtcoding.rodongin.dto.customer.CustomerResp.CustomerListRespDto;
+import shop.mtcoding.rodongin.dto.customer.CustomerSaveInDto;
 
 @Mapper
 public interface CustomerRepository {
@@ -21,9 +22,8 @@ public interface CustomerRepository {
 
         public Customer findById(int id);
 
-        public int insert(@Param("customerTitle") String customerTitle,
-                        @Param("customerContent") String customerContent,
-                        @Param("employeeId") Integer employeeId);
+        public int insert(@Param("employeeId") Integer employeeId,
+                        @Param("customerSaveInDto") CustomerSaveInDto customerSaveInDto);
 
         public int updateById(@Param("id") Integer id, @Param("customerTitle") String customerTitle,
                         @Param("customerContent") String customerContent);

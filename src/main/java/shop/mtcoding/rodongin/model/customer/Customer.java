@@ -12,7 +12,6 @@ public class Customer {
     private String customerTitle;
     private String customerContent;
     private Integer employeeId;
-    private String employeeName;
     private Timestamp createdAt;
 
 }

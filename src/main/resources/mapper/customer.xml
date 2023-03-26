@@ -42,8 +42,10 @@
     </select>    
 
     <insert id="insert">
-        insert into customer (customer_title, customer_content, employee_id, created_at)
-        values(#{customerTitle}, #{customerContent}, #{employeeId}, now())
+
+    INSERT INTO customer (customer_title, customer_content, employee_id, created_at) 
+    VALUES (#{customerSaveInDto.customerTitle}, #{customerSaveInDto.customerContent}, #{employeeId}, now())
+
     </insert>    
 
     <delete id="deleteById" >

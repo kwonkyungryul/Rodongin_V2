@@ -88,7 +88,6 @@ public class AnnouncementControllerTest {
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .session(mockSession));
-        System.out.println("테스트 : " + requestBody);
         System.out.println("테스트 : " + resultActions);
 
         // then
