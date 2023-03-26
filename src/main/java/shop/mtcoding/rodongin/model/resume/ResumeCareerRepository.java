@@ -9,23 +9,26 @@ import shop.mtcoding.rodongin.dto.resume.ResumeCareerDto;
 
 @Mapper
 public interface ResumeCareerRepository {
-    public int deleteByResumeId(int resumeId);
+        public int deleteByResumeId(int resumeId);
 
-    public List<ResumeCareerDto> findByResumeId(int resumeId);
+        public List<ResumeCareerDto> findByResumeId(int resumeId);
 
-    public void insert(@Param("resumeId") int resumeId, @Param("careerCompany") String careerCompany,
-            @Param("careerStart") Date careerStart,
-            @Param("careerEnd") Date careerEnd);
+        public void insert(@Param("resumeId") int resumeId, @Param("careerCompany") String careerCompany,
+                        @Param("careerStart") Date careerStart,
+                        @Param("careerEnd") Date careerEnd);
 
-    public List<ResumeCareer> findAll();
+        public List<ResumeCareer> findAll();
 
-    public ResumeCareer findById(int id);
+        public ResumeCareer findById(int id);
 
-    public int updateById(int id, ResumeCareer apply);
+        public int updateById(int id, ResumeCareer apply);
 
-    public int deleteById(int id);
+        public int deleteById(int id);
 
-    public void updateByResumeId(@Param("resumeId") int resumeId, @Param("careerCompany") String careerCompany,
-            @Param("careerStart") Date careerStart,
-            @Param("careerEnd") Date careerEnd);
+        public void updateByResumeId(@Param("resumeId") int resumeId, @Param("careerCompany") String careerCompany,
+                        @Param("careerStart") Date careerStart,
+                        @Param("careerEnd") Date careerEnd);
+
+        public ResumeCareerDto findByIdApply(Integer resumeId);
+
 }

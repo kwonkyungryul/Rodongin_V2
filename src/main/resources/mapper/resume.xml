@@ -32,6 +32,9 @@
     <select id="findById" resultType="shop.mtcoding.rodongin.model.resume.Resume">
       SELECT * FROM resume WHERE id = #{id}
     </select>
+    <select id="findByIdApply" resultType="shop.mtcoding.rodongin.dto.resume.ResumeDto">
+      SELECT * FROM resume WHERE id = #{id}
+    </select>
     
     <select id="findByEmpId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeDto">
         SELECT * FROM resume WHERE employee_id = #{employeeId}

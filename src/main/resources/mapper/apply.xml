@@ -16,6 +16,35 @@
         SELECT * FROM apply WHERE id = #{id}
     </select>
 
+<!-- 연습 -->
+    <select id="findByAnnouncmentId" resultType="shop.mtcoding.rodongin.model.apply.Apply">
+        SELECT * FROM apply  where ANNOUNCEMENT_ID =#{announcementId}
+    </select>
+    
+    <select id="findByAnnouncmentIdApply" resultType="shop.mtcoding.rodongin.dto.apply.ApplyListOutDto">
+        SELECT * FROM apply  where ANNOUNCEMENT_ID =#{announcementId}
+    </select>
+
+<!-- 
+  <resultMap id="applyList" type="shop.mtcoding.rodongin.dto.apply.ApplyListOutDto">
+        <id property="id" column="id"/>
+        <result property="resumeId" column="resume_id"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="ResumeDto" javaType="shop.mtcoding.rodongin.dto.apply.ApplyListOutDto$ResumeDto">
+            <id property="id" column="id"/>
+            <result property="resumeTitle" column="resume_title"/>
+            <result property="careerCompany" column="career_company"/>
+        </association>
+    </resultMap>
+    <select id="findByAnnouncementId" resultMap="applyList">
+        SELECT * FROM APPLY a
+        inner join RESUME r
+        on a.RESUME_ID =r.ID  
+        where ANNOUNCEMENT_ID =#{announcementId}
+    </select> -->
+
+    
+
     <select id="findByCompanyId" resultType="shop.mtcoding.rodongin.dto.apply.ApplyResp$ApplyListRespDto">
         SELECT r.id as resume_id, e.employee_fullname, e.employee_address, r.resume_title, r.resume_salary, GROUP_CONCAT(DISTINCT rc.career_company SEPARATOR ', ') companyName, GROUP_CONCAT(DISTINCT sm.stack_name SEPARATOR ', ') stackName
         FROM apply a

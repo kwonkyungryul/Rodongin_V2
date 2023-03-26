@@ -1,11 +1,11 @@
 package shop.mtcoding.rodongin.model.apply;
 
-
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.rodongin.dto.apply.ApplyListOutDto;
 import shop.mtcoding.rodongin.dto.apply.ApplyResp.ApplyListRespDto;
 
 @Mapper
@@ -20,5 +20,9 @@ public interface ApplyRepository {
 
     public int deleteById(int id);
 
-    public List<ApplyListRespDto> findByCompanyId(int announcmentId);
+    // public List<ApplyListRespDto> findByCompanyId(int announcmentId);
+
+    // public List<ApplyListOutDto> findByAnnouncmentId(int announcementId);
+
+    public List<Apply> findByAnnouncmentId(int announcementId);
 }
