@@ -3,6 +3,8 @@ package shop.mtcoding.rodongin.controller;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,7 @@ import shop.mtcoding.rodongin.util.MySession;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "5. 기업 정보관리", description = "기업 정보관리")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -38,6 +41,7 @@ public class CompanyController {
     private final HttpSession session;
 
     @GetMapping("/companies/{id}")
+    @Operation(summary = "3. 기업 정보보기", description = "기업정보를 조회합니다.")
     public ResponseEntity<?> detail(@PathVariable int id) {
         CompanyDetailOutDto dto = companyService.기업상세보기(id);
         // model.addAttribute("detailDto", dto);
@@ -46,6 +50,7 @@ public class CompanyController {
 
 
     @PostMapping("/companies/login")
+    @Operation(summary = "2. 기업 로그인", description = "기업 로그인을 합니다.")
     public ResponseEntity<?>  login(@RequestBody CompanyLoginInDto companyLoginInDto, HttpServletResponse response, 
     @RequestParam(value = "remember", required = false) String companyUsername) {
     
@@ -63,6 +68,7 @@ public class CompanyController {
     }
 
     @PostMapping("/companies/join")
+    @Operation(summary = "1. 기업 회원가입", description = "기업 회원가입을 합니다.")
     public ResponseEntity<?> join(@RequestBody CompanyJoinInDto companyJoinInDto) throws Exception {
         if (companyJoinInDto.getCompanyUsername() == null || companyJoinInDto.getCompanyUsername().isEmpty()) {
             throw new CustomException("아이디를 작성해주세요");
@@ -106,6 +112,7 @@ public class CompanyController {
     }
 
     @PutMapping("/s/companies/{id}")
+    @Operation(summary = "4. 기업 정보수정", description = "기업 정보를 수정합니다.")
     public ResponseEntity<?> update(@PathVariable int id,
     @RequestBody CompanyUpdateInDto companyUpdateInDto, HttpServletResponse response){
 

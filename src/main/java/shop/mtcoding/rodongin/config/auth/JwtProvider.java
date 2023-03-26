@@ -17,6 +17,7 @@ public class JwtProvider {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER = "Authorization";
     private static final String SECRET = System.getenv("JWT_SECRET");
+    // export JWT_SECRET=JWT_SECRET
 
     public static String create(Employee employee){
         String jwt = JWT.create()

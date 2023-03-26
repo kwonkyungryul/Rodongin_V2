@@ -1,9 +1,12 @@
 package shop.mtcoding.rodongin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.ResponseDto;
 import shop.mtcoding.rodongin.dto.employee.*;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "1. 구직자 정보관리", description = "구직자 정보관리")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -23,6 +27,7 @@ public class EmployeeController {
     private final HttpSession session;
 
     @PutMapping("/s/employees")
+    @Operation(summary = "4. 구직자 정보수정", description = "구직자 개인정보를 수정합니다.")
     public ResponseEntity<?> update(@RequestBody EmployeeUpdateInDto employeeUpdateInDto) {
 
         if (employeeUpdateInDto.getEmployeePassword() == null ||
@@ -51,6 +56,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/s/employees")
+    @Operation(summary = "5. 구직자 상세정보 추가", description = "구직자 상세정보를 추가합니다.")
     public ResponseEntity<?> save(@RequestBody EmployeeSaveInDto employeeSaveInDto) {
 
         employeeService.개인정보추가(employeeSaveInDto);
@@ -59,6 +65,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/s/employees")
+    @Operation(summary = "3. 구직자 정보보기", description = "구직자 개인정보를 조회합니다.")
     public ResponseEntity<?> detail() {
         EmployeeDetailOutDto response = employeeService.유저정보조회();
 
@@ -66,6 +73,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees/join")
+    @Operation(summary = "1. 구직자 회원가입", description = "구직자 회원가입을 합니다.")
     public ResponseEntity<?> join(@RequestBody EmployeeJoinInDto employeeJoinInDto) throws Exception {
         if (employeeJoinInDto.getEmployeeName() == null || employeeJoinInDto.getEmployeeName().isEmpty()) {
             throw new CustomException("아이디를 작성해주세요");
@@ -99,6 +107,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees/login")
+    @Operation(summary = "2. 구직자 로그인", description = "구직자 로그인을 합니다.")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginInDto employeeLoginInDto,
             HttpServletResponse response,
             @RequestParam(value = "remember", required = false) String employeeName) {
@@ -111,11 +120,9 @@ public class EmployeeController {
             throw new CustomException("password를 입력해주세요", HttpStatus.BAD_REQUEST);
         }
 
-        Employee principal = employeeService.로그인(employeeLoginInDto, response, employeeName);
+        String jwt = employeeService.로그인(employeeLoginInDto, response, employeeName);
 
-        session.setAttribute("principal", principal);
-
-        return new ResponseEntity<>(new ResponseDto<>(1, "로그인 완료", null), HttpStatus.OK);
+        return ResponseEntity.ok().header(JwtProvider.HEADER, jwt).body("구직자 로그인 성공");
     }
 
 }

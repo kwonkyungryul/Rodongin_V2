@@ -59,7 +59,13 @@ public class AnnouncementService {
     }
 
     public void 게시글수정(int id, AnnouncementUpdateInDto announcementUpdateInDto) {
+        Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+
         Announcement announcementPS = announcementRepository.findById(id);
+        if (comPrincipal.getId() != announcementPS.getCompanyId()) {
+            throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN);
+        }
+
         if (announcementPS == null) {
             throw new CustomApiException("해당 게시글을 찾을 수 없습니다.");
         }
@@ -73,7 +79,12 @@ public class AnnouncementService {
     }
 
     public void 게시글삭제(int id) {
+        Company comPrincipal = (Company) session.getAttribute("comPrincipal");
+
         Announcement announcementPS = announcementRepository.findById(id);
+        if (comPrincipal.getId() != announcementPS.getCompanyId()) {
+            throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN);
+        }
         if (announcementPS == null) {
             throw new CustomApiException("없는 게시글을 삭제할 수 없습니다.");
         }

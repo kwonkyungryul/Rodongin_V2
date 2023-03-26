@@ -10,7 +10,7 @@ CREATE TABLE employee (
 	id int primary key auto_increment,
     employee_name varchar(255) not null unique,
     employee_password varchar(255) not null,
-    emplpyee_role varchar(10) default 'employee',
+    employee_role varchar(10) default 'employee',
     employee_fullname char(10) not null,
     employee_email varchar(100) not null,
     employee_tel char(12) not null,

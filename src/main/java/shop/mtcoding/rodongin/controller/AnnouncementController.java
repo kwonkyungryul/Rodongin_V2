@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +32,7 @@ import shop.mtcoding.rodongin.util.MySession;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "6. 공고 정보관리", description = "공고 정보관리")
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;
@@ -37,6 +40,7 @@ public class AnnouncementController {
     private final HttpSession session;
 
     @DeleteMapping("/s/announcements/{id}")
+    @Operation(summary = "6. 공고 삭제", description = "공고 정보를 삭제합니다.")
     public ResponseEntity<?> delete(@PathVariable int id) {
 
         announcementService.게시글삭제(id);
@@ -46,6 +50,7 @@ public class AnnouncementController {
 
     // 게시글 수정
     @PutMapping("/s/announcements/{id}")
+    @Operation(summary = "5. 공고 정보수정", description = "공고 정보를 수정합니다.")
     public ResponseEntity<?> update(@PathVariable int id,
             @RequestBody AnnouncementUpdateInDto announcementUpdateInDto, HttpServletResponse response) {
 
@@ -90,6 +95,7 @@ public class AnnouncementController {
     }
 
     @PostMapping("/s/announcements")
+    @Operation(summary = "4. 공고 등록", description = "공고 정보를 등록합니다.")
     public ResponseEntity<?> save(@RequestBody AnnouncementSaveInDto announcementSaveInDto) {
 
         if (announcementSaveInDto.getStackId() == null
@@ -127,12 +133,14 @@ public class AnnouncementController {
     }
 
     @GetMapping("/announcements/{id}")
+    @Operation(summary = "3. 공고 상세보기", description = "공고 상세정보를 조회합니다.")
     public ResponseEntity<?> detail(@PathVariable Integer id) {
         AnnouncementDetailOutDto datailDto = announcementService.공고상세보기(id);
         return new ResponseEntity<>(new ResponseDto<>(1, "공고상세보기페이지", datailDto), HttpStatus.OK);
     }
 
     @GetMapping({ "/announcements", "/" })
+    @Operation(summary = "1. 공고 리스트 보기", description = "공고 리스트를 조회합니다.")
     public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int num,
             @RequestParam(defaultValue = "") String content) {
 
@@ -144,6 +152,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/s/announcements/companies/{companyId}")
+    @Operation(summary = "2. 공고 정보수정", description = "공고 정보를 수정합니다.")
     public ResponseEntity<?> comList(@PathVariable int companyId) {
 
         List<AnnouncementCompanyListOutDto> comList = announcementService.우리회사공고리스트(companyId);

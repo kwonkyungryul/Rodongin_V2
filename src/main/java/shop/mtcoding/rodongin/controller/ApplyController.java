@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,14 @@ import shop.mtcoding.rodongin.util.MySession;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "3. 지원자 정보관리", description = "지원자 정보관리")
 public class ApplyController {
 
     private final HttpSession session;
     private final ApplyService applyService;
 
     @GetMapping("/s/apply/{announcementId}")
+    @Operation(summary = "1. 지원자 리스트 보기", description = "지원자 리스트를 조회합니다.")
     public ResponseEntity<?> applyList(@PathVariable int announcementId) {
 
         List<ApplyListOutDto> listDto = applyService.지원자목록보기(announcementId);

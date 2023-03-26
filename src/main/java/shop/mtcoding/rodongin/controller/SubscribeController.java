@@ -1,5 +1,7 @@
 package shop.mtcoding.rodongin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +15,14 @@ import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "4. 구독", description = "구독 및 구독취소")
 public class SubscribeController {
 
     private final HttpSession session;
     private final SubscribeService subscribeService;
 
     @DeleteMapping("/s/subscribes/{announcementId}")
+    @Operation(summary = "2. 구독취소", description = "공고를 구독을 취소합니다.")
     public ResponseEntity<?> delete(@PathVariable Integer announcementId) {
 
         if (announcementId == null) {
@@ -30,6 +34,7 @@ public class SubscribeController {
     }
 
     @PostMapping("/s/subscribes")
+    @Operation(summary = "1. 구독하기", description = "공고를 구독합니다.")
     public ResponseEntity<?> save(@RequestBody SubscribeSaveInDto subscribeSaveInDto) {
 
         if (subscribeSaveInDto.getAnnouncementId() == null) {

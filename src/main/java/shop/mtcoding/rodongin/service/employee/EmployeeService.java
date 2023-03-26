@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import shop.mtcoding.rodongin.config.auth.JwtProvider;
 import shop.mtcoding.rodongin.dto.employee.EmployeeCareerDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeDetailOutDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeGraduateDto;
@@ -119,7 +120,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee 로그인(EmployeeLoginInDto employeeLoginInDto, HttpServletResponse response, String employeeName) {
+    public String 로그인(EmployeeLoginInDto employeeLoginInDto, HttpServletResponse response, String employeeName) {
 
         Employee principalPS = employeeRepository.findByEmployeeName(employeeLoginInDto.getEmployeeName());
         if (principalPS == null) {
@@ -138,8 +139,10 @@ public class EmployeeService {
         employeeLoginInDto.setEmployeePassword(principalPS.getEmployeePassword());
 
         Employee principal = employeeRepository.findByEmployeeNameAndPassword(employeeLoginInDto);
-
-        if (principal == null) {
+        String jwt;
+        if (principal != null) {
+            jwt = JwtProvider.create(principal);
+        }else {
             throw new CustomException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -158,7 +161,7 @@ public class EmployeeService {
             response.addCookie(cookie);
         }
 
-        return principal;
+        return jwt;
 
     }
 
@@ -167,11 +170,17 @@ public class EmployeeService {
 
         Employee principal = (Employee) session.getAttribute("principal");
 
-        System.out.println(employeeUpdateInDto);
+        String encodedPassword;
+        try {
+            encodedPassword = Encode.passwordEncode(employeeUpdateInDto.getEmployeePassword());
+            employeeUpdateInDto.setEmployeePassword(encodedPassword);
+        } catch (Exception e) {
+            throw new CustomException("비밀번호 해싱 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         if (employeeUpdateInDto.getEmployeeThumbnail() != null) {
             String thumbnail = PathUtil.writeImageFile(employeeUpdateInDto.getEmployeeThumbnail());
             employeeUpdateInDto.setEmployeeThumbnail(thumbnail);
-            System.out.println(thumbnail);
         }
         try {
             employeeRepository.updateById(principal.getId(), employeeUpdateInDto);

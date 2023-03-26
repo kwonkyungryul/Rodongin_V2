@@ -56,7 +56,6 @@ public class CompanyService {
         String jwt;
         if (principal != null) {
             jwt = JwtProvider.create(principal);
-            System.out.println(jwt);
         } else {
             throw new CustomApiException("");
         }
