@@ -10,11 +10,7 @@ import lombok.Setter;
 public class Subscribe {
     private Integer id;
     private Integer employeeId;
-    private Integer companyId;
+    private Integer announcementId;
     private Timestamp createdAt;
 
-    public Subscribe (Integer employeeId, Integer companyId) {
-        this.employeeId = employeeId;
-        this.companyId = companyId;
-    }
 }
