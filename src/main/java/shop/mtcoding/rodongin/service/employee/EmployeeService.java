@@ -158,20 +158,19 @@ public class EmployeeService {
 
     @Transactional
     public Employee 회원정보수정(int principalId, EmployeeUpdateInDto employeeUpdateInDto) {
-
-        // String thumbnail =
-        // PathUtil.writeImageFile(employeeUpdateInDto.getEmployeeThumbnail());
-
-        // if (profile == null || profile.isEmpty()) {
-        // thumbnail = employeeRepository.findById(principalId).getEmployeeThumbnail();
-        // }
+        System.out.println(employeeUpdateInDto);
+        if (employeeUpdateInDto.getEmployeeThumbnail() != null) {
+            String thumbnail = PathUtil.writeImageFile(employeeUpdateInDto.getEmployeeThumbnail());
+            employeeUpdateInDto.setEmployeeThumbnail(thumbnail);
+            System.out.println(thumbnail);
+        }
         try {
             employeeRepository.updateById(principalId, employeeUpdateInDto);
 
         } catch (Exception e) {
             throw new CustomApiException("회원정보 수정에 실패하였습니다", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        System.out.println("aaaaa");
         Employee principal = employeeRepository.findById(principalId);
         return principal;
     }
