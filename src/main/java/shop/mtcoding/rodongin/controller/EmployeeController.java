@@ -65,7 +65,7 @@ public class EmployeeController {
         principal = employeeService.회원정보수정(principal.getId(), employeeUpdateInDto);
         session.setAttribute("principal", principal);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(1, "회원정보 수정 완료!", null), HttpStatus.CREATED);
     }
 
     @PostMapping("/employees")

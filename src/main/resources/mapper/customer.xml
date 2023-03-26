@@ -52,8 +52,10 @@
     </select>    
 
     <insert id="insert">
-        insert into customer (customer_title, customer_content, employee_id, created_at)
-        values(#{customerTitle}, #{customerContent}, #{employeeId}, now())
+
+    INSERT INTO customer (customer_title, customer_content, employee_id, created_at) 
+    VALUES (#{customerSaveInDto.customerTitle}, #{customerSaveInDto.customerContent}, #{employeeId}, now())
+
     </insert>    
 
     <delete id="deleteById" >
@@ -61,7 +63,7 @@
     </delete>    
 
     <update id="updateById" >
-        update customer set customer_title= #{customerTitle}, customer_content= #{customerContent} where id = #{id} 
+        update customer set customer_title= #{customerUpdateInDto.customerTitle}, customer_content= #{customerUpdateInDto.customerContent} where id = #{id} 
     </update>    
 
 </mapper>
