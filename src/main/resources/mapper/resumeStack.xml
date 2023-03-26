@@ -38,7 +38,6 @@
         FROM resume_stack rs
         INNER JOIN stack_master sm ON rs.stack_id = sm.id
         WHERE rs.resume_id = #{resumeId}
-        LIMIT 1;
     </select>
 
     <insert id="insert">

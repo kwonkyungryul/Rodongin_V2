@@ -61,6 +61,7 @@ public class ApplyControllerTest {
         resultActions.andExpect(jsonPath("$.data[0].id").value(1));
         resultActions.andExpect(jsonPath("$.data[0].resumeDto.resumeTitle").value("개발자 이력서"));
         resultActions.andExpect(jsonPath("$.data[0].employeeDto.employeeFullname").value("홍길동"));
-        resultActions.andExpect(jsonPath("$.data[0].resumeStackDto.stackMasterDto.stackName").value("Java"));
+        resultActions.andExpect(jsonPath("$.data[0].resumeStackDto[0].stackMasterDto.stackName").value("Java"));
+        resultActions.andExpect(jsonPath("$.data[0].resumeCareerDto[0].careerCompany").value("ABC IT Solutions"));
     }
 }

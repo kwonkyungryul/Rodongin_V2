@@ -1,6 +1,6 @@
 package shop.mtcoding.rodongin.dto.apply;
 
-import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class ApplyListOutDto {
    private Integer id;
    private ResumeDto resumeDto;
    private EmployeeDto employeeDto;
-   private ResumeStackDto resumeStackDto;
-   private ResumeCareerDto ResumeCareerDto;
+   private List<ResumeStackDto> resumeStackDto;
+   private List<ResumeCareerDto> ResumeCareerDto;
 
 }

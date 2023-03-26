@@ -29,6 +29,6 @@ public interface ResumeCareerRepository {
                         @Param("careerStart") Date careerStart,
                         @Param("careerEnd") Date careerEnd);
 
-        public ResumeCareerDto findByIdApply(Integer resumeId);
+        public List<ResumeCareerDto> findByIdApply(Integer resumeId);
 
 }

@@ -30,7 +30,7 @@ public class ApplyController {
         Company comPrincipal = MySession.CompanyPrincipal(session);
 
         List<ApplyListOutDto> listDto = applyService.지원자목록보기(comPrincipal.getId(), announcementId);
-        return new ResponseEntity<>(new ResponseDto<>(1, "기업상세보기", listDto), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(1, "지원자 목록 보기", listDto), HttpStatus.OK);
 
     }
 }

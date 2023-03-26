@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import shop.mtcoding.rodongin.dto.resume.ResumeReq.ResumeStackSaveDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeResp.ResumeStackRespDto;
 import shop.mtcoding.rodongin.dto.resume.ResumeStackDto;
 
@@ -23,6 +22,6 @@ public interface ResumeStackRepository {
         public void updateByResumeId(@Param("resumeId") int resumeId, @Param("stackId") int stackId,
                         @Param("stackAcquisition") String stackAcquisition);
 
-        public ResumeStackDto findByIdApply(Integer resumeId);
+        public List<ResumeStackDto> findByIdApply(Integer resumeId);
 
 }
