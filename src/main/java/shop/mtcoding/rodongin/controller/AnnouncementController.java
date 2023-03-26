@@ -36,30 +36,19 @@ public class AnnouncementController {
 
     private final HttpSession session;
 
-    @DeleteMapping("/announcements/{id}")
+    @DeleteMapping("/s/announcements/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-        if (comPrincipal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다.");
-        }
-        announcementService.게시글삭제(comPrincipal.getId(), id);
+
+        announcementService.게시글삭제(id);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
     }
 
     // 게시글 수정
-    @PutMapping("/announcements/{id}")
+    @PutMapping("/s/announcements/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
             @RequestBody AnnouncementUpdateInDto announcementUpdateInDto, HttpServletResponse response) {
 
-        // Company principal = (Company) session.getAttribute("comPrincipal");
-
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-
-        if (comPrincipal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다.", HttpStatus.UNAUTHORIZED);
-        }
 
         if (announcementUpdateInDto.getAnnouncementTitle() == null
                 || announcementUpdateInDto.getAnnouncementTitle().isEmpty()) {
@@ -96,20 +85,12 @@ public class AnnouncementController {
             throw new CustomApiException("Area을 작성해주세요");
         }
 
-        announcementService.게시글수정(comPrincipal.getId(), id, announcementUpdateInDto);
+        announcementService.게시글수정(id, announcementUpdateInDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글수정성공", null), HttpStatus.OK);
     }
 
-    @PostMapping("/announcements")
+    @PostMapping("/s/announcements")
     public ResponseEntity<?> save(@RequestBody AnnouncementSaveInDto announcementSaveInDto) {
-        System.out.println(announcementSaveInDto.getStackId());
-        // Company comPrincipal = (Company) session.getAttribute("comPrincipal");
-
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-
-        if (comPrincipal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
 
         if (announcementSaveInDto.getStackId() == null
                 || announcementSaveInDto.getStackId() == 0) {
@@ -140,7 +121,7 @@ public class AnnouncementController {
             throw new CustomApiException("Area을 작성해주세요");
         }
 
-        announcementService.공고등록(comPrincipal.getId(), announcementSaveInDto);
+        announcementService.공고등록(announcementSaveInDto);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "게시글작성 성공", null), HttpStatus.CREATED);
     }
@@ -155,24 +136,17 @@ public class AnnouncementController {
     public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int num,
             @RequestParam(defaultValue = "") String content) {
 
-        AnnouncementListOutDto announcementList = announcementService.공고리스트보기(num,
-                content);
+        AnnouncementListOutDto announcementList = announcementService.공고리스트보기(num, content);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "공고 리스트 " + num + "페이지",
                 announcementList), HttpStatus.OK);
 
     }
 
-    @GetMapping("/announcements/companies/{companyId}")
+    @GetMapping("/s/announcements/companies/{companyId}")
     public ResponseEntity<?> comList(@PathVariable int companyId) {
 
-        // Company principal = (Company) session.getAttribute("comPrincipal");
-        Company comPrincipal = MySession.CompanyPrincipal(session);
-        if (comPrincipal == null) {
-            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
-        }
-
-        List<AnnouncementCompanyListOutDto> comList = announcementService.우리회사공고리스트(comPrincipal.getId(), companyId);
+        List<AnnouncementCompanyListOutDto> comList = announcementService.우리회사공고리스트(companyId);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "공고 리스트 보기 성공",
                 comList), HttpStatus.OK);

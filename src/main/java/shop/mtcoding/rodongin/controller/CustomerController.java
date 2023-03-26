@@ -95,7 +95,7 @@ public class CustomerController {
     return new ResponseEntity<>(new ResponseDto<>(1, "게시글 등록 성공", null), HttpStatus.CREATED);
   }
 
-  @GetMapping("customers/{id}")
+  @GetMapping("/customers/{id}")
   public ResponseEntity<?> detail(@PathVariable int id) {
     CustomerDetailOutDto customerDetailOutDto = customerService.고객센터게시글상세보기(id);
     return new ResponseEntity<>(new ResponseDto<>(1, "게시글보기페이지 성공", customerDetailOutDto), HttpStatus.OK);

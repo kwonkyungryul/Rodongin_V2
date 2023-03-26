@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.rodongin.dto.resume.*;
 import shop.mtcoding.rodongin.handler.ex.CustomApiException;
+import shop.mtcoding.rodongin.model.employee.Employee;
 import shop.mtcoding.rodongin.model.resume.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,8 +26,10 @@ public class ResumeService {
 
     private final ResumeStackRepository resumeStackRepository;
 
+    private final HttpSession session;
+
     @Transactional
-    public ResumeDetailOutDto 이력서상세보기(int principalId, int id) {
+    public ResumeDetailOutDto 이력서상세보기(int id) {
         ResumeDetailOutDto resumeDetailOutDto = resumeRepository.findByResumeJoinAndEmployee(id);
         List<ResumeGraduateDto> resumeGraduateDtos = resumeGraduateRepository.findByResumeGraduateJoinSchoolMaster(id);
         List<ResumeCareerDto> resumeCareerDtos = resumeCareerRepository.findByResumeId(id);
@@ -41,10 +45,12 @@ public class ResumeService {
     }
 
     @Transactional
-    public void 이력서등록(int principalId, ResumeSaveInDto resumeSaveInDto) {
+    public void 이력서등록(ResumeSaveInDto resumeSaveInDto) {
+
+        Employee principal = (Employee) session.getAttribute("principal");
 
         try {
-            resumeRepository.insert(principalId, resumeSaveInDto);
+            resumeRepository.insert(principal.getId(), resumeSaveInDto);
             if (resumeSaveInDto.getSchoolId() != null) {
                 resumeGraduateRepository.insert(resumeSaveInDto.getId(), resumeSaveInDto.getSchoolId(),
                         resumeSaveInDto.getSchoolGraduate());
@@ -72,13 +78,16 @@ public class ResumeService {
     }
 
     @Transactional
-    public void 이력서수정(Integer principalId, int id, ResumeUpdateInDto resumeUpdateInDto) {
+    public void 이력서수정(int id, ResumeUpdateInDto resumeUpdateInDto) {
+
+        Employee principal = (Employee) session.getAttribute("principal");
+
         Resume resumePS = resumeRepository.findById(id);
         if (resumePS == null) {
             throw new CustomApiException("존재하지 않는 이력서 입니다.");
         }
 
-        if (resumePS.getEmployeeId() != principalId) {
+        if (resumePS.getEmployeeId().intValue() != principal.getId()) {
             throw new CustomApiException("권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
@@ -98,13 +107,16 @@ public class ResumeService {
     }
 
     @Transactional
-    public void 이력서삭제(Integer principalId, int id) {
+    public void 이력서삭제(int id) {
+
+        Employee principal = (Employee) session.getAttribute("principal");
+
         Resume resumePS = resumeRepository.findById(id);
         if (resumePS == null) {
             throw new CustomApiException("존재하지 않는 이력서 입니다.");
         }
 
-        if (resumePS.getEmployeeId() != principalId) {
+        if (resumePS.getEmployeeId() != principal.getId()) {
             throw new CustomApiException("권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
