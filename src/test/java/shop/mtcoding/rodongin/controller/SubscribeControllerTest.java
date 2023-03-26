@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.rodongin.dto.subscribe.SubscribeSaveInDto;
 import shop.mtcoding.rodongin.model.employee.Employee;
 
 @Transactional // 메서드 실행 직후 롤백!! // auto_increment 초기화
@@ -51,12 +52,14 @@ public class SubscribeControllerTest {
     @Test
     public void save_test() throws Exception {
         // given
-        Integer companyId = 1;
-        String responseBody = om.writeValueAsString(companyId);
+        SubscribeSaveInDto subscribeSaveInDto = SubscribeSaveInDto.builder()
+                .announcementId(1).build();
+
+        String responseBody = om.writeValueAsString(subscribeSaveInDto);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/subscribe")
-        .content(responseBody).contentType(MediaType.APPLICATION_JSON).session(mockSession));
+        ResultActions resultActions = mvc.perform(post("/subscribes")
+                .content(responseBody).contentType(MediaType.APPLICATION_JSON).session(mockSession));
 
         // then
         resultActions.andExpect(status().isCreated());
@@ -65,12 +68,11 @@ public class SubscribeControllerTest {
     @Test
     public void delete_test() throws Exception {
         // given
-        Integer companyId = 1;
-        String responseBody = om.writeValueAsString(companyId);
+        Integer announcementId = 1;
 
         // when
-        ResultActions resultActions = mvc.perform(delete("/subscribe")
-        .content(responseBody).contentType(MediaType.APPLICATION_JSON).session(mockSession));
+        ResultActions resultActions = mvc.perform(delete("/subscribes/" + announcementId)
+                .session(mockSession));
 
         // then
         resultActions.andExpect(status().isOk());

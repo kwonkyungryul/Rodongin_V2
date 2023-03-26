@@ -13,7 +13,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO subscribe (employee_id, announcement_id, created_at) VALUES(#{employeeId}, #{announcementId}, now())
+        INSERT INTO subscribe (employee_id, announcement_id, created_at) VALUES(#{employeeId}, #{subscribeSaveInDto.announcementId}, now())
     </insert>
 
     <delete id="deleteByEmployeeIdAndAnnouncementId">
