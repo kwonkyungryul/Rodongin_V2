@@ -23,6 +23,23 @@
         WHERE rs.resume_id = #{resumeId}
     </select>
 
+    <resultMap id="applyResumeStack" type="shop.mtcoding.rodongin.dto.resume.ResumeStackDto">
+        <id property="id" column="id"/>
+        <result property="stackAcquisition" column="stack_acquisition"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="stackMasterDto" javaType="shop.mtcoding.rodongin.dto.resume.ResumeStackDto$StackMasterDto">
+            <id property="id" column="stackId"/>
+            <result property="stackName" column="stackName"/>
+        </association>
+    </resultMap>
+
+    <select id="findByIdApply" resultMap="applyResumeStack">
+     SELECT rs.*, sm.id stackId, sm.stack_name stackName
+        FROM resume_stack rs
+        INNER JOIN stack_master sm ON rs.stack_id = sm.id
+        WHERE rs.resume_id = #{resumeId}
+    </select>
+
     <insert id="insert">
         INSERT INTO resume_stack (resume_id, stack_id, stack_acquisition, created_at) VALUES
         (#{resumeId},#{stackId},#{stackAcquisition},NOW())

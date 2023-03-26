@@ -16,7 +16,7 @@ public class EncodeTest {
         // 반환된 문자열이 null이 아니고 비어 있지 않은지 확인합니다.
         assertNotNull(encodedPassword);
         assertNotEquals("", encodedPassword);
-     
+
 
         // 반환된 문자열을 출력합니다.
         System.out.println(encodedPassword);

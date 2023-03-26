@@ -18,6 +18,7 @@ import shop.mtcoding.rodongin.handler.ex.CustomException;
 import shop.mtcoding.rodongin.model.company.Company;
 import shop.mtcoding.rodongin.model.company.CompanyRepository;
 import shop.mtcoding.rodongin.util.Encode;
+import shop.mtcoding.rodongin.util.PathUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -105,17 +106,18 @@ public class CompanyService {
     }
 
     @Transactional
-    public void 기업소개등록(int id, CompanyUpdateInDto companyUpdateInDto, int comPrincipalId){
+    public void 기업소개등록(int id, CompanyUpdateInDto companyUpdateInDto, int comPrincipalId) {
         CompanyDetailOutDto principalPS = companyRepository.findById(id);
         if (principalPS.getId() != comPrincipalId) {
             throw new CustomApiException("기업소개를 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
-        // String thumbnail = PathUtil.writeImageFile(profile);
 
-        // if (profile == null || profile.isEmpty()) {
-        //     thumbnail = companyRepository.findById(comPrincipalId).getCompanyThumbnail();
-        // }
-        
+        if (companyUpdateInDto.getCompanyThumbnail() != null) {
+            String thumbnail = PathUtil.writeImageFile(companyUpdateInDto.getCompanyThumbnail());
+            companyUpdateInDto.setCompanyThumbnail(thumbnail);
+        }
+
+
         try {
             int result = companyRepository.updateById(companyUpdateInDto, id);
             } catch (Exception e) {

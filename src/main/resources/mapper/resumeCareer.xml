@@ -5,6 +5,11 @@
 
 <mapper namespace="shop.mtcoding.rodongin.model.resume.ResumeCareerRepository">
 
+
+    <select id="findByIdApply" resultType="shop.mtcoding.rodongin.dto.resume.ResumeCareerDto">
+      SELECT * FROM resume_career where resume_id = #{resumeId};
+    </select>
+
     <select id="findByResumeId" resultType="shop.mtcoding.rodongin.dto.resume.ResumeCareerDto">
         SELECT * FROM resume_career where resume_id = #{resumeId}
     </select>

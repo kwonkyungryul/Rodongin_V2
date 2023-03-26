@@ -11,12 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Apply {
     private Integer id;
+    private Integer announcementId;
     private Integer resumeId;
-    private Integer companyId;
     private Timestamp createdAt;
-    
-    public Apply(Integer resumeId, Integer companyId) {
+
+    public Apply(Integer id, Integer announcementId, Integer resumeId, Timestamp createdAt) {
+        this.id = id;
+        this.announcementId = announcementId;
         this.resumeId = resumeId;
-        this.companyId = companyId;
+        this.createdAt = createdAt;
     }
+
 }

@@ -8,15 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CustomerSaveInDto {
+public class CustomerUpdateInDto {
     private String customerTitle;
     private String customerContent;
 
     @Builder
-    public CustomerSaveInDto(String customerTitle, String customerContent) {
+    public CustomerUpdateInDto(String customerTitle, String customerContent) {
         this.customerTitle = customerTitle;
         this.customerContent = customerContent;
-
     }
-
 }
