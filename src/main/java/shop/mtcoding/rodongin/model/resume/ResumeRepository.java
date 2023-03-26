@@ -34,4 +34,6 @@ public interface ResumeRepository {
     public int insert(@Param("employeeId") int employeeId, @Param("resumeSaveInDto") ResumeSaveInDto resumeSaveInDto);
 
     public List<Resume> findByResumeId(int resumeId);
+
+    public ResumeDto findByIdApply(Integer id);
 }

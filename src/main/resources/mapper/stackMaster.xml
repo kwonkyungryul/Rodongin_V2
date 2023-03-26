@@ -15,4 +15,5 @@
     <select id="findById" resultType="shop.mtcoding.rodongin.model.master.StackMaster">
         select * from stack_master where id = #{id}
     </select>
+
 </mapper>

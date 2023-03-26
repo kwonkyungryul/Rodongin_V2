@@ -1,13 +1,14 @@
 package shop.mtcoding.rodongin.model.employee;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import shop.mtcoding.rodongin.dto.employee.EmployeeDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeJoinInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeLoginInDto;
 import shop.mtcoding.rodongin.dto.employee.EmployeeUpdateInDto;
-import shop.mtcoding.rodongin.dto.employee.EmployeeReq.EmployeeUpdatdReq;
-
-import java.util.List;
 
 @Mapper
 public interface EmployeeRepository {
@@ -20,6 +21,8 @@ public interface EmployeeRepository {
     public List<Employee> findAll();
 
     public Employee findById(int id);
+
+    public EmployeeDto findByIdApply(int id);
 
     // public int updateById(@Param("id") int id, @Param("employeeUpdatdReq")
     // EmployeeUpdatdReq employeeUpdatdReq,

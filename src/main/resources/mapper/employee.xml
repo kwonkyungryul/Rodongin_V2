@@ -23,6 +23,9 @@
     <select id="findById" resultType="shop.mtcoding.rodongin.model.employee.Employee">
         SELECT * FROM employee WHERE id = #{id}
     </select>
+    <select id="findByIdApply" resultType="shop.mtcoding.rodongin.dto.employee.EmployeeDto">
+        SELECT * FROM employee WHERE id = #{id}
+    </select>
 
 
     <insert id="insert">
