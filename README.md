@@ -38,6 +38,21 @@
 ### 5단계 **( ~ 03/04)**
 - 합격, 불합격 통보
 ---
+### REST 변경점
+![image](https://user-images.githubusercontent.com/68271830/233276035-0f8ca00d-5ceb-4a89-9532-401896345411.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276313-8a00afb5-5cd0-415a-a059-b7d6bbb5d599.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276353-8de4475d-183c-4e0f-b485-37e22ebbf1a2.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276401-c824197f-8b05-4c3b-98fd-5fa41feb3ede.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276470-8331d9ad-f251-4821-8717-35f2f15f4b61.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276538-5e396df9-6c18-4109-afd0-2ccc0a6b33c4.png)
+
+![image](https://user-images.githubusercontent.com/68271830/233276574-fbe02855-b6b0-4095-b8b5-966bc6110d59.png)
+---
 ### 사용자 시나리오
 ![image](https://user-images.githubusercontent.com/68271830/233270113-64f0b75b-89a0-4284-9f16-acf76ef3df45.png)
 
@@ -66,18 +81,3 @@
 ![image](https://user-images.githubusercontent.com/68271830/233270631-d206a11e-7e0e-4bb1-9c3c-145c0c8ade56.png)
 
 ![image](https://user-images.githubusercontent.com/68271830/233270660-18e96d4d-346d-495f-8f75-520c825a6e84.png)
----
-### REST 변경점
-![image](https://user-images.githubusercontent.com/68271830/233276035-0f8ca00d-5ceb-4a89-9532-401896345411.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276313-8a00afb5-5cd0-415a-a059-b7d6bbb5d599.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276353-8de4475d-183c-4e0f-b485-37e22ebbf1a2.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276401-c824197f-8b05-4c3b-98fd-5fa41feb3ede.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276470-8331d9ad-f251-4821-8717-35f2f15f4b61.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276538-5e396df9-6c18-4109-afd0-2ccc0a6b33c4.png)
-
-![image](https://user-images.githubusercontent.com/68271830/233276574-fbe02855-b6b0-4095-b8b5-966bc6110d59.png)
