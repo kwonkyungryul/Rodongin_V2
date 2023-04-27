@@ -38,6 +38,9 @@
 ### 5단계 **( ~ 03/04)**
 - 합격, 불합격 통보
 ---
+### 시연영상
+https://www.youtube.com/watch?v=vDDCN68fZbc
+
 ### REST 변경점
 ![image](https://user-images.githubusercontent.com/68271830/233276035-0f8ca00d-5ceb-4a89-9532-401896345411.png)
 
