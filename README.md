@@ -39,7 +39,7 @@
 - 합격, 불합격 통보
 ---
 ### 발표 자료
-[3조_미니프로젝트2_PPT.pdf](..%2F..%2F..%2FUsers%2Fkkr07%2FOneDrive%2F%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4%2F3%EC%A1%B0_%EB%AF%B8%EB%8B%88%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B82_PPT.pdf)
+[3조_미니프로젝트2_PPT.pdf](https://github.com/kwonkyungryul/Rodongin_V2/files/11342048/3._.2_PPT.pdf)
 
 ### 시연영상
 https://www.youtube.com/watch?v=vDDCN68fZbc
